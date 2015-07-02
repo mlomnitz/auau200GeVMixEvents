@@ -12,10 +12,10 @@ StMixerHists::StMixerHists(char* fileBaseName):
    mSE_Vtx = new TH2F(Form("%s_seVtx", fileBaseName), "Vertex pos;vertex x;vertex y", 250, -2.5, 2.5, 250, -2.5, 2.5);
    mME_Vtx = new TH2F(Form("%s_meVtx", fileBaseName), "Vertex pos;vertex x;vertex y", 250, -2.5, 2.5, 250, -2.5, 2.5);
 
-   mSE_LS = new TH2F(Form("%s_se_ls_mass", fileBaseName), "Same Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c),Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-   mSE_US = new TH2F(Form("%s_se_us_mass", fileBaseName), "Same Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c),Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-   mME_LS = new TH2F(Form("%s_me_ls_mass", fileBaseName), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c),Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-   mME_US = new TH2F(Form("%s_me_us_mass", fileBaseName), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c),Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
+   mSE_LS = new TH2F(Form("%s_se_ls_mass", fileBaseName), "Same Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
+   mSE_US = new TH2F(Form("%s_se_us_mass", fileBaseName), "Same Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
+   mME_LS = new TH2F(Form("%s_me_ls_mass", fileBaseName), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
+   mME_US = new TH2F(Form("%s_me_us_mass", fileBaseName), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
    return;
 }
 void StMixerHists::closeFile()
