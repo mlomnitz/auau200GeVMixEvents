@@ -43,7 +43,7 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst)
    {
       StPicoTrack const* trk = picoDst->track(iTrk);
       bool saveTrack = false;
-      if (!isGoodTrack(trk)  || isCloseTrack(*trk, pVertex)) continue;
+      if (!isGoodTrack(trk)  || isCloseTrack(*trk, pVertex)) continue;//good track and Not close trak
       if (isTpcPion(trk))
       {
          isTpcPi = true;
