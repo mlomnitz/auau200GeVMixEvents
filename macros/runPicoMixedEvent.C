@@ -47,6 +47,8 @@ StChain *chain;
 
 void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *outputFile="outputBaseName", 
 			 const Char_t *badRunListFileName = "picoList_bad_MB.list") { 
+  TStopwatch*   stopWatch = new TStopwatch();
+  stopWatch->Start();
   // -- Check STAR Library. Please set SL_version to the original star library used in the production 
   //    from http://www.star.bnl.gov/devcgi/dbProdOptionRetrv.pl
   StMemStat mem;
@@ -71,6 +73,7 @@ void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *output
   gSystem->Load("StPicoCutsBase");
   gSystem->Load("StPicoHFMaker");
   gSystem->Load("StRefMultCorr");
+  gSystem->Load("StEventPlane");
   gSystem->Load("StPicoMixedEventMaker");
   
   
@@ -94,7 +97,9 @@ void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *output
   for(Int_t i=0;i<6;i++){
     cout << i << " " << grefmultCorrUtil->get(i, 0) << endl;
   }
-  StPicoMixedEventMaker* picoMixedEventMaker = new StPicoMixedEventMaker("picoMixedEventMaker", picoDstMaker, grefmultCorrUtil, outputFile, sInputListHF);
+  StEventPlane*  eventPlaneMaker = new StEventPlane("eventPlaneMaker",picoDstMaker,grefmultCorrUtil);
+  // StPicoMixedEventMaker* picoMixedEventMaker = new StPicoMixedEventMaker("picoMixedEventMaker", picoDstMaker, grefmultCorrUtil, outputFile, sInputListHF);
+  StPicoMixedEventMaker* picoMixedEventMaker = new StPicoMixedEventMaker("picoMixedEventMaker", picoDstMaker, grefmultCorrUtil, eventPlaneMaker, outputFile, sInputListHF);
 
   // ---------------------------------------------------
   // -- Set Base cuts for HF analysis
@@ -129,6 +134,9 @@ void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *output
   cout << "****************************************** " << endl;
   
   delete chain;
+
+  stopWatch->Stop();   
+  stopWatch->Print();
   
 }
 
