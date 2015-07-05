@@ -13,16 +13,17 @@
 #include "StPicoMixedEventMaker.h"
 #include "StPicoEventMixer.h"
 #include "StRoot/StRefMultCorr/StRefMultCorr.h"
+#include "StRoot/StEventPlane/StEventPlane.h"
 
 #include <vector>
 
 ClassImp(StPicoMixedEventMaker)
 
 // _________________________________________________________
-StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil,
+StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
       char const* outputBaseFileName,  char const* inputHFListHFtree = "") :
    StMaker(name), mPicoDst(NULL), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
-   mGRefMultCorrUtil(grefmultCorrUtil), mPicoEventMixer(NULL),
+   mGRefMultCorrUtil(grefmultCorrUtil), mEventPlane(eventPlaneMaker), mPicoEventMixer(NULL),
    mOuputFileBaseName(outputBaseFileName), mInputFileName(inputHFListHFtree),
    mEventCounter(0), mTree(NULL), mOutputFileTree(NULL)
 {
@@ -48,10 +49,20 @@ StPicoMixedEventMaker::~StPicoMixedEventMaker()
 }
 // Method should load Q vector stuff from Hao, needs fixing
 // _________________________________________________________
-bool StPicoMixedEventMaker::loadEventPlaneCorr(Int_t const run)
+bool StPicoMixedEventMaker::loadEventPlaneCorr(StEventPlane const * mEventPlane)
 {
    //needs to implement, will currently break maker
-   return false;
+   if(!mEventPlane)
+   {
+      LOG_WARN << "No EventPlane ! Skipping! " << endm;
+      return kFALSE;
+   }
+   // cout<<"mEventPlane->getAcceptEvent()="<<mEventPlane->getAcceptEvent()<<endl;
+   if(!mEventPlane->getAcceptEvent()) {
+      LOG_WARN << "StPicoMixedEvent::THistograms and TProiles NOT found! shoudl check the input Qvector files From HaoQiu ! Skipping this run! " << endm;
+     return kFALSE;
+   }
+   return kTRUE;
 }
 // _________________________________________________________
 Int_t StPicoMixedEventMaker::Init()
@@ -60,10 +71,7 @@ Int_t StPicoMixedEventMaker::Init()
    mPicoEventMixer = new StPicoEventMixer("cat0");
    mPicoEventMixer->setEventBuffer(10);
    mGRefMultCorrUtil = new StRefMultCorr("grefmult");
-   // if(!LoadEventPlaneCorr(mRunId)){
-   // LOG_WARN << "Event plane calculations unavalable! Skipping"<<endm;
-   // return kStOk;
-   // }
+
 
    // -- reset event to be in a defined state
    //resetEvent();
@@ -122,6 +130,20 @@ Int_t StPicoMixedEventMaker::Make()
 //     4            55-60%            30-40%
 //     5            50-55%            20-30%
 //     6            45-50%            10-20%
+
+   if(!loadEventPlaneCorr(mEventPlane)){
+   LOG_WARN << "Event plane calculations unavalable! Skipping"<<endm;
+   return kStOK;
+   // continue;
+   }
+
+//   cout<<"GUANNAN Xie Check==========="<<endl;
+//   cout<<",yEventPlane->getRunId()="<<mEventPlane->getRunId()<<endl;
+//   cout<<"RunId()="<<picoDst->event()->runId()<<endl;
+//   cout<<"getCentrality()="<<centrality<<endl;
+//   cout<<"mEventPlane->getCentrality()="<<mEventPlane->getCentrality()<<endl;
+//   cout<<"mEventPlane->getEventPlane()="<<mEventPlane->getEventPlane()<<endl;
+
    if (centrality < 4 || centrality > 6) return kStOk;
    //cout<<"Centrality: "<<centrality<<endl;
    // - - -
