@@ -31,13 +31,14 @@ class StPicoDstMaker;
 class StPicoEvent;
 class StPicoTrack;
 class StRefMultCorr;
+class StEventPlane;
 
 class StPicoEventMixer;
 
 class StPicoMixedEventMaker : public StMaker 
 {
   public:
-  StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil,
+  StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
 			char const* outputBaseFileName,  
 			char const* inputHFListHFtree);
     virtual ~StPicoMixedEventMaker();
@@ -54,6 +55,7 @@ class StPicoMixedEventMaker : public StMaker
     StPicoDstMaker* mPicoDstMaker;      
     StPicoEvent*    mPicoEvent;         
     StRefMultCorr* mGRefMultCorrUtil;
+    StEventPlane*  mEventPlane;
 
     StPicoEventMixer* mPicoEventMixer; //Needs to be generalized to have mixer per category bin
 
@@ -62,7 +64,7 @@ class StPicoMixedEventMaker : public StMaker
 
     int             mEventCounter;
 
-    bool loadEventPlaneCorr(int const runId);
+    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
                                         
     TTree*          mTree;
     TFile*          mOutputFileTree; 
