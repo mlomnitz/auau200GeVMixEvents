@@ -56,6 +56,7 @@ class StPicoMixedEventMaker : public StMaker
     StPicoDstMaker* mPicoDstMaker;      
     StPicoEvent*    mPicoEvent;         
     StRefMultCorr* mGRefMultCorrUtil;
+    StEventPlane*  mEventPlane;
 
     StPicoEventMixer* mPicoEventMixer[10][9]; //Needs to be generalized, have vz and centrality
 
