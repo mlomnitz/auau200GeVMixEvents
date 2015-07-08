@@ -31,13 +31,15 @@ class StPicoDstMaker;
 class StPicoEvent;
 class StPicoTrack;
 class StRefMultCorr;
+class StEventPlane;
 
 class StPicoEventMixer;
 
 class StPicoMixedEventMaker : public StMaker 
 {
   public:
-  StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil,
+   StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
+  // StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil,
 			char const* outputBaseFileName,  
 			char const* inputHFListHFtree);
     virtual ~StPicoMixedEventMaker();
@@ -62,7 +64,7 @@ class StPicoMixedEventMaker : public StMaker
 
     int             mEventCounter;
 
-    bool loadEventPlaneCorr(int const runId);
+    // bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
                                         
     TTree*          mTree;
     TFile*          mOutputFileTree; 
