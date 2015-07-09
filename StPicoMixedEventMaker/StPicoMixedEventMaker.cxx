@@ -167,7 +167,7 @@ Int_t StPicoMixedEventMaker::Make()
    int const centrality  = mGRefMultCorrUtil->getCentralityBin9();
    if (centrality < 0 || centrality > 8) return kStOk;
    int const vz_bin = (int)((6 + pVtx.z()) / 1.2) ;
-   if (vz_bin < 0 || vz_bin > 9) return kStOk;
+   if (vz_bin < 0  ||  vz_bin > 9) return kStOk;
 //     4            55-60%            30-40%
 //     5            50-55%            20-30%
 //     6            45-50%            10-20%
