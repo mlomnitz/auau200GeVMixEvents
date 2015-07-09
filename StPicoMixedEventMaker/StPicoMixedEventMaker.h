@@ -60,12 +60,14 @@ class StPicoMixedEventMaker : public StMaker
 
     StPicoEventMixer* mPicoEventMixer[10][9]; //Needs to be generalized, have vz and centrality
 
+    Int_t           mFailedRunnumber;
+
     TString         mOuputFileBaseName; 
     TString         mInputFileName;     
 
     int             mEventCounter;
 
-    // bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
+    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
                                         
     TTree*          mTree;
     TFile*          mOutputFileTree; 
