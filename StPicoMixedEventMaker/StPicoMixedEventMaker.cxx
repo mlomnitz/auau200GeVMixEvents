@@ -184,12 +184,12 @@ Int_t StPicoMixedEventMaker::Make()
    }
    else  return kStOK;
 
-   cout << "GUANNAN Xie Check===========" << endl;
-   cout << "mEventPlane->getRunId()=" << mEventPlane->getRunId() << endl;
-   cout << "RunId()=" << picoDst->event()->runId() << endl;
-   cout << "getCentrality()=" << centrality << endl;
-   cout << "mEventPlane->getCentrality()=" << mEventPlane->getCentrality() << endl;
-   cout << "mEventPlane->getEventPlane()=" << mEventPlane->getEventPlane() << endl;
+   //cout << "GUANNAN Xie Check===========" << endl;
+   //cout << "mEventPlane->getRunId()=" << mEventPlane->getRunId() << endl;
+   //cout << "RunId()=" << picoDst->event()->runId() << endl;
+   //cout << "getCentrality()=" << centrality << endl;
+   //cout << "mEventPlane->getCentrality()=" << mEventPlane->getCentrality() << endl;
+   //cout << "mEventPlane->getEventPlane()=" << mEventPlane->getEventPlane() << endl;
 
    if (mPicoEventMixer[vz_bin][centrality] -> addPicoEvent(picoDst) ==  true)
       mPicoEventMixer[vz_bin][centrality]->mixEvents();
