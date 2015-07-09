@@ -100,7 +100,7 @@ Int_t StPicoMixedEventMaker::Init()
       {
       for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
       {
-         mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(Form("Cent_%i_Vz_%i_EvtPlan", iCentrality, iVz, iEventPlane));
+         mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(Form("Cent_%i_Vz_%i_EvtPlan_%i", iCentrality, iVz, iEventPlane));
          mPicoEventMixer[iVz][iCentrality][iEventPlane]->setEventBuffer(10);
       }
       }
