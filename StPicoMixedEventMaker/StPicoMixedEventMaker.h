@@ -58,7 +58,7 @@ class StPicoMixedEventMaker : public StMaker
     StRefMultCorr* mGRefMultCorrUtil;
     StEventPlane*  mEventPlane;
 
-    StPicoEventMixer* mPicoEventMixer[10][9]; //Needs to be generalized, have vz and centrality
+    StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
 
     Int_t           mFailedRunnumber;
 

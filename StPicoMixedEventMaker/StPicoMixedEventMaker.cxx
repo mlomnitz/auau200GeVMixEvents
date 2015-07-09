@@ -32,7 +32,10 @@ StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* p
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-         mPicoEventMixer[iVz][iCentrality] = NULL;
+      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+      {
+         mPicoEventMixer[iVz][iCentrality][iEventPlane] = NULL;
+      }
       }
    }
 
@@ -61,7 +64,10 @@ StPicoMixedEventMaker::~StPicoMixedEventMaker()
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-         delete mPicoEventMixer[iVz][iCentrality];
+      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+      {
+         delete mPicoEventMixer[iVz][iCentrality][iEventPlane];
+      }
       }
    }
    //mOutputFileTree->Write();
@@ -92,8 +98,11 @@ Int_t StPicoMixedEventMaker::Init()
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-         mPicoEventMixer[iVz][iCentrality] = new StPicoEventMixer(Form("Cent_%i_Vz_%i", iCentrality, iVz));
-         mPicoEventMixer[iVz][iCentrality]->setEventBuffer(10);
+      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+      {
+         mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(Form("Cent_%i_Vz_%i_EvtPlan", iCentrality, iVz, iEventPlane));
+         mPicoEventMixer[iVz][iCentrality][iEventPlane]->setEventBuffer(10);
+      }
       }
    }
    mGRefMultCorrUtil = new StRefMultCorr("grefmult");
@@ -120,8 +129,11 @@ Int_t StPicoMixedEventMaker::Finish()
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-         mPicoEventMixer[iVz][iCentrality]->finish();
+      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+      {
+         mPicoEventMixer[iVz][iCentrality][iEventPlane]->finish();
          //delete mPicoEventMixer[iVz][iCentrality];
+      }
       }
    }
    //mOutputFileTree->Write()
@@ -184,15 +196,19 @@ Int_t StPicoMixedEventMaker::Make()
    }
    else  return kStOK;
 
+   float const eventPlane = mEventPlane->getEventPlane();
+   int const eventPlane_bin = (int)((eventPlane) / 0.3141592) ;
+   if (eventPlane_bin < 0  ||  eventPlane_bin > 9) return kStOk;
    //cout << "GUANNAN Xie Check===========" << endl;
    //cout << "mEventPlane->getRunId()=" << mEventPlane->getRunId() << endl;
    //cout << "RunId()=" << picoDst->event()->runId() << endl;
    //cout << "getCentrality()=" << centrality << endl;
    //cout << "mEventPlane->getCentrality()=" << mEventPlane->getCentrality() << endl;
    //cout << "mEventPlane->getEventPlane()=" << mEventPlane->getEventPlane() << endl;
+   // cout << "eventPlane_bin=" << eventPlane_bin << endl;
 
-   if (mPicoEventMixer[vz_bin][centrality] -> addPicoEvent(picoDst) ==  true)
-      mPicoEventMixer[vz_bin][centrality]->mixEvents();
+   if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin] -> addPicoEvent(picoDst) ==  true)
+      mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
    //mTree->Fill();
 
    return kStOk;
