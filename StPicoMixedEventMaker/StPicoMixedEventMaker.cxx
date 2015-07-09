@@ -69,21 +69,21 @@ StPicoMixedEventMaker::~StPicoMixedEventMaker()
 }
 // Method should load Q vector stuff from Hao, needs fixing
 // _________________________________________________________
-//bool StPicoMixedEventMaker::loadEventPlaneCorr(StEventPlane const * mEventPlane)
-//{
-//   //needs to implement, will currently break maker
-//   if(!mEventPlane)
-//   {
-//      LOG_WARN << "No EventPlane ! Skipping! " << endm;
-//      return kFALSE;
-//   }
-//   // cout<<"mEventPlane->getAcceptEvent()="<<mEventPlane->getAcceptEvent()<<endl;
-//   if(!mEventPlane->getAcceptEvent()) {
-//      LOG_WARN << "StPicoMixedEvent::THistograms and TProiles NOT found! shoudl check the input Qvector files From HaoQiu ! Skipping this run! " << endm;
-//     return kFALSE;
-//   }
-//   return kTRUE;
-//}
+bool StPicoMixedEventMaker::loadEventPlaneCorr(StEventPlane const * mEventPlane)
+{
+   //needs to implement, will currently break maker
+   if (!mEventPlane)
+   {
+      LOG_WARN << "No EventPlane ! Skipping! " << endm;
+      return kFALSE;
+   }
+   if (!mEventPlane->getAcceptEvent())
+   {
+      // LOG_WARN << "StPicoMixedEvent::THistograms and TProiles NOT found! shoudl check the input Qvector files From HaoQiu ! Skipping this run! " << endm;
+      return kFALSE;
+   }
+   return kTRUE;
+}
 // _________________________________________________________
 Int_t StPicoMixedEventMaker::Init()
 {
@@ -104,6 +104,7 @@ Int_t StPicoMixedEventMaker::Init()
 
    // -- reset event to be in a defined state
    //resetEvent();
+   mFailedRunnumber = 0;
 
    return kStOK;
 }
@@ -172,17 +173,23 @@ Int_t StPicoMixedEventMaker::Make()
 //     5            50-55%            20-30%
 //     6            45-50%            10-20%
    //cout<<"Centrality: "<<centrality<<endl;
-//   if(!loadEventPlaneCorr(mEventPlane)){
-//   LOG_WARN << "Event plane calculations unavalable! Skipping"<<endm;
-//   return kStOK;
-//   }
+   if (mFailedRunnumber != picoDst->event()->runId())
+   {
+      if (!loadEventPlaneCorr(mEventPlane))
+      {
+         LOG_WARN << "Event plane calculations unavalable! Skipping" << endm;
+         mFailedRunnumber = picoDst->event()->runId();
+         return kStOK;
+      }
+   }
+   else  return kStOK;
 
-//   cout<<"GUANNAN Xie Check==========="<<endl;
-//   cout<<",yEventPlane->getRunId()="<<mEventPlane->getRunId()<<endl;
-//   cout<<"RunId()="<<picoDst->event()->runId()<<endl;
-//   cout<<"getCentrality()="<<centrality<<endl;
-//   cout<<"mEventPlane->getCentrality()="<<mEventPlane->getCentrality()<<endl;
-//   cout<<"mEventPlane->getEventPlane()="<<mEventPlane->getEventPlane()<<endl;
+   cout << "GUANNAN Xie Check===========" << endl;
+   cout << "mEventPlane->getRunId()=" << mEventPlane->getRunId() << endl;
+   cout << "RunId()=" << picoDst->event()->runId() << endl;
+   cout << "getCentrality()=" << centrality << endl;
+   cout << "mEventPlane->getCentrality()=" << mEventPlane->getCentrality() << endl;
+   cout << "mEventPlane->getEventPlane()=" << mEventPlane->getEventPlane() << endl;
 
    if (mPicoEventMixer[vz_bin][centrality] -> addPicoEvent(picoDst) ==  true)
       mPicoEventMixer[vz_bin][centrality]->mixEvents();
