@@ -29,7 +29,7 @@ namespace mxeCuts
   float const Vrcut = 2.0; // 
   
   //Tracking
-  float const minPt = 1.2;
+  float const minPt = 0.6;//1.2
   float const nHitsFit = 20;
   float const nHitsFit_nHitsPos = 0.52;
   float const dca2pVtx = 0.008;
