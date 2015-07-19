@@ -58,7 +58,6 @@ StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* p
 // _________________________________________________________
 StPicoMixedEventMaker::~StPicoMixedEventMaker()
 {
-   cout << "Lomnitz:: Destroying" << endl;
    delete mGRefMultCorrUtil;
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
    {
@@ -105,7 +104,7 @@ Int_t StPicoMixedEventMaker::Init()
       }
       }
    }
-   mGRefMultCorrUtil = new StRefMultCorr("grefmult");
+   // mGRefMultCorrUtil = new StRefMultCorr("grefmult");
    // if(!LoadEventPlaneCorr(mRunId)){
    // LOG_WARN << "Event plane calculations unavalable! Skipping"<<endm;
    // return kStOk;
