@@ -15,6 +15,7 @@
 #include "StPicoEventMixer.h"
 #include "StRoot/StRefMultCorr/StRefMultCorr.h"
 #include "StRoot/StEventPlane/StEventPlane.h"
+#include "kfEvent.h"
 
 #include <vector>
 
@@ -22,20 +23,21 @@ ClassImp(StPicoMixedEventMaker)
 
 // _________________________________________________________
 StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
-      char const* outputBaseFileName,  char const* inputHFListHFtree = "") :
+      char const* outputBaseFileName,  char const* inputHFListHFtree,  char const * kfFileList) :
    StMaker(name), mPicoDst(NULL), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
    mGRefMultCorrUtil(grefmultCorrUtil), mEventPlane(eventPlaneMaker),
    mOuputFileBaseName(outputBaseFileName), mInputFileName(inputHFListHFtree),
-   mEventCounter(0), mTree(NULL), mOutputFileTree(NULL)
+   mEventCounter(0), mTree(NULL), mOutputFileTree(NULL),
+   mKfEvent(NULL), mKfFileList(kfFileList), mKfChain(NULL), iiii(0), jjjj(0)
 {
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
-      {
-         mPicoEventMixer[iVz][iCentrality][iEventPlane] = NULL;
-      }
+         for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+         {
+            mPicoEventMixer[iVz][iCentrality][iEventPlane] = NULL;
+         }
       }
    }
 
@@ -58,15 +60,14 @@ StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* p
 // _________________________________________________________
 StPicoMixedEventMaker::~StPicoMixedEventMaker()
 {
-   delete mGRefMultCorrUtil;
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
-      {
-         delete mPicoEventMixer[iVz][iCentrality][iEventPlane];
-      }
+         for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+         {
+            delete mPicoEventMixer[iVz][iCentrality][iEventPlane];
+         }
       }
    }
    //mOutputFileTree->Write();
@@ -92,23 +93,41 @@ bool StPicoMixedEventMaker::loadEventPlaneCorr(StEventPlane const * mEventPlane)
 // _________________________________________________________
 Int_t StPicoMixedEventMaker::Init()
 {
+
+   // -------------Next is include KfVertex tree
+   // mKfEvent = new kfEvent();
+   mKfChain = new TChain("kfEvent");
+   std::ifstream listOfKfFiles;
+   listOfKfFiles.open(mKfFileList);
+   if (listOfKfFiles.is_open())
+   {
+      std::string kffile;
+      while (getline(listOfKfFiles, kffile))
+      {
+         LOG_INFO << "StPicoD0AnaMaker - Adding kfVertex tree:" << kffile << endm;
+         mKfChain->Add(kffile.c_str());
+      }
+   }
+   else
+   {
+      LOG_ERROR << "StPicoD0AnaMaker - Could not open list of corresponding kfEvent files. ABORT!" << endm;
+      return kStErr;
+   }
+   mKfEvent = new kfEvent(mKfChain);
+   // -------------Finish include KfVertex tree----!!!!!!!!
+
    mOutputFileTree->cd();
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
-      {
-         mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(Form("Cent_%i_Vz_%i_EvtPlan_%i", iCentrality, iVz, iEventPlane));
-         mPicoEventMixer[iVz][iCentrality][iEventPlane]->setEventBuffer(10);
-      }
+         for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+         {
+            mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(Form("Cent_%i_Vz_%i_EvtPlan_%i", iCentrality, iVz, iEventPlane));
+            mPicoEventMixer[iVz][iCentrality][iEventPlane]->setEventBuffer(10);
+         }
       }
    }
-   // mGRefMultCorrUtil = new StRefMultCorr("grefmult");
-   // if(!LoadEventPlaneCorr(mRunId)){
-   // LOG_WARN << "Event plane calculations unavalable! Skipping"<<endm;
-   // return kStOk;
-   // }
 
    // -- reset event to be in a defined state
    //resetEvent();
@@ -128,11 +147,11 @@ Int_t StPicoMixedEventMaker::Finish()
    {
       for (int iCentrality = 0 ; iCentrality < 9 ; ++iCentrality)
       {
-      for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
-      {
-         mPicoEventMixer[iVz][iCentrality][iEventPlane]->finish();
-         //delete mPicoEventMixer[iVz][iCentrality];
-      }
+         for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
+         {
+            mPicoEventMixer[iVz][iCentrality][iEventPlane]->finish();
+            //delete mPicoEventMixer[iVz][iCentrality];
+         }
       }
    }
    //mOutputFileTree->Write()
@@ -151,6 +170,7 @@ void StPicoMixedEventMaker::Clear(Option_t* opt)
 // _________________________________________________________
 Int_t StPicoMixedEventMaker::Make()
 {
+   readNextEvent();
 
    if (!mPicoDstMaker)
    {
@@ -164,6 +184,15 @@ Int_t StPicoMixedEventMaker::Make()
       LOG_WARN << "No picoDst ! Skipping! " << endm;
       return kStWarn;
    }
+
+   if (picoDst->event()->runId() != mKfEvent->mRunId  ||
+         picoDst->event()->eventId() != mKfEvent->mEventId)
+   {
+      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << endm;
+      LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent are not in sync." << endm;
+      exit(1);
+   }
+
    // - GRef from Guannan
    if (!mGRefMultCorrUtil)
    {
@@ -172,6 +201,18 @@ Int_t StPicoMixedEventMaker::Make()
    }
    //Lomnitz, need to fix this bs
    StThreeVectorF const pVtx = picoDst->event()->primaryVertex();
+   StThreeVectorF const kfVtx(mKfEvent->mKfVx, mKfEvent->mKfVy, mKfEvent->mKfVz);
+   if (pVtx.x() != mKfEvent->mVx)               // || pVtx.y() != mKfEvent->mVy || pVtx.z() != mKfEvent->mVz
+   {
+      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << endm;
+      LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent vertex are not in sync." << endm;
+      exit(1);
+   }
+   // cout<<"pVtx="<<pVtx.x()<<" ; "<<pVtx.y()<<" ;"<<pVtx.z()<<endl;
+   // cout<<"kfVtx="<<kfVtx.x()<<" ; "<<kfVtx.y()<<" ;"<<kfVtx.z()<<endl;
+   // if(pVtx.x()!=-999) cout<<"pVtx iiii++="<<iiii++<<endl;
+   // if(kfVtx.x()!=-999) cout<<"kfVtx jjjj++="<<jjjj++<<endl;
+
    if (fabs(pVtx.z()) >= 6.0)
       return kStOk;
    mGRefMultCorrUtil->init(picoDst->event()->runId());
