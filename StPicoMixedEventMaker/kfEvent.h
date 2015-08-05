@@ -16,7 +16,8 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class kfEvent {
+class kfEvent
+{
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -45,7 +46,7 @@ public :
    TBranch        *b_mKfVy;   //!
    TBranch        *b_mKfVz;   //!
 
-   kfEvent(TTree *tree=0);
+   kfEvent(TTree *tree = 0);
    virtual ~kfEvent();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -59,16 +60,18 @@ public :
 #endif
 
 #ifdef kfEvent_cxx
-kfEvent::kfEvent(TTree *tree) : fChain(0) 
+kfEvent::kfEvent(TTree *tree) : fChain(0)
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
-   if (tree == 0) {
+   if (tree == 0)
+   {
       TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("/project/projectdirs/starprod/hft/kfVertex/Run14/AuAu/200GeV/physics2/P15ic/094/15094070/st_physics_15094070_raw_0000007.kfVertex.root");
-      if (!f || !f->IsOpen()) {
+      if (!f || !f->IsOpen())
+      {
          f = new TFile("/project/projectdirs/starprod/hft/kfVertex/Run14/AuAu/200GeV/physics2/P15ic/094/15094070/st_physics_15094070_raw_0000007.kfVertex.root");
       }
-      f->GetObject("kfEvent",tree);
+      f->GetObject("kfEvent", tree);
 
    }
    Init(tree);
@@ -92,7 +95,8 @@ Long64_t kfEvent::LoadTree(Long64_t entry)
    if (!fChain) return -5;
    Long64_t centry = fChain->LoadTree(entry);
    if (centry < 0) return centry;
-   if (fChain->GetTreeNumber() != fCurrent) {
+   if (fChain->GetTreeNumber() != fCurrent)
+   {
       fCurrent = fChain->GetTreeNumber();
       Notify();
    }
