@@ -87,6 +87,12 @@ void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *output
   TString sInputFile(inputFile);
   TString sInputListHF("");  
 
+  // create list of kfVertex files
+  TString command = "sed 's/picodsts/hft\\\/kfVertex/g' " + sInputFile + " >correspondingkfVertex.list";
+  gSystem->Exec(command.Data());
+  command = "sed -i 's/picoDst/kfVertex/g' correspondingkfVertex.list";
+  gSystem->Exec(command.Data());
+
   // ========================================================================================
   StPicoDstMaker* picoDstMaker = new StPicoDstMaker(0, sInputFile, "picoDstMaker");
   StRefMultCorr* grefmultCorrUtil  = CentralityMaker::instance()->getgRefMultCorr();
@@ -97,7 +103,7 @@ void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *output
     cout << i << " " << grefmultCorrUtil->get(i, 0) << endl;
   }
   StEventPlane*  eventPlaneMaker = new StEventPlane("eventPlaneMaker",picoDstMaker,grefmultCorrUtil);
-  StPicoMixedEventMaker* picoMixedEventMaker = new StPicoMixedEventMaker("picoMixedEventMaker", picoDstMaker, grefmultCorrUtil, eventPlaneMaker, outputFile, sInputListHF);
+  StPicoMixedEventMaker* picoMixedEventMaker = new StPicoMixedEventMaker("picoMixedEventMaker", picoDstMaker, grefmultCorrUtil, eventPlaneMaker, outputFile, sInputListHF, "correspondingkfVertex.list");
 
   // ---------------------------------------------------
   // -- Set Base cuts for HF analysis
@@ -133,6 +139,9 @@ void runPicoMixedEvent(const Char_t *inputFile="test.list", const Char_t *output
   cout << "****************************************** " << endl;
   
   delete chain;
+  // delete list of kfEvent list
+  command = "rm -f correspondingkfVertex.list";
+  gSystem->Exec(command.Data());
 
   stopWatch->Stop(); 
   stopWatch->Print();
