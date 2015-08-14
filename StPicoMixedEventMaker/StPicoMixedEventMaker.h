@@ -1,14 +1,13 @@
 #ifndef StPicoMixedEventMaker_h
 #define StPicoMixedEventMaker_h
 
-#include "TChain.h"
 #include "StMaker.h"
 
 /* **************************************************
  *  Base class for Mixed Event cosntructions
- *
+ *  
  *  - Usage: Implement specific decay in daughter, i.e. 2 or three body decay
- *
+ * 
  *  - Methods from StHFCyts utility class can/should be used
  *
  * **************************************************
@@ -18,13 +17,14 @@
  *            Mustaga Mustafa  (mmustafa@lbl.gov)
  *
  *  ** Code Maintainer
+ * 
  *
- *
- * **************************************************
+ * **************************************************  
  */
 
 class TTree; //Need tod ecide if will be saving TTree, NTuple or histos
 class TFile;
+class TChain;
 
 class StPicoDst;
 class StPicoDstMaker;
@@ -32,58 +32,45 @@ class StPicoEvent;
 class StPicoTrack;
 class StRefMultCorr;
 class StEventPlane;
+class StD0Hists;
+class StPicoEventMixer;
 class kfEvent;
 
-class StPicoEventMixer;
-
-class StPicoMixedEventMaker : public StMaker
+class StPicoMixedEventMaker : public StMaker 
 {
-public:
+  public:
    StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
-                         // StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil,
-                         char const* outputBaseFileName,
-                         char const* inputHFListHFtree,
-                         char const* kfFileList);
-   virtual ~StPicoMixedEventMaker();
-   virtual Int_t Init();
-   virtual Int_t Make();
-   virtual Int_t Finish();
-   virtual void  Clear(Option_t* opt = "");
+			char const* outputBaseFileName, char const* inputPicoList, char const* kfFileList);
+    virtual ~StPicoMixedEventMaker();
+    virtual Int_t Init();
+    virtual Int_t Make();
+    virtual Int_t Finish();
+    virtual void  Clear(Option_t* opt="");
 
-   Int_t SetCategories();
+ private:
+    StPicoDst*      mPicoDst;
+    StPicoDstMaker* mPicoDstMaker;      
+    StPicoEvent*    mPicoEvent;         
+    StRefMultCorr* mGRefMultCorrUtil;
+    StEventPlane*  mEventPlaneMaker;
+    kfEvent* mKfEvent;
+    char const *mKfFileList;
+    TChain* mKfChain;
 
-private:
-   void readNextEvent();
-   int categorize(StPicoDst const*);
-   StPicoDst*      mPicoDst;
-   StPicoDstMaker* mPicoDstMaker;
-   StPicoEvent*    mPicoEvent;
-   StRefMultCorr* mGRefMultCorrUtil;
-   StEventPlane*  mEventPlane;
-   kfEvent* mKfEvent;
-   int iiii, jjjj;
+    StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
 
-   char const *mKfFileList;
-   TChain* mKfChain;
+    Int_t           mFailedRunnumber;
 
-   StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
+    TString         mOuputFileBaseName; 
+    TString         mInputFileName;     
 
-   Int_t           mFailedRunnumber;
+    int             mEventCounter;
 
-   TString         mOuputFileBaseName;
-   TString         mInputFileName;
+    //    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
 
-   int             mEventCounter;
+    TFile*          mOutputFile; 
+    StD0Hists* mD0Hists;
 
-   bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
-
-   TTree*          mTree;
-   TFile*          mOutputFileTree;
-
-   ClassDef(StPicoMixedEventMaker, 0)
+    ClassDef(StPicoMixedEventMaker, 0)
 };
-inline void StPicoMixedEventMaker::readNextEvent()
-{
-   mKfChain->GetEntry(mEventCounter++);// Be Careful here,
-}
 #endif

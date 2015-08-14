@@ -1,28 +1,33 @@
 #include <limits>
 
-#include "TTree.h"
-#include "TH2F.h"
+#include "TH3F.h"
+#include "THn.h"
 
 #include "StPicoEventMixer.h"
 #include "StPicoDstMaker/StPicoEvent.h"
 #include "StPicoDstMaker/StPicoTrack.h"
 #include "StPicoDstMaker/StPicoDst.h"
-
+#include "StPicoDstMaker/StPicoBTofPidTraits.h"
+#include "StEventPlane/StEventPlane.h"
 #include "StPicoMixedEventMaker.h"
 #include "StMixerEvent.h"
 #include "StMixerPair.h"
 #include "StMixerTriplet.h"
-#include "StMixerHists.h"
+#include "StD0Hists.h"
+#include "StBTofUtil/tofPathLength.hh"
 
-StPicoEventMixer::StPicoEventMixer(char* category):
-    mEvents(NULL), mHists(NULL), mEventsBuffer(std::numeric_limits<int>::min()), filledBuffer(0)
+StPicoEventMixer::StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPlane* eventPlaneMaker, StD0Hists* d0Hists):
+    mEvents(NULL), mD0Hists(d0Hists)
 {
-    setEventBuffer(3);
-    mHists = new StMixerHists(category);
+    mCentBin = centBin;
+    mVzBin = vzBin;
+    mPsiBin = psiBin;
+    mEventPlaneMaker = eventPlaneMaker;
+    setEventsBufferSize(11);
+
 }
 StPicoEventMixer::~StPicoEventMixer()
 {
-    delete mHists;
     for (int i = 0 ; i < mEvents.size() ; i++)
     {
         delete mEvents.at(i);
@@ -30,73 +35,90 @@ StPicoEventMixer::~StPicoEventMixer()
 }
 void StPicoEventMixer::finish()
 {
-    mHists->closeFile();
+    if(!mFirstEvents.size())
+    {
+        cout<<"warning: not enough events to mix!   centBin: "<<mCentBin<<"  vzBin: "<<mVzBin<<"  psiBin: "<<mPsiBin<<"  nEvents: "<<mEvents.size()<<endl;
+        mEventsBufferSize = mEvents.size();
+        mixEvents();
+    }
+    for(int i=0; i<mEventsBufferSize-1; i++)
+    {
+        mEvents.push_back(mFirstEvents.at(0));
+        mFirstEvents.erase(mFirstEvents.begin());
+        mixEvents();
+    }
+
 }
-bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst)
+bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, float weight)
 {
-    if (!isGoodEvent(picoDst))
+    if (!isGoodEvent(picoDst, pVertex))
         return false;
     int nTracks = picoDst->numberOfTracks();
-    StThreeVectorF pVertex = picoDst->event()->primaryVertex();
-    StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField());
-    bool isTpcPi = false;
-    bool isTofPi = false;
-    bool isTpcK = false;
-    bool isTofK = false;
+    StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), weight);
     //Event.setNoTracks( nTracks );
     for (int iTrk = 0; iTrk < nTracks; ++iTrk)
     {
         StPicoTrack const* trk = picoDst->track(iTrk);
         bool saveTrack = false;
+        bool isPion_ = false;
+        bool isKaon_ = false;
+
         if (!isGoodTrack(trk)  || isCloseTrack(*trk, pVertex)) continue;//good track and Not close trak
-        if (isTpcPion(trk))
+        if (isPion(trk, picoDst, pVertex))
         {
-            isTpcPi = true;
             event->addPion(event->getNoTracks());
+            isPion_ = true;
             saveTrack = true;
         }
-        if (isTpcKaon(trk))
+        if (isKaon(trk, picoDst, pVertex))
         {
-            isTpcK = true;
-            saveTrack = true;
             event->addKaon(event->getNoTracks());
+            isKaon_ = true;
+            saveTrack = true;
         }
         if (saveTrack == true)
         {
-            StMixerTrack mTrack(pVertex, picoDst->event()->bField(), *trk, isTpcPi, isTofPi, isTpcK, isTofK);
+            StMixerTrack mTrack(pVertex, picoDst->event()->bField(), *trk, isPion_, isKaon_);
             event->addTrack(mTrack);
         }
     }
-    if (event->getNoPions() > 0 ||  event->getNoKaons() > 0)
-    {
-        mEvents.push_back(event);
-        filledBuffer += 1;
-    }
+    //   if (event->getNoPions() > 0 ||  event->getNoKaons() > 0)
+    //   {
+    mEvents.push_back(event);
+    //   }
+    /*
     else
     {
-        delete event;
-        return false;
+    delete event;
+    return false;
     }
+    */
     //Returns true if need to do mixing, false if buffer has space still
-    if (filledBuffer == mEventsBuffer - 1)
+    if (mEvents.size() == mEventsBufferSize)
         return true;
     return false;
 }
 void StPicoEventMixer::mixEvents()
 {
-
-    //cout<<"Mixing events"<<endl;
     //-------
-    size_t const nEvent = mEvents.size();
-    int const nTracksEvt1 = mEvents.at(0)->getNoPions();
+    size_t const nEvents = mEvents.size();
+    if(!nEvents) return;
     //Template for D0 studies
-    for (size_t iEvt2 = 0; iEvt2 < nEvent; iEvt2++)
+    for (size_t iEvt2 = 0; iEvt2 < nEvents; iEvt2++)
     {
+        int const nTracksEvt1 = mEvents.at(0)->getNoPions();
         int const nTracksEvt2 = mEvents.at(iEvt2)->getNoKaons();
+
         if (iEvt2 == 0)
-            mHists->fillSameEvt(mEvents.at(0)->vertex());
+        {
+            mD0Hists->hCentVzPsiSameEventNoWeight->Fill(mCentBin+0.5, mVzBin*1.2-5.5, (mPsiBin+0.5)*TMath::Pi()/10);
+            mD0Hists->hCentVzPsiSameEvent->Fill(mCentBin+0.5, mVzBin*1.2-5.5, (mPsiBin+0.5)*TMath::Pi()/10, mEvents.at(0)->weight());
+        }
         else
-            mHists->fillMixedEvt(mEvents.at(0)->vertex());
+        {
+            mD0Hists->hCentVzPsiMixedNoWeight->Fill(mCentBin+0.5, mVzBin*1.2-5.5, (mPsiBin+0.5)*TMath::Pi()/10);
+            mD0Hists->hCentVzPsiMixed->Fill(mCentBin+0.5, mVzBin*1.2-5.5, (mPsiBin+0.5)*TMath::Pi()/10, mEvents.at(0)->weight());
+        }
         for (int iTrk2 = 0; iTrk2 < nTracksEvt2; iTrk2++)
         {
 
@@ -111,46 +133,76 @@ void StPicoEventMixer::mixEvents()
                                  mxeCuts::pidMass[mxeCuts::kPion], mxeCuts::pidMass[mxeCuts::kKaon],
                                  mEvents.at(0)->vertex(), mEvents.at(iEvt2)->vertex(),
                                  mEvents.at(0)->field());
+                int charge2 = mEvents.at(0)->pionAt(iTrk1).charge() * mEvents.at(iEvt2)->kaonAt(iTrk2).charge();
+
+                //Topology histos, fill before checking cuts
+                if( iEvt2 == 0 ) {
+                    if (charge2<0) mD0Hists->fillSameEvt_US_QADist(pair,mCentBin);
+                    else mD0Hists->fillSameEvt_LS_QADist(pair,mCentBin);
+                }
+                else {
+                    if (charge2 <0) mD0Hists->fillMixedEvtQADist(pair,mCentBin);
+                }
+
                 if (!isGoodPair(&pair)) continue;
-                int charge = mEvents.at(0)->pionAt(iTrk1).charge() +  mEvents.at(iEvt2)->kaonAt(iTrk2).charge();
+                int daughters[2] = {mEvents.at(0)->pionId(iTrk1), mEvents.at(iEvt2)->kaonId(iTrk2)};
+                float dPhi = pair.phi()-mEventPlaneMaker->getEventPlane(2, daughters);
+
+                double toFill[5] = {mCentBin+0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
+
                 if (iEvt2 == 0)
-                    mHists->fillSameEvtPair(&pair, charge);
+                {
+                    //		if(pair.m()>1.6 && pair.m()<2.1)
+                    //		  cout<<"pair: "<<pair.m()<<" "<<pair.pt()<<" "<<pair.eta()<<" "<<pair.particle1Dca()<<" "<<pair.particle2Dca()<<" "<<pair.dcaDaughters()<<" "<<pair.decayLength()<<" "<<cos(pair.pointingAngle())<<" "<<pair.decayLength() * sin(pair.pointingAngle())<<endl;
+                    if (charge2<0) mD0Hists->hD0CentPtEtaMDphi->Fill(toFill, mEvents.at(0)->weight());
+                    else mD0Hists->hD0CentPtEtaMDphiLikeSign->Fill(toFill, mEvents.at(0)->weight());
+                }
                 else
-                    mHists->fillMixedEvtPair(&pair, charge);
+                {
+                    if (charge2<0) mD0Hists->hD0CentPtEtaMDphiMixed->Fill(toFill, mEvents.at(0)->weight());
+                    else mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Fill(toFill, mEvents.at(0)->weight());
+                }
             } //second event track loop
         } //first event track loop
     } //loop over second events
-    --filledBuffer;
-    delete mEvents.at(0)   ;
+
+    if(mFirstEvents.size()==mEventsBufferSize-1)
+        delete mEvents.at(0);
+    else
+        mFirstEvents.push_back(mEvents.at(0));
     mEvents.erase(mEvents.begin());
-    return;
+
 }
-// _________________________________________________________
-bool StPicoEventMixer::isMixerPion(StMixerTrack const& track)
-{
-    short info = track.getTrackInfo();
-    //TPC pion
-    if ((info & 2) >> 1 != 1) return false;
-    //TOF pion
-    if ((info & 4) >> 2 != 1) return false;
-    return true;
-}
-// _________________________________________________________
-bool StPicoEventMixer::isMixerKaon(StMixerTrack const& track)
-{
-    short info = track.getTrackInfo();
-    //TPC Kaon
-    if ((info & 8) >> 3 != 1) return false;
-    //TOF Kaon
-    if ((info & 16) >> 4 != 1) return false;
-    return true;
-}
-bool StPicoEventMixer::isGoodEvent(StPicoDst const * const picoDst)
+bool StPicoEventMixer::isGoodEvent(StPicoDst const * const picoDst, StThreeVectorF pVertex)
 {
     StPicoEvent* picoEvent = picoDst->event();
     return ((picoEvent->triggerWord() & mxeCuts::triggerWord) &&
-            fabs(picoEvent->primaryVertex().z()) < mxeCuts::maxVz &&
-            fabs(picoEvent->primaryVertex().z() - picoEvent->vzVpd()) < mxeCuts::vzVpdVz);
+            fabs(pVertex.z()) < mxeCuts::maxVz &&
+            fabs(pVertex.z() - picoEvent->vzVpd()) < mxeCuts::vzVpdVz);
+}
+bool StPicoEventMixer::isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
+{
+    if(!isTpcKaon(trk)) return false;
+    float beta = getTofBeta(trk, picoDst, pVertex);
+    if(beta < 0) return true;
+    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
+    float mKaon = 0.493677;
+    float oneOverBetaExpected = sqrt(mKaon*mKaon/p/p+1);
+    //  hOneOverBetaDiffPionP->Fill(pPion, 1./betaPion-oneOverBetaExpectedPion);
+    if(fabs(1./beta-oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffPion) return false;
+    return true;
+}
+bool StPicoEventMixer::isPion(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
+{
+    if(!isTpcPion(trk)) return false;
+    float beta = getTofBeta(trk, picoDst, pVertex);
+    if(beta < 0) return true;
+    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
+    float mPion = 0.13957;
+    float oneOverBetaExpected = sqrt(mPion*mPion/p/p+1);
+    //  hOneOverBetaDiffPionP->Fill(pPion, 1./betaPion-oneOverBetaExpectedPion);
+    if(fabs(1./beta-oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffKaon) return false;
+    return true;
 }
 bool StPicoEventMixer::isTpcPion(StPicoTrack const * const trk)
 {
@@ -190,4 +242,33 @@ int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair) const
         if ((pair.pt() >= mxeCuts::PtEdge[i]) && (pair.pt() < mxeCuts::PtEdge[i + 1]))
             return i;
     }
+}
+float StPicoEventMixer::getTofBeta(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex) const
+{
+    int index2tof = trk->bTofPidTraitsIndex();
+
+    float beta = std::numeric_limits<float>::quiet_NaN();
+
+    if(index2tof >= 0)
+    {
+        StPicoBTofPidTraits *tofPid = picoDst->btofPidTraits(index2tof);
+
+        if(tofPid)
+        {
+            beta = tofPid->btofBeta();
+
+            if (beta < 1e-4)
+            {
+                StThreeVectorF const btofHitPos = tofPid->btofHitPos();
+
+                StPhysicalHelixD helix = trk->helix();
+                float L = tofPathLength(&pVertex, &btofHitPos, helix.curvature());
+                float tof = tofPid->btof();
+                if (tof > 0) beta = L / (tof * (2.99792458e10 / 1.e9));
+                else beta = std::numeric_limits<float>::quiet_NaN();
+            }
+        }
+    }
+
+    return beta;
 }

@@ -6,12 +6,13 @@ StMixerEvent::StMixerEvent() :  mVtx(StThreeVectorF()),
 {
 }
 StMixerEvent::StMixerEvent(StMixerEvent *t) : mVtx(t->mVtx), mBField(t->mBField),
-    mTracks(t->mTracks),
+    mWeight(t->mWeight), mTracks(t->mTracks),
     mEventKaons(t->mEventKaons), mEventPions(t->mEventPions)
 {
 }
-StMixerEvent::StMixerEvent(StThreeVectorF vtx, float b) :  mVtx(StThreeVectorF()),
-    mBField(std::numeric_limits<float>::quiet_NaN())
+StMixerEvent::StMixerEvent(StThreeVectorF vtx, float b, float weight) :  mVtx(StThreeVectorF()),
+    mBField(std::numeric_limits<float>::quiet_NaN()),
+    mWeight(weight)
 {
     mVtx = vtx;
     mBField = b;
