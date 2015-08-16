@@ -4,16 +4,16 @@
 /* **************************************************
  * Class stores event buffer used in event mixing. Mixing
  * is done automatically once buffer reaches defined maximum.
- * User should rpesonalize mixEvent() method to cosntruct
+ * User should rpesonalize mixEvent() method to cosntruct 
  * desired background.
  *
  * **************************************************
- *
+ * 
  * Initial Authors:
  *          **Michael Lomnitz (mrlomnitz@lbl.gov)
  *          Musta Mustafa   (mmustafa@lbl.gov)
  *
- *  ** Code maintainer
+ *  ** Code maintainer 
  *
  * **************************************************
  */
@@ -31,41 +31,41 @@ class StPicoDst;
 class StMixerTrack;
 class StMixerEvent;
 class StMixerPair;
-class StMixerHists;
+class StD0Hists;
+class StEventPlane;
 
-class StPicoEventMixer
-{
-public:
-   StPicoEventMixer(char* category);
-   ~StPicoEventMixer();
-   bool addPicoEvent(StPicoDst const* picoDst);
-   void setEventBuffer(int buffer);
-   void mixEvents();
-   bool isGoodEvent(StPicoDst const * const picoDst);
-   bool isGoodTrack(StPicoTrack const * const trk);
-   bool isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx);
-   bool isTpcPion(StPicoTrack const * const);
-   bool isTpcKaon(StPicoTrack const * const);
-   bool isGoodPair(StMixerPair const& pair);
-   int getD0PtIndex(StMixerPair const& pair) const;
-   void finish();
-private:
-   bool isMixerPion(StMixerTrack const&);
-   bool isMixerKaon(StMixerTrack const&);
+class StPicoEventMixer {
+ public: 
+  StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPlane* eventPlaneMaker, StD0Hists* d0Hists);
+  ~StPicoEventMixer();
+  bool addPicoEvent(StPicoDst const* picoDst, StThreeVectorF pVertex, float weight=1);
+  void setEventsBufferSize(int bufferSize);
+  void mixEvents();
+  bool isGoodEvent(StPicoDst const * const picoDst, StThreeVectorF pVertex);
+  bool isGoodTrack(StPicoTrack const * const trk);
+  bool isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx);
+  bool isTpcPion(StPicoTrack const * const trk);
+  bool isTpcKaon(StPicoTrack const * const trk);
+  bool isPion(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex);
+  bool isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex);
+  float getTofBeta(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex) const;
+  bool isGoodPair(StMixerPair const& pair);
+  int getD0PtIndex(StMixerPair const& pair) const;
+  void finish();
+ private:
+  int mCentBin, mVzBin, mPsiBin;
+  StEventPlane* mEventPlaneMaker;
 
-   //TTree * ntp_ME;
-   std::vector <StMixerEvent*> mEvents;
-   StMixerHists* mHists;
-   unsigned short int mEventsBuffer;
-   unsigned short int filledBuffer;
-   float dca1, dca2, dcaDaughters, theta_hs, decayL_hs;
-   float pt_hs, mass_hs, eta_hs, phi_hs;
+  //TTree * ntp_ME;
+  std::vector <StMixerEvent*> mEvents; 
+  std::vector <StMixerEvent*> mFirstEvents; // first events in a job stored to mix with last events
+  StD0Hists* mD0Hists;
+  unsigned short int mEventsBufferSize; 
+  float dca1, dca2, dcaDaughters, theta_hs, decayL_hs;
+  float pt_hs, mass_hs, eta_hs, phi_hs;
 };
 
-inline void StPicoEventMixer::setEventBuffer(int buffer)
-{
-   mEventsBuffer = buffer;
-}
-
-
+inline void StPicoEventMixer::setEventsBufferSize(int bufferSize){ mEventsBufferSize = bufferSize;}
+			    
+    
 #endif
