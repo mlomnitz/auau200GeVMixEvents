@@ -43,12 +43,12 @@ namespace mxeCuts
    float const tofOneOverBetaDiffKaon = 0.03;
 
    //Topology QA
-   float const massMin = 1.82;
-   float const massMax = 1.9;
+   float const massMin = 0;//1.82;
+   float const massMax = 2.5;//1.9;
    int const massBins = 250;
 
    int   const nPtBins = 5;
-   float const PtEdge[nPtBins + 1] = {0., 1., 2., 3., 5., 10.};
+   float const PtEdge[nPtBins + 1] = {0., 1., 2., 3., 5., 15.};
    //Ultimate1
    //float const dcaV0ToPv[nPtBins] = {0.0062, 0.0047, 0.0040, 0.0041, 0.0042};
    //float const decayLength[nPtBins] = {0.0149, 0.0205, 0.0216, 0.0233, 0.0282};
