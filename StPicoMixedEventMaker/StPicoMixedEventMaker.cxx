@@ -268,6 +268,7 @@ Int_t StPicoMixedEventMaker::Make()
 
    if (TMath::Abs(vertexPos.z()) > mxeCuts::maxVz) return kStOk;
    if (TMath::Abs(vertexPos.z() - mPicoEvent->vzVpd()) > mxeCuts::vzVpdVz) return kStOk;
+   if (sqrt(TMath::Power(vertexPos.x(), 2) + TMath::Power(vertexPos.y(), 2)) > mxeCuts:: Vrcut) return kStOk;
 
    mD0Hists->hRefMult->Fill(mPicoEvent->refMult());
    mD0Hists->hGRefMult->Fill(mPicoEvent->grefMult());

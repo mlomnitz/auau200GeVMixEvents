@@ -180,7 +180,8 @@ bool StPicoEventMixer::isGoodEvent(StPicoDst const * const picoDst, StThreeVecto
    StPicoEvent* picoEvent = picoDst->event();
    return ((picoEvent->triggerWord() & mxeCuts::triggerWord) &&
            fabs(pVertex.z()) < mxeCuts::maxVz &&
-           fabs(pVertex.z() - picoEvent->vzVpd()) < mxeCuts::vzVpdVz);
+           fabs(pVertex.z() - picoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
+           sqrt(TMath::Power(pVertex.x(), 2) + TMath::Power(pVertex.y(), 2)) <= mxeCuts:: Vrcut);
 }
 bool StPicoEventMixer::isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
 {
@@ -244,6 +245,7 @@ int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair) const
       if ((pair.pt() >= mxeCuts::PtEdge[i]) && (pair.pt() < mxeCuts::PtEdge[i + 1]))
          return i;
    }
+   return mxeCuts::nPtBins - 1;
 }
 float StPicoEventMixer::getTofBeta(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex) const
 {
