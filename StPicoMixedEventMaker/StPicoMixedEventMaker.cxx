@@ -158,29 +158,27 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->hD0CentPtEtaMDphiLikeSign->Write();
    mD0Hists->hD0CentPtEtaMDphiMixed->Write();
    mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Write();
-   for (int iCent = 0; iCent < 9; ++iCent)
-   {
-      mD0Hists->mSE_US_PointingAngle[iCent]->Write();
-      mD0Hists->mSE_US_DecayL[iCent]->Write();
-      mD0Hists->mSE_US_Dca12[iCent]->Write();
-      mD0Hists->mSE_US_PionDca2Vtx[iCent]->Write();
-      mD0Hists->mSE_US_KaonDca2Vtx[iCent]->Write();
-      mD0Hists->mSE_US_D0Dca2Vtx[iCent]->Write();
-      //
-      mD0Hists->mSE_LS_PointingAngle[iCent]->Write();
-      mD0Hists->mSE_LS_DecayL[iCent]->Write();
-      mD0Hists->mSE_LS_Dca12[iCent]->Write();
-      mD0Hists->mSE_LS_PionDca2Vtx[iCent]->Write();
-      mD0Hists->mSE_LS_KaonDca2Vtx[iCent]->Write();
-      mD0Hists->mSE_LS_D0Dca2Vtx[iCent]->Write();
-      //
-      mD0Hists->mME_US_PointingAngle[iCent]->Write();
-      mD0Hists->mME_US_DecayL[iCent]->Write();
-      mD0Hists->mME_US_Dca12[iCent]->Write();
-      mD0Hists->mME_US_PionDca2Vtx[iCent]->Write();
-      mD0Hists->mME_US_KaonDca2Vtx[iCent]->Write();
-      mD0Hists->mME_US_D0Dca2Vtx[iCent]->Write();
-   }
+   //
+   mD0Hists->mSE_US_PointingAngle->Write();
+   mD0Hists->mSE_US_DecayL->Write();
+   mD0Hists->mSE_US_Dca12->Write();
+   mD0Hists->mSE_US_PionDca2Vtx->Write();
+   mD0Hists->mSE_US_KaonDca2Vtx->Write();
+   mD0Hists->mSE_US_D0Dca2Vtx->Write();
+   //
+   mD0Hists->mSE_LS_PointingAngle->Write();
+   mD0Hists->mSE_LS_DecayL->Write();
+   mD0Hists->mSE_LS_Dca12->Write();
+   mD0Hists->mSE_LS_PionDca2Vtx->Write();
+   mD0Hists->mSE_LS_KaonDca2Vtx->Write();
+   mD0Hists->mSE_LS_D0Dca2Vtx->Write();
+   //
+   mD0Hists->mME_US_PointingAngle->Write();
+   mD0Hists->mME_US_DecayL->Write();
+   mD0Hists->mME_US_Dca12->Write();
+   mD0Hists->mME_US_PionDca2Vtx->Write();
+   mD0Hists->mME_US_KaonDca2Vtx->Write();
+   mD0Hists->mME_US_D0Dca2Vtx->Write();
 
    mOutputFile->Write();
    mOutputFile->Close();
