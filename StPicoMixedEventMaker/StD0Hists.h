@@ -59,33 +59,33 @@ public:
    THn* hD0CentPtEtaMDphiLikeSignMixed;
 
    //Topology distribution
-   TH2F* mSE_Vtx[9];
-   TH2F* mME_Vtx[9];
-   TH2F* mSE_LS[9];
-   TH2F* mSE_US[9];
-   TH2F* mME_LS[9];
-   TH2F* mME_US[9];
+   TH3F* mSE_Vtx;
+   TH3F* mME_Vtx;
+   TH3F* mSE_LS;
+   TH3F* mSE_US;
+   TH3F* mME_LS;
+   TH3F* mME_US;
    //QA hists
-   TH2F* mSE_US_PointingAngle[9];
-   TH2F* mSE_US_DecayL[9];
-   TH2F* mSE_US_Dca12[9];
-   TH2F* mSE_US_PionDca2Vtx[9];
-   TH2F* mSE_US_KaonDca2Vtx[9];
-   TH2F* mSE_US_D0Dca2Vtx[9];
+   TH3F* mSE_US_PointingAngle;
+   TH3F* mSE_US_DecayL;
+   TH3F* mSE_US_Dca12;
+   TH3F* mSE_US_PionDca2Vtx;
+   TH3F* mSE_US_KaonDca2Vtx;
+   TH3F* mSE_US_D0Dca2Vtx;
    //
-   TH2F* mSE_LS_PointingAngle[9];
-   TH2F* mSE_LS_DecayL[9];
-   TH2F* mSE_LS_Dca12[9];
-   TH2F* mSE_LS_PionDca2Vtx[9];
-   TH2F* mSE_LS_KaonDca2Vtx[9];
-   TH2F* mSE_LS_D0Dca2Vtx[9];
+   TH3F* mSE_LS_PointingAngle;
+   TH3F* mSE_LS_DecayL;
+   TH3F* mSE_LS_Dca12;
+   TH3F* mSE_LS_PionDca2Vtx;
+   TH3F* mSE_LS_KaonDca2Vtx;
+   TH3F* mSE_LS_D0Dca2Vtx;
    //
-   TH2F* mME_US_PointingAngle[9];
-   TH2F* mME_US_DecayL[9];
-   TH2F* mME_US_Dca12[9];
-   TH2F* mME_US_PionDca2Vtx[9];
-   TH2F* mME_US_KaonDca2Vtx[9];
-   TH2F* mME_US_D0Dca2Vtx[9];
+   TH3F* mME_US_PointingAngle;
+   TH3F* mME_US_DecayL;
+   TH3F* mME_US_Dca12;
+   TH3F* mME_US_PionDca2Vtx;
+   TH3F* mME_US_KaonDca2Vtx;
+   TH3F* mME_US_D0Dca2Vtx;
 private:
 
    ClassDef(StD0Hists, 1);

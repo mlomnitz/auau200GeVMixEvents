@@ -54,34 +54,33 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    hD0CentVzPsiPtEtaMDphiMixed = new THnF("hD0CentVzPsiPtEtaMDphiMixed", "hD0CentVzPsiPtEtaMDphiMixed", nDimMixed, nBinsMixed, xMinMixed, xMaxMixed);
    hD0CentVzPsiPtEtaMDphiLikeSignMixed = new THnF("hD0CentVzPsiPtEtaMDphiLikeSignMixed", "hD0CentVzPsiPtEtaMDphiLikeSignMixed", nDimMixed, nBinsMixed, xMinMixed, xMaxMixed);
    */
-   for (int cent = 0 ; cent < 9; ++cent)
-   {
-      mSE_LS[cent] = new TH2F(Form("%s_se_ls_mass_cent%i", fileBaseName, cent), "Same Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-      mSE_US[cent] = new TH2F(Form("%s_se_us_mass_cent%i", fileBaseName, cent), "Same Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-      mME_LS[cent] = new TH2F(Form("%s_me_ls_mass_cent%i", fileBaseName, cent), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-      mME_US[cent] = new TH2F(Form("%s_me_us_mass_cent%i", fileBaseName, cent), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 250, 0, 2.5);
-      //QA Foreground
-      mSE_US_PointingAngle[cent] = new TH2F(Form("%s_se_us_pointingangle_cent%i", fileBaseName, cent), "Same Event US pointing angle; p_{T} (GeV/c)", 150, 0, 15, 1000, 0, 1.0);
-      mSE_US_DecayL[cent] = new TH2F(Form("%s_se_us_decayL_cent%i", fileBaseName, cent), "Same Event US Decay Length; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mSE_US_Dca12[cent] = new TH2F(Form("%s_se_us_dcaDaughters_cent%i", fileBaseName, cent), "Same Event US dca daughters; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mSE_US_PionDca2Vtx[cent] = new TH2F(Form("%s_se_us_pionDca_cent%i", fileBaseName, cent), "Same Event #pi dca 2 vertex; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 1.);
-      mSE_US_KaonDca2Vtx[cent] = new TH2F(Form("%s_se_us_kaonDca_cent%i", fileBaseName, cent), "Same Event US K dca 2 vertex; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 1.);
-      mSE_US_D0Dca2Vtx[cent] = new TH2F(Form("%s_se_us_D0Dca2Vtx_cent%i", fileBaseName, cent), "SameEvent US D0 dca 2 vertex; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      //
-      mSE_LS_PointingAngle[cent] = new TH2F(Form("%s_se_ls_pointingangle_cent%i", fileBaseName, cent), "Same Event LS pointing angle; p_{T} (GeV/c)", 150, 0, 15, 1000, 0, 1.0);
-      mSE_LS_DecayL[cent] = new TH2F(Form("%s_se_ls_decayL_cent%i", fileBaseName, cent), "Same Event LS Decay Length; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mSE_LS_Dca12[cent] = new TH2F(Form("%s_se_ls_dcaDaughters_cent%i", fileBaseName, cent), "Same Event LS dca daughters; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mSE_LS_PionDca2Vtx[cent] = new TH2F(Form("%s_se_ls_pionDca_cent%i", fileBaseName, cent), "Same Event #pi dca 2 vertex; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 1.);
-      mSE_LS_KaonDca2Vtx[cent] = new TH2F(Form("%s_se_ls_kaonDca_cent%i", fileBaseName, cent), "Same Event LS K dca 2 vertex; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 1.);
-      mSE_LS_D0Dca2Vtx[cent] = new TH2F(Form("%s_se_ls_D0Dca2Vtx_cent%i", fileBaseName, cent), "SameEvent LS D0 dca 2 vertex; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      //
-      mME_US_PointingAngle[cent] = new TH2F(Form("%s_me_us_pointingangle_cent%i", fileBaseName, cent), "Same Event US pointing angle ; p_{T} (GeV/c)", 150, 0, 15, 1000, 0, 1.0);
-      mME_US_DecayL[cent] = new TH2F(Form("%s_me_us_decayL_cent%i", fileBaseName, cent), "Same Event US Decay Length ; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mME_US_Dca12[cent] = new TH2F(Form("%s_me_us_dcaDaughters_cent%i", fileBaseName, cent), "Same Event US dca daughters ; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mME_US_PionDca2Vtx[cent] = new TH2F(Form("%s_me_us_pionDca_cent%i", fileBaseName, cent), "Same Event #pi dca 2 vertex ; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mME_US_KaonDca2Vtx[cent] = new TH2F(Form("%s_me_us_kaonDca_cent%i", fileBaseName, cent), "Same Event US K dca 2 vertex ; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-      mME_US_D0Dca2Vtx[cent] = new TH2F(Form("%s_me_us_D0Dca2Vtx_cent%i", fileBaseName, cent), "SameEvent US D0 dca 2 vertex ; p_{T} (GeV/c)", 150, 0, 15, 100, 0, 0.1);
-   }
+
+   mSE_LS = new TH3F(Form("%s_se_ls_mass", fileBaseName), "Same Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
+   mSE_US = new TH3F(Form("%s_se_us_mass", fileBaseName), "Same Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
+   mME_LS = new TH3F(Form("%s_me_ls_mass", fileBaseName), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
+   mME_US = new TH3F(Form("%s_me_us_mass", fileBaseName), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
+   //QA Foreground
+   mSE_US_PointingAngle = new TH3F(Form("%s_se_us_pointingangle", fileBaseName), "Same Event US pointing angle; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0, 1.0);
+   mSE_US_DecayL = new TH3F(Form("%s_se_us_decayL", fileBaseName), "Same Event US Decay Length; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mSE_US_Dca12 = new TH3F(Form("%s_se_us_dcaDaughters", fileBaseName), "Same Event US dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mSE_US_PionDca2Vtx = new TH3F(Form("%s_se_us_pionDca", fileBaseName), "Same Event #pi dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 1.);
+   mSE_US_KaonDca2Vtx = new TH3F(Form("%s_se_us_kaonDca", fileBaseName), "Same Event US K dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 1.);
+   mSE_US_D0Dca2Vtx = new TH3F(Form("%s_se_us_D0Dca2Vtx", fileBaseName), "SameEvent US D0 dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   //
+   mSE_LS_PointingAngle = new TH3F(Form("%s_se_ls_pointingangle", fileBaseName), "Same Event LS pointing angle; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0, 1.0);
+   mSE_LS_DecayL = new TH3F(Form("%s_se_ls_decayL", fileBaseName), "Same Event LS Decay Length; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mSE_LS_Dca12 = new TH3F(Form("%s_se_ls_dcaDaughters", fileBaseName), "Same Event LS dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mSE_LS_PionDca2Vtx = new TH3F(Form("%s_se_ls_pionDca", fileBaseName), "Same Event #pi dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 1.);
+   mSE_LS_KaonDca2Vtx = new TH3F(Form("%s_se_ls_kaonDca", fileBaseName), "Same Event LS K dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 1.);
+   mSE_LS_D0Dca2Vtx = new TH3F(Form("%s_se_ls_D0Dca2Vtx", fileBaseName), "SameEvent LS D0 dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   //
+   mME_US_PointingAngle = new TH3F(Form("%s_me_us_pointingangle", fileBaseName), "Same Event US pointing angle ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0, 1.0);
+   mME_US_DecayL = new TH3F(Form("%s_me_us_decayL", fileBaseName), "Same Event US Decay Length ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mME_US_Dca12 = new TH3F(Form("%s_me_us_dcaDaughters", fileBaseName), "Same Event US dca daughters ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mME_US_PionDca2Vtx = new TH3F(Form("%s_me_us_pionDca", fileBaseName), "Same Event #pi dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mME_US_KaonDca2Vtx = new TH3F(Form("%s_me_us_kaonDca", fileBaseName), "Same Event US K dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mME_US_D0Dca2Vtx = new TH3F(Form("%s_me_us_D0Dca2Vtx", fileBaseName), "SameEvent US D0 dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+
 }
 StD0Hists::~StD0Hists()
 {
@@ -112,7 +111,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          //std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mME_US_PointingAngle[centrality]->Fill(pair.pt(), std::cos(pair.pointingAngle()));
+      mME_US_PointingAngle->Fill(pair.pt(), centrality,  std::cos(pair.pointingAngle()));
 
    //DecayL
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -120,7 +119,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
          //pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mME_US_DecayL[centrality]->Fill(pair.pt(), pair.decayLength());
+      mME_US_DecayL->Fill(pair.pt(), centrality, pair.decayLength());
 
    //DcaDaughter
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -128,7 +127,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mME_US_Dca12[centrality]->Fill(pair.pt(), pair.dcaDaughters());
+      mME_US_Dca12->Fill(pair.pt(), centrality, pair.dcaDaughters());
 
    //PionDca
    if (//pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
@@ -137,7 +136,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
       pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
       ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mME_US_PionDca2Vtx[centrality]->Fill(pair.pt(), pair.particle1Dca());
+      mME_US_PionDca2Vtx->Fill(pair.pt(), centrality, pair.particle1Dca());
 
    //Kaon Dca
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
@@ -146,7 +145,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mME_US_KaonDca2Vtx[centrality]->Fill(pair.pt(), pair.particle2Dca());
+      mME_US_KaonDca2Vtx->Fill(pair.pt(), centrality,  pair.particle2Dca());
 
    //D0 dca
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -154,7 +153,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex]
       )
-      mME_US_D0Dca2Vtx[centrality]->Fill(pair.pt(), (pair.decayLength()) * sin(pair.pointingAngle()));
+      mME_US_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
 // --------------------------------------
 void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centrality)
@@ -176,7 +175,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          //std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_US_PointingAngle[centrality]->Fill(pair.pt(), std::cos(pair.pointingAngle()));
+      mSE_US_PointingAngle->Fill(pair.pt(), centrality, std::cos(pair.pointingAngle()));
 
    //DecayL
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -184,7 +183,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
          //pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_US_DecayL[centrality]->Fill(pair.pt(), pair.decayLength());
+      mSE_US_DecayL->Fill(pair.pt(),  centrality, pair.decayLength());
 
    //DcaDaughter
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -192,7 +191,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_US_Dca12[centrality]->Fill(pair.pt(), pair.dcaDaughters());
+      mSE_US_Dca12->Fill(pair.pt(), centrality, pair.dcaDaughters());
 
    //PionDca
    if (//pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
@@ -201,7 +200,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
       pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
       ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_US_PionDca2Vtx[centrality]->Fill(pair.pt(), pair.particle1Dca());
+      mSE_US_PionDca2Vtx->Fill(pair.pt(), centrality, pair.particle1Dca());
 
    //Kaon Dca
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
@@ -210,7 +209,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_US_KaonDca2Vtx[centrality]->Fill(pair.pt(), pair.particle2Dca());
+      mSE_US_KaonDca2Vtx->Fill(pair.pt(), centrality, pair.particle2Dca());
 
    //D0 dca
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -218,7 +217,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex]
       )
-      mSE_US_D0Dca2Vtx[centrality]->Fill(pair.pt(), (pair.decayLength()) * sin(pair.pointingAngle()));
+      mSE_US_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
 // --------------------------------------
 void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centrality)
@@ -240,7 +239,7 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          //std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_LS_PointingAngle[centrality]->Fill(pair.pt(), std::cos(pair.pointingAngle()));
+      mSE_LS_PointingAngle->Fill(pair.pt(), centrality, std::cos(pair.pointingAngle()));
 
    //DecayL
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -248,7 +247,7 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
          //pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_LS_DecayL[centrality]->Fill(pair.pt(), pair.decayLength());
+      mSE_LS_DecayL->Fill(pair.pt(), centrality, pair.decayLength());
 
    //DcaDaughter
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -256,7 +255,7 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_LS_Dca12[centrality]->Fill(pair.pt(), pair.dcaDaughters());
+      mSE_LS_Dca12->Fill(pair.pt(), centrality, pair.dcaDaughters());
 
    //PionDca
    if (//pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
@@ -265,7 +264,7 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
       pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
       ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_LS_PionDca2Vtx[centrality]->Fill(pair.pt(), pair.particle1Dca());
+      mSE_LS_PionDca2Vtx->Fill(pair.pt(), centrality, pair.particle1Dca());
 
    //Kaon Dca
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
@@ -274,7 +273,7 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
          ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
-      mSE_LS_KaonDca2Vtx[centrality]->Fill(pair.pt(), pair.particle2Dca());
+      mSE_LS_KaonDca2Vtx->Fill(pair.pt(), centrality, pair.particle2Dca());
 
    //D0 dca
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -282,5 +281,5 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
          pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
          std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex]
       )
-      mSE_LS_D0Dca2Vtx[centrality]->Fill(pair.pt(), (pair.decayLength()) * sin(pair.pointingAngle()));
+      mSE_LS_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
