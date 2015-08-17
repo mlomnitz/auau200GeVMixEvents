@@ -11,7 +11,6 @@
 
 #include "TObject.h"
 
-class TH1I;
 class TH1F;
 class TH2F;
 class TH3F;
@@ -36,11 +35,11 @@ public:
    TH2F*      hVzVpdVz;
    TH1F*      hVzDiff;
    TH2F*      hVxy;
-   TH1I*      hRefMult;
-   TH1I*      hGRefMult;
-   TH1I*      hTrigger;
-   TH1I*      hCentrality;
-   TH1I*      hCentralityWeighted;
+   TH1F*      hRefMult;
+   TH1F*      hGRefMult;
+   TH1F*      hTrigger;
+   TH1F*      hCentrality;
+   TH1F*      hCentralityWeighted;
 
    TH2F*      hOneOverBetaDiffKaonP;
    TH2F*      hOneOverBetaDiffPionP;

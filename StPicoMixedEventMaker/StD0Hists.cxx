@@ -3,7 +3,6 @@
 #include "StD0Hists.h"
 #include "StMixerPair.h"
 #include "TMath.h"
-#include "TH1I.h"
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TH3F.h"
@@ -18,11 +17,11 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    hVzVpdVz = new TH2F("hVzVpdVz", "hVzVpdVz", 200, -100, 100, 200, -100, 100);
    hVzDiff  = new TH1F("hVzDiff", "hVzDiff", 500, -100, 100);
    hVxy = new TH2F("hVxy", "hVxy", 500, -1, 1, 500, -1, 1);
-   hRefMult = new TH1I("hRefMult", "hRefMult", 1000, 0, 1000);
-   hGRefMult = new TH1I("hGRefMult", "hGRefMult", 1000, 0, 1000);
-   hTrigger = new TH1I("hTrigger", "hTrigger", 32, 0, 32);
-   hCentrality = new TH1I("hCentrality", "hCentrality", 9, 0, 9);
-   hCentralityWeighted = new TH1I("hCentralityWeighted", "hCentralityWeighted", 9, 0, 9);
+   hRefMult = new TH1F("hRefMult", "hRefMult", 1000, 0, 1000);
+   hGRefMult = new TH1F("hGRefMult", "hGRefMult", 1000, 0, 1000);
+   hTrigger = new TH1F("hTrigger", "hTrigger", 32, 0, 32);
+   hCentrality = new TH1F("hCentrality", "hCentrality", 9, 0, 9);
+   hCentralityWeighted = new TH1F("hCentralityWeighted", "hCentralityWeighted", 9, 0, 9);
 
    // track level QA
    hOneOverBetaDiffKaonP = new TH2F("hOneOverBetaDiffKaonP", "hOneOverBetaDiffKaonP", 50, 0, 5, 100, -0.5, 0.5);
