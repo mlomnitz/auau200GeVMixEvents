@@ -6,12 +6,12 @@ StMixerEvent::StMixerEvent() :  mVtx(StThreeVectorF()),
 {
 }
 StMixerEvent::StMixerEvent(StMixerEvent *t) : mVtx(t->mVtx), mBField(t->mBField),
-					      mWeight(t->mWeight), mTracks(t->mTracks),
-					      mEventKaons(t->mEventKaons), mEventPions(t->mEventPions), mQ(t->mQ)
+   mWeight(t->mWeight), mTracks(t->mTracks),
+   mEventKaons(t->mEventKaons), mEventPions(t->mEventPions), mQ(t->mQ)
 {
 }
-StMixerEvent::StMixerEvent(StThreeVectorF vtx, float b, TVector2 Q, float weight) : 
-  mWeight(weight), mQ(Q), mVtx(vtx), mBField(b)
+StMixerEvent::StMixerEvent(StThreeVectorF vtx, float b, TVector2 Q, float weight) :
+   mWeight(weight), mQ(Q), mVtx(vtx), mBField(b)
 {
 }
 void StMixerEvent::addTrack(StMixerTrack t)

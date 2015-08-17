@@ -32,7 +32,7 @@ class StMixerEvent
 public:
    StMixerEvent();
    StMixerEvent(StMixerEvent *);
-   StMixerEvent(StThreeVectorF vertexPos, float B, TVector2 Q, float weight=1);
+   StMixerEvent(StThreeVectorF vertexPos, float B, TVector2 Q, float weight = 1);
    ~StMixerEvent()
    {
       ;
@@ -110,8 +110,8 @@ inline float const StMixerEvent::weight() const
 {
    return mWeight;
 }
-inline TVector2 const StMixerEvent::Q() const 
-{ 
-  return mQ; 
+inline TVector2 const StMixerEvent::Q() const
+{
+   return mQ;
 }
 #endif

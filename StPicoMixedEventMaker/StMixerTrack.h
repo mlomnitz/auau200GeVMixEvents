@@ -64,8 +64,8 @@ inline int const StMixerTrack::charge() const
    if (mTrackInfo & 1) return 1;
    else return -1;
 }
-inline TVector2 const StMixerTrack::q() const 
-{ 
-  return mq; 
+inline TVector2 const StMixerTrack::q() const
+{
+   return mq;
 }
 #endif

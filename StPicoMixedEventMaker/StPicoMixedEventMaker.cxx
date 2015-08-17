@@ -97,8 +97,8 @@ Int_t StPicoMixedEventMaker::Init()
       {
          for (int iEventPlane = 0 ; iEventPlane < 10 ; ++iEventPlane)
          {
-	   mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(iCentrality, iVz, iEventPlane, mEventPlaneMaker, mD0Hists);
-	   //         mPicoEventMixer[iVz][iCentrality][iEventPlane]->setEventBuffer(10);
+            mPicoEventMixer[iVz][iCentrality][iEventPlane] = new StPicoEventMixer(iCentrality, iVz, iEventPlane, mEventPlaneMaker, mD0Hists);
+            //         mPicoEventMixer[iVz][iCentrality][iEventPlane]->setEventBuffer(10);
          }
       }
    }
@@ -309,7 +309,7 @@ Int_t StPicoMixedEventMaker::Make()
    mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
 
    if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, mEventPlaneMaker->Q(), weight))
-     mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
+      mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
 
    return kStOk;
 }
