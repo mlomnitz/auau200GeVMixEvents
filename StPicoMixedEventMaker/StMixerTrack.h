@@ -20,7 +20,7 @@
  * **************************************************
  */
 #include <math.h>
-
+#include "TVector2.h"
 #include "StThreeVectorF.hh"
 
 class StPicoTrack;
@@ -30,11 +30,12 @@ class StMixerTrack
 public:
    StMixerTrack();
    StMixerTrack(StMixerTrack const *);
-   StMixerTrack(StThreeVectorF const & pVtx, float B, StPicoTrack const& picoTrack, bool isPion, bool isKaon);
+   StMixerTrack(StThreeVectorF const & pVtx, float B, StPicoTrack const& picoTrack, bool isPion, bool isKaon, TVector2 q);
    short const getTrackInfo() const;
    int const charge() const ;
    StThreeVectorF const& gMom() const;
    StThreeVectorF const& origin() const;
+   TVector2 const q() const;
    ~StMixerTrack()
    {
       ;
@@ -43,6 +44,7 @@ private:
    StThreeVectorF mOrigin;
    StThreeVectorF mMom;
    short mTrackInfo;
+   TVector2 mq;
    //Removed origin, allt racks shoud me set to 0,0,0
 };
 inline short const StMixerTrack::getTrackInfo() const
@@ -61,5 +63,9 @@ inline int const StMixerTrack::charge() const
 {
    if (mTrackInfo & 1) return 1;
    else return -1;
+}
+inline TVector2 const StMixerTrack::q() const 
+{ 
+  return mq; 
 }
 #endif
