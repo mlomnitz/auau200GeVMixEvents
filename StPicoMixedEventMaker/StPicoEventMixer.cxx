@@ -48,12 +48,12 @@ void StPicoEventMixer::finish()
    }
 
 }
-bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, float weight)
+bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, TVector2 Q, float weight)
 {
    if (!isGoodEvent(picoDst, pVertex))
       return false;
    int nTracks = picoDst->numberOfTracks();
-   StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), weight);
+   StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), Q, weight);
    //Event.setNoTracks( nTracks );
    for (int iTrk = 0; iTrk < nTracks; ++iTrk)
    {
@@ -77,8 +77,8 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVecto
       }
       if (saveTrack == true)
       {
-         StMixerTrack mTrack(pVertex, picoDst->event()->bField(), *trk, isPion_, isKaon_);
-         event->addTrack(mTrack);
+	StMixerTrack mTrack(pVertex, picoDst->event()->bField(), *trk, isPion_, isKaon_, mEventPlaneMaker->q(iTrk));
+	event->addTrack(mTrack);
       }
    }
    //   if (event->getNoPions() > 0 ||  event->getNoKaons() > 0)
@@ -147,14 +147,18 @@ void StPicoEventMixer::mixEvents()
 
             if (!isGoodPair(&pair)) continue;
             int daughters[2] = {mEvents.at(0)->pionId(iTrk1), mEvents.at(iEvt2)->kaonId(iTrk2)};
-            float dPhi = pair.phi() - mEventPlaneMaker->getEventPlane(2, daughters);
+	    TVector2 QSub = mEvents.at(0)->Q()-mEvents.at(0)->pionAt(iTrk1).q();
+	    if(iEvt2 == 0) QSub -= mEvents.at(iEvt2)->kaonAt(iTrk2).q();
+	    float dPhi = pair.phi()-QSub.Phi()/2;
+	    while(dPhi<0) dPhi += TMath::Pi();
+	    while(dPhi>=TMath::Pi()) dPhi -= TMath::Pi();
 
             double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
 
             if (iEvt2 == 0)
             {
-               //     if(pair.m()>1.6 && pair.m()<2.1)
-               //       cout<<"pair: "<<pair.m()<<" "<<pair.pt()<<" "<<pair.eta()<<" "<<pair.particle1Dca()<<" "<<pair.particle2Dca()<<" "<<pair.dcaDaughters()<<" "<<pair.decayLength()<<" "<<cos(pair.pointingAngle())<<" "<<pair.decayLength() * sin(pair.pointingAngle())<<endl;
+	      //	      if(pair.m()>1.6 && pair.m()<2.1)
+	      //		cout<<"pair: "<<pair.m()<<" "<<pair.pt()<<" "<<pair.eta()<<" "<<pair.particle1Dca()<<" "<<pair.particle2Dca()<<" "<<pair.dcaDaughters()<<" "<<pair.decayLength()<<" "<<cos(pair.pointingAngle())<<" "<<pair.decayLength() * sin(pair.pointingAngle())<<" "<<dPhi<<endl;
                if (charge2 < 0) mD0Hists->hD0CentPtEtaMDphi->Fill(toFill, mEvents.at(0)->weight());
                else mD0Hists->hD0CentPtEtaMDphiLikeSign->Fill(toFill, mEvents.at(0)->weight());
             }

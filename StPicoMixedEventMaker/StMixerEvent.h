@@ -2,6 +2,7 @@
 #define StMixerEvent_hh
 #include <math.h>
 #include <vector>
+#include "TVector2.h"
 #include "StThreeVectorF.hh"
 #include "StMixerTrack.h"
 /* **************************************************
@@ -31,7 +32,7 @@ class StMixerEvent
 public:
    StMixerEvent();
    StMixerEvent(StMixerEvent *);
-   StMixerEvent(StThreeVectorF vertexPos, float B, float weight);
+   StMixerEvent(StThreeVectorF vertexPos, float B, TVector2 Q, float weight=1);
    ~StMixerEvent()
    {
       ;
@@ -51,10 +52,12 @@ public:
    StThreeVectorF const & vertex() const;
    double const field() const;
    float const weight() const;
+   TVector2 const Q() const;
 private:
    StThreeVectorF mVtx;
    float mBField;
    float mWeight;
+   TVector2 mQ;
    std::vector <StMixerTrack  > mTracks;
    std::vector <int  > mEventKaons;
    std::vector <int  > mEventPions;
@@ -106,5 +109,9 @@ inline double const StMixerEvent::field() const
 inline float const StMixerEvent::weight() const
 {
    return mWeight;
+}
+inline TVector2 const StMixerEvent::Q() const 
+{ 
+  return mQ; 
 }
 #endif
