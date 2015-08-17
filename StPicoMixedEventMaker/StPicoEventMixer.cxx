@@ -2,7 +2,6 @@
 
 #include "TH3F.h"
 #include "THn.h"
-
 #include "StPicoEventMixer.h"
 #include "StPicoDstMaker/StPicoEvent.h"
 #include "StPicoDstMaker/StPicoTrack.h"
