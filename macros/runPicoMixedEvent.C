@@ -30,6 +30,7 @@
 #include "StRoot/StRefMultCorr/StRefMultCorr.h"
 #include "StRoot/StRefMultCorr/CentralityMaker.h"
 // #include "StPicoHFMaker/StPicoHFEvent.h"
+#include "StRoot/StEventPlane/StEventPlane.h"
 
 #include "StPicoMixedEventMaker/StPicoMixedEventMaker.h"
 #include "StMemStat.h"
