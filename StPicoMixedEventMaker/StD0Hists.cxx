@@ -102,7 +102,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
          break;
       }
    }
-   if (pair.m() <  mxeCuts::massMin || pair.m() > mxeCuts::massMax) return;
+   if (pair.m() <  mxeCuts::QAmassMin || pair.m() > mxeCuts::QAmassMax) return;
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -166,7 +166,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
          break;
       }
    }
-   if (pair.m() <  mxeCuts::massMin || pair.m() > mxeCuts::massMax) return;
+   if (pair.m() <  mxeCuts::QAmassMin || pair.m() > mxeCuts::QAmassMax) return;
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -230,7 +230,7 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
          break;
       }
    }
-   if (pair.m() <  mxeCuts::massMin || pair.m() > mxeCuts::massMax) return;
+   if (pair.m() <  mxeCuts::QAmassMin || pair.m() > mxeCuts::QAmassMax) return;
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
