@@ -18,6 +18,7 @@ void loadSharedHFLibraries() {
   // gSystem->Load("StPicoHFMaker");
   // gSystem->Load("StPicoHFMyAnaMaker");
     gSystem->Load("StRefMultCorr");
+    gSystem->Load("StEventPlane");
   gSystem->Load("StPicoMixedEventMaker");
   cout << " loading of shared HF libraries are done" << endl;
 
