@@ -249,7 +249,7 @@ Int_t StPicoMixedEventMaker::Make()
    }
    //if (!(isMinBias)) {cout<<"not a mb trigger"<<endl;return 0;}
    bool isVPDMB5 = kFALSE;
-   for (int i = 0; i < 9; i++)
+   for (int i = 0; i < 5; i++)
    {
       if (mPicoEvent->triggerWord() & (1 << i)) isVPDMB5 = kTRUE ; //Select MB trigger
    }
