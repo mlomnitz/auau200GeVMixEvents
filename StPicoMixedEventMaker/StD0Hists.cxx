@@ -76,8 +76,8 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    mME_US_PointingAngle = new TH3F(Form("%s_me_us_pointingangle", fileBaseName), "Same Event US pointing angle ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0, 1.0);
    mME_US_DecayL = new TH3F(Form("%s_me_us_decayL", fileBaseName), "Same Event US Decay Length ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
    mME_US_Dca12 = new TH3F(Form("%s_me_us_dcaDaughters", fileBaseName), "Same Event US dca daughters ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
-   mME_US_PionDca2Vtx = new TH3F(Form("%s_me_us_pionDca", fileBaseName), "Same Event #pi dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
-   mME_US_KaonDca2Vtx = new TH3F(Form("%s_me_us_kaonDca", fileBaseName), "Same Event US K dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
+   mME_US_PionDca2Vtx = new TH3F(Form("%s_me_us_pionDca", fileBaseName), "Same Event #pi dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 1.0);
+   mME_US_KaonDca2Vtx = new TH3F(Form("%s_me_us_kaonDca", fileBaseName), "Same Event US K dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 1.0);
    mME_US_D0Dca2Vtx = new TH3F(Form("%s_me_us_D0Dca2Vtx", fileBaseName), "SameEvent US D0 dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.1);
 
 }
