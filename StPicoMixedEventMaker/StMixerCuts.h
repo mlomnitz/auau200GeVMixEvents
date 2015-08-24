@@ -46,8 +46,8 @@ namespace mxeCuts
    float const massMax = 2.5;
    int const massBins = 250;
    //Topology QA
-   float const QAmassMin = 1.82;
-   float const QAmassMax = 1.9;
+   float const QAmassMin = 1.828;
+   float const QAmassMax = 1.892;
 
    int   const nPtBins = 5;
    float const PtEdge[nPtBins + 1] = {0., 1., 2., 3., 5., 15.};
