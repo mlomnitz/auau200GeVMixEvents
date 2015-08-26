@@ -289,18 +289,18 @@ Int_t StPicoMixedEventMaker::Make()
    int const vz_bin = (int)((6 + vertexPos.z()) / 1.2) ;
    if (vz_bin < 0  ||  vz_bin > 9) return kStOk;
 
-   /*
+
    if (mFailedRunnumber != mPicoEvent->runId())
-     {
-       if (!loadEventPlaneCorr(mEventPlane))
-    {
-      LOG_WARN << "Event plane calculations unavalable! Skipping" << endm;
-      mFailedRunnumber = picoDst->event()->runId();
-      return kStOK;
-    }
-     }
+   {
+      if (!loadEventPlaneCorr(mEventPlane))
+      {
+         LOG_WARN << "Event plane calculations unavalable! Skipping" << endm;
+         mFailedRunnumber = picoDst->event()->runId();
+         return kStOK;
+      }
+   }
    else  return kStOK;
-   */
+
 
    float const eventPlane = mEventPlaneMaker->getEventPlane();
    int const eventPlane_bin = (int)(eventPlane / TMath::Pi() * 10.) ;
