@@ -152,12 +152,27 @@ Int_t StPicoMixedEventMaker::Finish()
          }
       }
    }
+   cout<<"StPicoMixedEventMaker::Finish()"<<endl;
    mOutputFile->cd();
 
+   cout<<"aa"<<endl;
    mD0Hists->hD0CentPtEtaMDphi->Write();
+   cout<<"bb"<<endl;
    mD0Hists->hD0CentPtEtaMDphiLikeSign->Write();
+   cout<<"cc"<<endl;
    mD0Hists->hD0CentPtEtaMDphiMixed->Write();
+   cout<<"dd"<<endl;
    mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Write();
+   cout<<"ee"<<endl;
+
+   mD0Hists->hD0CentPtMDphiEtaGap->Write();
+   cout<<"ff"<<endl;
+   mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
+   cout<<"gg"<<endl;
+   mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
+   cout<<"hh"<<endl;
+   mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Write();
+   cout<<"ii"<<endl;
    //
    mD0Hists->mSE_US_PointingAngle->Write();
    mD0Hists->mSE_US_DecayL->Write();
@@ -165,6 +180,8 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mSE_US_PionDca2Vtx->Write();
    mD0Hists->mSE_US_KaonDca2Vtx->Write();
    mD0Hists->mSE_US_D0Dca2Vtx->Write();
+   cout<<"jj"<<endl;
+
    //
    mD0Hists->mSE_LS_PointingAngle->Write();
    mD0Hists->mSE_LS_DecayL->Write();
@@ -172,6 +189,7 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mSE_LS_PionDca2Vtx->Write();
    mD0Hists->mSE_LS_KaonDca2Vtx->Write();
    mD0Hists->mSE_LS_D0Dca2Vtx->Write();
+   cout<<"kk"<<endl;
    //
    mD0Hists->mME_US_PointingAngle->Write();
    mD0Hists->mME_US_DecayL->Write();
@@ -179,9 +197,11 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mME_US_PionDca2Vtx->Write();
    mD0Hists->mME_US_KaonDca2Vtx->Write();
    mD0Hists->mME_US_D0Dca2Vtx->Write();
+   cout<<"ll"<<endl;
 
    mOutputFile->Write();
-   mOutputFile->Close();
+   //   mOutputFile->Close();
+   cout<<"StPicoMixedEventMaker::Finish() done"<<endl;
 
    return kStOK;
 }
@@ -249,7 +269,7 @@ Int_t StPicoMixedEventMaker::Make()
    }
    //if (!(isMinBias)) {cout<<"not a mb trigger"<<endl;return 0;}
    bool isVPDMB5 = kFALSE;
-   for (int i = 0; i < 9; i++)
+   for (int i = 0; i < 5; i++)
    {
       if (mPicoEvent->triggerWord() & (1 << i)) isVPDMB5 = kTRUE ; //Select MB trigger
    }
@@ -308,7 +328,7 @@ Int_t StPicoMixedEventMaker::Make()
 
    mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
 
-   if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, mEventPlaneMaker->Q(), weight))
+   if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, weight))
      mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
 
    return kStOk;

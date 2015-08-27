@@ -57,6 +57,11 @@ public:
    THn* hD0CentPtEtaMDphiMixed;
    THn* hD0CentPtEtaMDphiLikeSignMixed;
 
+   THn* hD0CentPtMDphiEtaGap;
+   THn* hD0CentPtMDphiEtaGapLikeSign;
+   THn* hD0CentPtMDphiEtaGapMixed;
+   THn* hD0CentPtMDphiEtaGapLikeSignMixed;
+
    //Topology distribution
    TH3F* mSE_Vtx;
    TH3F* mME_Vtx;
