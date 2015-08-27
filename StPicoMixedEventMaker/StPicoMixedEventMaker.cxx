@@ -155,24 +155,15 @@ Int_t StPicoMixedEventMaker::Finish()
    cout<<"StPicoMixedEventMaker::Finish()"<<endl;
    mOutputFile->cd();
 
-   cout<<"aa"<<endl;
    mD0Hists->hD0CentPtEtaMDphi->Write();
-   cout<<"bb"<<endl;
    mD0Hists->hD0CentPtEtaMDphiLikeSign->Write();
-   cout<<"cc"<<endl;
    mD0Hists->hD0CentPtEtaMDphiMixed->Write();
-   cout<<"dd"<<endl;
    mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Write();
-   cout<<"ee"<<endl;
 
    mD0Hists->hD0CentPtMDphiEtaGap->Write();
-   cout<<"ff"<<endl;
    mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
-   cout<<"gg"<<endl;
    mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
-   cout<<"hh"<<endl;
    mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Write();
-   cout<<"ii"<<endl;
    //
    mD0Hists->mSE_US_PointingAngle->Write();
    mD0Hists->mSE_US_DecayL->Write();
@@ -180,7 +171,6 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mSE_US_PionDca2Vtx->Write();
    mD0Hists->mSE_US_KaonDca2Vtx->Write();
    mD0Hists->mSE_US_D0Dca2Vtx->Write();
-   cout<<"jj"<<endl;
 
    //
    mD0Hists->mSE_LS_PointingAngle->Write();
@@ -189,7 +179,6 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mSE_LS_PionDca2Vtx->Write();
    mD0Hists->mSE_LS_KaonDca2Vtx->Write();
    mD0Hists->mSE_LS_D0Dca2Vtx->Write();
-   cout<<"kk"<<endl;
    //
    mD0Hists->mME_US_PointingAngle->Write();
    mD0Hists->mME_US_DecayL->Write();
@@ -197,7 +186,6 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mME_US_PionDca2Vtx->Write();
    mD0Hists->mME_US_KaonDca2Vtx->Write();
    mD0Hists->mME_US_D0Dca2Vtx->Write();
-   cout<<"ll"<<endl;
 
    mOutputFile->Write();
    //   mOutputFile->Close();
