@@ -22,7 +22,7 @@ StPicoEventMixer::StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPl
    mVzBin = vzBin;
    mPsiBin = psiBin;
    mEventPlaneMaker = eventPlaneMaker;
-   setEventsBufferSize(11);
+   setEventsBufferSize(1);
 
 }
 StPicoEventMixer::~StPicoEventMixer()
@@ -48,12 +48,12 @@ void StPicoEventMixer::finish()
    }
 
 }
-bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, TVector2 Q, float weight)
+bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, float weight)
 {
    if (!isGoodEvent(picoDst, pVertex))
       return false;
    int nTracks = picoDst->numberOfTracks();
-   StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), Q, weight);
+   StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), mEventPlaneMaker, weight);
    //Event.setNoTracks( nTracks );
    for (int iTrk = 0; iTrk < nTracks; ++iTrk)
    {
@@ -146,12 +146,11 @@ void StPicoEventMixer::mixEvents()
             }
 
             if (!isGoodPair(&pair)) continue;
-            int daughters[2] = {mEvents.at(0)->pionId(iTrk1), mEvents.at(iEvt2)->kaonId(iTrk2)};
-            TVector2 QSub = mEvents.at(0)->Q() - mEvents.at(0)->pionAt(iTrk1).q();
-            if (iEvt2 == 0) QSub -= mEvents.at(iEvt2)->kaonAt(iTrk2).q();
-            float dPhi = pair.phi() - QSub.Phi() / 2;
-            while (dPhi < 0) dPhi += TMath::Pi();
-            while (dPhi >= TMath::Pi()) dPhi -= TMath::Pi();
+	    TVector2 QSub = mEvents.at(0)->Q()-mEvents.at(0)->pionAt(iTrk1).q();
+	    if(iEvt2 == 0) QSub -= mEvents.at(iEvt2)->kaonAt(iTrk2).q();
+	    float dPhi = pair.phi()-QSub.Phi()/2;
+	    while(dPhi<0) dPhi += TMath::Pi();
+	    while(dPhi>=TMath::Pi()) dPhi -= TMath::Pi();
 
             double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
 
@@ -167,6 +166,43 @@ void StPicoEventMixer::mixEvents()
                if (charge2 < 0) mD0Hists->hD0CentPtEtaMDphiMixed->Fill(toFill, mEvents.at(0)->weight());
                else mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Fill(toFill, mEvents.at(0)->weight());
             }
+
+	    int iEta = (int)(pair.eta()*10+10);
+	    //	    if(iEta<0 || iEta>=20) { cout<<"pair.eta(): "<<pair.eta()<<"   iEta: "<<iEta<<"   etaPion: "<<mEvents.at(0)->pionAt(iTrk1).gMom().pseudoRapidity()<<"  etaKaon: "<<mEvents.at(iEvt2)->kaonAt(iTrk2).gMom().pseudoRapidity()<<endl; continue;}
+	    for(int nEtaGaps=0; nEtaGaps<8; nEtaGaps++)
+	      {
+		TVector2 QSubEtaGap = mEvents.at(0)->QEtaGap(iEta, nEtaGaps);
+		int iEta_ = iEta;
+		if(iEta_ < nEtaGaps) iEta_ = nEtaGaps-1;
+		if(iEta_ > 20-nEtaGaps) iEta_= 20-nEtaGaps;
+		int iEtaPion = (int)(mEvents.at(0)->pionAt(iTrk1).gMom().pseudoRapidity()*10+10);
+		if(fabs(iEtaPion-iEta_) >= nEtaGaps)
+		  QSubEtaGap -= mEvents.at(0)->pionAt(iTrk1).q();
+		if(iEvt2 == 0)
+		  {
+		    int iEtaKaon = (int)(mEvents.at(iEvt2)->kaonAt(iTrk2).gMom().pseudoRapidity()*10+10);
+		    if(fabs(iEtaKaon-iEta_) >= nEtaGaps)
+		      QSubEtaGap -= mEvents.at(iEvt2)->kaonAt(iTrk2).q();
+		  }
+		if(QSubEtaGap.Mod()==0) {cout<<"QSubEtaGap.Mod()==0  nEtaGaps: "<<nEtaGaps<<endl; continue;}
+		float dPhiEtaGap = pair.phi()-QSubEtaGap.Phi()/2;
+		while(dPhiEtaGap<0) dPhiEtaGap += TMath::Pi();
+		while(dPhiEtaGap>=TMath::Pi()) dPhiEtaGap -= TMath::Pi();
+		double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.m(), dPhiEtaGap, 0.1*nEtaGaps+0.05};
+		
+		if (iEvt2 == 0)
+		  {
+		    if (charge2 < 0) mD0Hists->hD0CentPtMDphiEtaGap->Fill(toFill, mEvents.at(0)->weight());
+		    else mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Fill(toFill, mEvents.at(0)->weight());
+		  }
+		else
+		  {
+		    if (charge2 < 0) mD0Hists->hD0CentPtMDphiEtaGapMixed->Fill(toFill, mEvents.at(0)->weight());
+		    else mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Fill(toFill, mEvents.at(0)->weight());
+		  }
+
+	      }
+
          } //second event track loop
       } //first event track loop
    } //loop over second events

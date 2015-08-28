@@ -152,12 +152,18 @@ Int_t StPicoMixedEventMaker::Finish()
          }
       }
    }
+   cout<<"StPicoMixedEventMaker::Finish()"<<endl;
    mOutputFile->cd();
 
    mD0Hists->hD0CentPtEtaMDphi->Write();
    mD0Hists->hD0CentPtEtaMDphiLikeSign->Write();
    mD0Hists->hD0CentPtEtaMDphiMixed->Write();
    mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Write();
+
+   mD0Hists->hD0CentPtMDphiEtaGap->Write();
+   mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
+   mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
+   mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Write();
    //
    mD0Hists->mSE_US_PointingAngle->Write();
    mD0Hists->mSE_US_DecayL->Write();
@@ -165,6 +171,7 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mSE_US_PionDca2Vtx->Write();
    mD0Hists->mSE_US_KaonDca2Vtx->Write();
    mD0Hists->mSE_US_D0Dca2Vtx->Write();
+
    //
    mD0Hists->mSE_LS_PointingAngle->Write();
    mD0Hists->mSE_LS_DecayL->Write();
@@ -181,7 +188,8 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mME_US_D0Dca2Vtx->Write();
 
    mOutputFile->Write();
-   mOutputFile->Close();
+   //   mOutputFile->Close();
+   cout<<"StPicoMixedEventMaker::Finish() done"<<endl;
 
    return kStOK;
 }
@@ -308,8 +316,8 @@ Int_t StPicoMixedEventMaker::Make()
 
    mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
 
-   if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, mEventPlaneMaker->Q(), weight))
-      mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
+   if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, weight))
+     mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
 
    return kStOk;
 }

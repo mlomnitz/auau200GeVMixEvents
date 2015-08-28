@@ -36,13 +36,22 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
 
    //D0 histograms
    const int nDim = 5;
-   int nBins[nDim] = {9, 10, 20, 50, 10};//cent, pt, eta, m, dPhi
-   double xMin[nDim] = {0, 0, -1, 1.6, 0};
-   double xMax[nDim] = {9, 10, 1, 2.1, TMath::Pi()};
+   int nBins[nDim] = {9, 10, 20, 250, 10};//cent, pt, eta, m, dPhi
+   double xMin[nDim] = {0, 0, -1, 0, 0};
+   double xMax[nDim] = {9, 10, 1, 2.5, TMath::Pi()};
    hD0CentPtEtaMDphi = new THnF("hD0CentPtEtaMDphi", "hD0CentPtEtaMDphi", nDim, nBins, xMin, xMax);
    hD0CentPtEtaMDphiLikeSign = new THnF("hD0CentPtEtaMDphiLikeSign", "hD0CentPtEtaMDphiLikeSign", nDim, nBins, xMin, xMax);
    hD0CentPtEtaMDphiMixed = new THnF("hD0CentPtEtaMDphiMixed", "hD0CentPtEtaMDphiMixed", nDim, nBins, xMin, xMax);
    hD0CentPtEtaMDphiLikeSignMixed = new THnF("hD0CentPtEtaMDphiLikeSignMixed", "hD0CentPtEtaMDphiLikeSignMixed", nDim, nBins, xMin, xMax);
+
+   const int nDim2 = 5;
+   int nBins2[nDim2] = {9, 10, 50, 10, 8};//cent, pt, m, dPhi, etaGap
+   double xMin2[nDim2] = {0, 0, 1.6, 0, 0};
+   double xMax2[nDim2] = {9, 10, 2.1, TMath::Pi(), 0.8};
+   hD0CentPtMDphiEtaGap = new THnF("hD0CentPtMDphiEtaGap", "hD0CentPtMDphiEtaGap", nDim2, nBins2, xMin2, xMax2);
+   hD0CentPtMDphiEtaGapLikeSign = new THnF("hD0CentPtMDphiEtaGapLikeSign", "hD0CentPtMDphiEtaGapLikeSign", nDim2, nBins2, xMin2, xMax2);
+   hD0CentPtMDphiEtaGapMixed = new THnF("hD0CentPtMDphiEtaGapMixed", "hD0CentPtMDphiEtaGapMixed", nDim2, nBins2, xMin2, xMax2);
+   hD0CentPtMDphiEtaGapLikeSignMixed = new THnF("hD0CentPtMDphiEtaGapLikeSignMixed", "hD0CentPtMDphiEtaGapLikeSignMixed", nDim2, nBins2, xMin2, xMax2);
 
    /*
    const int nDimMixed=7;

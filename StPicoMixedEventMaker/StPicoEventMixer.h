@@ -39,7 +39,7 @@ class StPicoEventMixer
 public:
    StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPlane* eventPlaneMaker, StD0Hists* d0Hists);
    ~StPicoEventMixer();
-   bool addPicoEvent(StPicoDst const* picoDst, StThreeVectorF pVertex, TVector2 Q, float weight = 1);
+   bool addPicoEvent(StPicoDst const* picoDst, StThreeVectorF pVertex, float weight = 1);
    void setEventsBufferSize(int bufferSize);
    void mixEvents();
    bool isGoodEvent(StPicoDst const * const picoDst, StThreeVectorF pVertex);

@@ -26,13 +26,14 @@
  */
 
 class StMixerTrack;
+class StEventPlane;
 
 class StMixerEvent
 {
 public:
    StMixerEvent();
    StMixerEvent(StMixerEvent *);
-   StMixerEvent(StThreeVectorF vertexPos, float B, TVector2 Q, float weight = 1);
+   StMixerEvent(StThreeVectorF vertexPos, float B, StEventPlane* eventPlaneMaker, float weight=1);
    ~StMixerEvent()
    {
       ;
@@ -53,11 +54,13 @@ public:
    double const field() const;
    float const weight() const;
    TVector2 const Q() const;
+   TVector2 QEtaGap(int iEta, int nEtaGaps) const;
 private:
    StThreeVectorF mVtx;
    float mBField;
    float mWeight;
    TVector2 mQ;
+   TVector2 mQEta[20];
    std::vector <StMixerTrack  > mTracks;
    std::vector <int  > mEventKaons;
    std::vector <int  > mEventPions;
