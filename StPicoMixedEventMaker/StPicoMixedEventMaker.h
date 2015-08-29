@@ -66,7 +66,7 @@ private:
 
    int             mEventCounter;
 
-      bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
+   bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
 
    TFile*          mOutputFile;
    StD0Hists* mD0Hists;

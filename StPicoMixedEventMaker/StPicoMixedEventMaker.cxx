@@ -152,7 +152,7 @@ Int_t StPicoMixedEventMaker::Finish()
          }
       }
    }
-   cout<<"StPicoMixedEventMaker::Finish()"<<endl;
+   cout << "StPicoMixedEventMaker::Finish()" << endl;
    mOutputFile->cd();
 
    mD0Hists->hD0CentPtEtaMDphi->Write();
@@ -189,7 +189,7 @@ Int_t StPicoMixedEventMaker::Finish()
 
    mOutputFile->Write();
    //   mOutputFile->Close();
-   cout<<"StPicoMixedEventMaker::Finish() done"<<endl;
+   cout << "StPicoMixedEventMaker::Finish() done" << endl;
 
    return kStOK;
 }
@@ -317,7 +317,7 @@ Int_t StPicoMixedEventMaker::Make()
    mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
 
    if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, weight))
-     mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
+      mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
 
    return kStOk;
 }
