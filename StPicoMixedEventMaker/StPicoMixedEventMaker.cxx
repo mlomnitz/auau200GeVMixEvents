@@ -69,7 +69,7 @@ StPicoMixedEventMaker::~StPicoMixedEventMaker()
       }
    }
 }
-/*
+
 // Method should load Q vector stuff from Hao, needs fixing
 // _________________________________________________________
 bool StPicoMixedEventMaker::loadEventPlaneCorr(StEventPlane const * mEventPlane)
@@ -87,7 +87,7 @@ bool StPicoMixedEventMaker::loadEventPlaneCorr(StEventPlane const * mEventPlane)
    }
    return kTRUE;
 }
-*/
+
 // _________________________________________________________
 Int_t StPicoMixedEventMaker::Init()
 {
