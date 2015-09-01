@@ -300,7 +300,7 @@ Int_t StPicoMixedEventMaker::Make()
 
    if (mFailedRunnumber != mPicoEvent->runId())
    {
-      if (!loadEventPlaneCorr(mEventPlane))
+      if (!loadEventPlaneCorr(mEventPlaneMaker))
       {
          LOG_WARN << "Event plane calculations unavalable! Skipping" << endm;
          mFailedRunnumber = picoDst->event()->runId();
