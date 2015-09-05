@@ -36,7 +36,7 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
 
    //D0 histograms
    const int nDim = 5;
-   int nBins[nDim] = {9, 10, 20, 250, 10};//cent, pt, eta, m, dPhi
+   int nBins[nDim] = {9, 40, 20, 250, 10};//cent, pt, eta, m, dPhi
    double xMin[nDim] = {0, 0, -1, 0, 0};
    double xMax[nDim] = {9, 10, 1, 2.5, TMath::Pi()};
    hD0CentPtEtaMDphi = new THnF("hD0CentPtEtaMDphi", "hD0CentPtEtaMDphi", nDim, nBins, xMin, xMax);
