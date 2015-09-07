@@ -22,7 +22,7 @@ StPicoEventMixer::StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPl
    mVzBin = vzBin;
    mPsiBin = psiBin;
    mEventPlaneMaker = eventPlaneMaker;
-   setEventsBufferSize(1);
+   setEventsBufferSize(11);
 
 }
 StPicoEventMixer::~StPicoEventMixer()
