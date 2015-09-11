@@ -78,10 +78,10 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    mME_LS = new TH3F(Form("%s_me_ls_mass", fileBaseName), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
    mME_US = new TH3F(Form("%s_me_us_mass", fileBaseName), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
 
-   int const maxDca = 0.3;
+   float const maxDca = 0.3;
    int const nDcaBins = 300;
 
-   int const maxDca12 = 0.1;
+   float const maxDca12 = 0.1;
    int const nDca12Bins = 200;
 
    //QA Foreground
