@@ -44,6 +44,16 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    hD0CentPtEtaMDphiMixed = new THnF("hD0CentPtEtaMDphiMixed", "hD0CentPtEtaMDphiMixed", nDim, nBins, xMin, xMax);
    hD0CentPtEtaMDphiLikeSignMixed = new THnF("hD0CentPtEtaMDphiLikeSignMixed", "hD0CentPtEtaMDphiLikeSignMixed", nDim, nBins, xMin, xMax);
 
+   //D0 histograms
+   const int nDimDaug = 5;
+   int nBinsDaug[nDimDaug] = {9, 40, 10, 250, 10};//cent, pt, daughterpt1, m, daughterpt2
+   double xMinDaug[nDimDaug] = {0, 0, 0.6, 0, 0.6};
+   double xMaxDaug[nDimDaug] = {9, 10, 1.6, 2.5, 1.6};
+   hD0CentPtEtaMDphiDaug = new THnF("hD0CentPtEtaMDphiDaug", "hD0CentPtEtaMDphiDaug", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+   hD0CentPtEtaMDphiDaugLikeSign = new THnF("hD0CentPtEtaMDphiDaugLikeSign", "hD0CentPtEtaMDphiDaugLikeSign", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+   hD0CentPtEtaMDphiDaugMixed = new THnF("hD0CentPtEtaMDphiDaugMixed", "hD0CentPtEtaMDphiDaugMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+   hD0CentPtEtaMDphiDaugLikeSignMixed = new THnF("hD0CentPtEtaMDphiDaugLikeSignMixed", "hD0CentPtEtaMDphiDaugLikeSignMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+
    const int nDim2 = 5;
    int nBins2[nDim2] = {9, 10, 50, 10, 8};//cent, pt, m, dPhi, etaGap
    double xMin2[nDim2] = {0, 0, 1.6, 0, 0};
@@ -68,30 +78,30 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    mME_LS = new TH3F(Form("%s_me_ls_mass", fileBaseName), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
    mME_US = new TH3F(Form("%s_me_us_mass", fileBaseName), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
 
-   int const maxDca = 0.3;
+   float const maxDca = 0.3;
    int const nDcaBins = 300;
 
-   int const maxDca12 = 0.1;
+   float const maxDca12 = 0.1;
    int const nDca12Bins = 200;
 
    //QA Foreground
    mSE_US_PointingAngle = new TH3F(Form("%s_se_us_pointingangle", fileBaseName), "Same Event US pointing angle; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0.9, 1.0);
    mSE_US_DecayL = new TH3F(Form("%s_se_us_decayL", fileBaseName), "Same Event US Decay Length; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
-   mSE_US_Dca12 = new TH3F(Form("%s_se_us_dcaDaughters", fileBaseName), "Same Event US dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins, 0, maxDca12);
+   mSE_US_Dca12 = new TH3F(Form("%s_se_us_dcaDaughters", fileBaseName), "Same Event US dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDca12Bins, 0, maxDca12);
    mSE_US_PionDca2Vtx = new TH3F(Form("%s_se_us_pionDca", fileBaseName), "Same Event #pi dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mSE_US_KaonDca2Vtx = new TH3F(Form("%s_se_us_kaonDca", fileBaseName), "Same Event US K dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mSE_US_D0Dca2Vtx = new TH3F(Form("%s_se_us_D0Dca2Vtx", fileBaseName), "SameEvent US D0 dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.05);
    //
    mSE_LS_PointingAngle = new TH3F(Form("%s_se_ls_pointingangle", fileBaseName), "Same Event LS pointing angle; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0.9, 1.0);
    mSE_LS_DecayL = new TH3F(Form("%s_se_ls_decayL", fileBaseName), "Same Event LS Decay Length; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
-   mSE_LS_Dca12 = new TH3F(Form("%s_se_ls_dcaDaughters", fileBaseName), "Same Event LS dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins, 0, maxDca12);
+   mSE_LS_Dca12 = new TH3F(Form("%s_se_ls_dcaDaughters", fileBaseName), "Same Event LS dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDca12Bins, 0, maxDca12);
    mSE_LS_PionDca2Vtx = new TH3F(Form("%s_se_ls_pionDca", fileBaseName), "Same Event #pi dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mSE_LS_KaonDca2Vtx = new TH3F(Form("%s_se_ls_kaonDca", fileBaseName), "Same Event LS K dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mSE_LS_D0Dca2Vtx = new TH3F(Form("%s_se_ls_D0Dca2Vtx", fileBaseName), "SameEvent LS D0 dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.05);
    //
    mME_US_PointingAngle = new TH3F(Form("%s_me_us_pointingangle", fileBaseName), "Same Event US pointing angle ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0.9, 1.0);
    mME_US_DecayL = new TH3F(Form("%s_me_us_decayL", fileBaseName), "Same Event US Decay Length ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
-   mME_US_Dca12 = new TH3F(Form("%s_me_us_dcaDaughters", fileBaseName), "Same Event US dca daughters ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins, 0, maxDca12);
+   mME_US_Dca12 = new TH3F(Form("%s_me_us_dcaDaughters", fileBaseName), "Same Event US dca daughters ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDca12Bins, 0, maxDca12);
    mME_US_PionDca2Vtx = new TH3F(Form("%s_me_us_pionDca", fileBaseName), "Same Event #pi dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mME_US_KaonDca2Vtx = new TH3F(Form("%s_me_us_kaonDca", fileBaseName), "Same Event US K dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mME_US_D0Dca2Vtx = new TH3F(Form("%s_me_us_D0Dca2Vtx", fileBaseName), "SameEvent US D0 dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.05);

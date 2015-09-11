@@ -57,6 +57,12 @@ public:
    THn* hD0CentPtEtaMDphiMixed;
    THn* hD0CentPtEtaMDphiLikeSignMixed;
 
+   //add daughter pT
+   THn* hD0CentPtEtaMDphiDaug;
+   THn* hD0CentPtEtaMDphiDaugLikeSign;
+   THn* hD0CentPtEtaMDphiDaugMixed;
+   THn* hD0CentPtEtaMDphiDaugLikeSignMixed;
+
    THn* hD0CentPtMDphiEtaGap;
    THn* hD0CentPtMDphiEtaGapLikeSign;
    THn* hD0CentPtMDphiEtaGapMixed;

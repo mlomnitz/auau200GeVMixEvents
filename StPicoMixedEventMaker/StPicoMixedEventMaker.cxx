@@ -160,6 +160,12 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->hD0CentPtEtaMDphiMixed->Write();
    mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Write();
 
+   //Daught
+   mD0Hists->hD0CentPtEtaMDphiDaug->Write();
+   mD0Hists->hD0CentPtEtaMDphiDaugLikeSign->Write();
+   mD0Hists->hD0CentPtEtaMDphiDaugMixed->Write();
+   mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed->Write();
+
    mD0Hists->hD0CentPtMDphiEtaGap->Write();
    mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
    mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
