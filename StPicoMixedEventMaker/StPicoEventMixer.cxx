@@ -62,7 +62,7 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVecto
       bool isPion_ = false;
       bool isKaon_ = false;
 
-      if (!isGoodTrack(trk)  || isCloseTrack(*trk, pVertex)) continue;//good track and Not close trak
+      if (!isGoodTrack(trk, picoDst, pVertex )  || isCloseTrack(*trk, pVertex)) continue;//good track and Not close trak
       if (isPion(trk, picoDst, pVertex))
       {
          event->addPion(event->getNoTracks());
@@ -153,6 +153,7 @@ void StPicoEventMixer::mixEvents()
             while (dPhi >= TMath::Pi()) dPhi -= TMath::Pi();
 
             double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
+            double toFillDaug[5] = {mCentBin + 0.5, pair.pt(), mEvents.at(0)->pionAt(iTrk1).gMom().perp(), pair.m(), mEvents.at(iEvt2)->kaonAt(iTrk2).gMom().perp()};
 
             if (iEvt2 == 0)
             {
@@ -160,11 +161,17 @@ void StPicoEventMixer::mixEvents()
                //    cout<<"pair: "<<pair.m()<<" "<<pair.pt()<<" "<<pair.eta()<<" "<<pair.particle1Dca()<<" "<<pair.particle2Dca()<<" "<<pair.dcaDaughters()<<" "<<pair.decayLength()<<" "<<cos(pair.pointingAngle())<<" "<<pair.decayLength() * sin(pair.pointingAngle())<<" "<<dPhi<<endl;
                if (charge2 < 0) mD0Hists->hD0CentPtEtaMDphi->Fill(toFill, mEvents.at(0)->weight());
                else mD0Hists->hD0CentPtEtaMDphiLikeSign->Fill(toFill, mEvents.at(0)->weight());
+               //Daught
+               if (charge2 < 0) mD0Hists->hD0CentPtEtaMDphiDaug->Fill(toFillDaug, mEvents.at(0)->weight());
+               else mD0Hists->hD0CentPtEtaMDphiDaugLikeSign->Fill(toFillDaug, mEvents.at(0)->weight());
             }
             else
             {
                if (charge2 < 0) mD0Hists->hD0CentPtEtaMDphiMixed->Fill(toFill, mEvents.at(0)->weight());
                else mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Fill(toFill, mEvents.at(0)->weight());
+               //Daught
+               if (charge2 < 0) mD0Hists->hD0CentPtEtaMDphiDaugMixed->Fill(toFillDaug, mEvents.at(0)->weight());
+               else mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed->Fill(toFillDaug, mEvents.at(0)->weight());
             }
 
             int iEta = (int)(pair.eta() * 10 + 10);
@@ -258,10 +265,11 @@ bool StPicoEventMixer::isTpcKaon(StPicoTrack const * const trk)
 {
    return (fabs(trk->nSigmaKaon()) < mxeCuts::nSigmaKaon);
 }
-bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk)
+bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, const StPicoDst* picoDst,  StThreeVectorF const kfVtx)
 {
+  StThreeVectorF mom = trk->gMom(kfVtx, picoDst->event()->bField());
    return ((!mxeCuts::mRequireHft || trk->isHFTTrack()) &&
-           trk->nHitsFit() >= mxeCuts::nHitsFit && trk->gPt() > mxeCuts::minPt);
+           trk->nHitsFit() >= mxeCuts::nHitsFit && trk->gPt() > mxeCuts::minPt && fabs(mom.pseudoRapidity()) <= mxeCuts::Eta);
 }
 bool StPicoEventMixer::isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx)
 {
