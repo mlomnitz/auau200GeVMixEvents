@@ -46,7 +46,7 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
 
    //D0 histograms
    const int nDimDaug = 5;
-   int nBinsDaug[nDimDaug] = {9, 40, 10, 250, 10};//cent, pt, daughterpt1, m, daughterpt2
+   int nBinsDaug[nDimDaug] = {9, 100, 10, 250, 10};//cent, pt, daughterpt1, m, daughterpt2
    double xMinDaug[nDimDaug] = {0, 0, 0.6, 0, 0.6};
    double xMaxDaug[nDimDaug] = {9, 10, 1.6, 2.5, 1.6};
    hD0CentPtEtaMDphiDaug = new THnF("hD0CentPtEtaMDphiDaug", "hD0CentPtEtaMDphiDaug", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
@@ -55,7 +55,7 @@ StD0Hists::StD0Hists(char* fileBaseName = "")
    hD0CentPtEtaMDphiDaugLikeSignMixed = new THnF("hD0CentPtEtaMDphiDaugLikeSignMixed", "hD0CentPtEtaMDphiDaugLikeSignMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
 
    const int nDim2 = 5;
-   int nBins2[nDim2] = {9, 10, 50, 10, 8};//cent, pt, m, dPhi, etaGap
+   int nBins2[nDim2] = {9, 100, 50, 10, 8};//cent, pt, m, dPhi, etaGap
    double xMin2[nDim2] = {0, 0, 1.6, 0, 0};
    double xMax2[nDim2] = {9, 10, 2.1, TMath::Pi(), 0.8};
    hD0CentPtMDphiEtaGap = new THnF("hD0CentPtMDphiEtaGap", "hD0CentPtMDphiEtaGap", nDim2, nBins2, xMin2, xMax2);
