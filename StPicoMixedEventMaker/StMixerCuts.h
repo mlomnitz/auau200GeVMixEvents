@@ -31,7 +31,7 @@ namespace mxeCuts
    //Tracking
    float const minPt = 0.6;//1.2//0.6
    float const nHitsFit = 20;
-   float const dca2pVtx = 0.008;
+   float const dca2pVtx = 0.0058;
    bool const mRequireHft = true;
    float const Eta = 1.0;
    //PID
