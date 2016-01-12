@@ -282,6 +282,7 @@ bool StPicoEventMixer::isGoodPair(StMixerPair const& pair)
 {
    int ptIndex = getD0PtIndex(pair);
    return (pair.m() > mxeCuts::massMin && pair.m() < mxeCuts::massMax &&
+           std::abs(pair.lorentzVector().rapidity()) < mxeCuts::RapidityCut &&
            pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
            pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
            pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
