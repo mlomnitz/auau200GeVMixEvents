@@ -68,6 +68,7 @@ private:
 
    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
    bool isMinBiasTrigger(StPicoEvent const*) const;
+   bool isGoodEvent() const;
 
    TFile*          mOutputFile;
    StD0Hists* mD0Hists;

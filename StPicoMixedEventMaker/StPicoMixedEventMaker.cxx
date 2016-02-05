@@ -263,52 +263,58 @@ Int_t StPicoMixedEventMaker::Make()
    mD0Hists->hVzDiff->Fill(mPicoEvent->vzVpd() - vertexPos.z());
    mD0Hists->hVxy->Fill(vertexPos.x(), vertexPos.y());
 
-   if (TMath::Abs(vertexPos.z()) > mxeCuts::maxVz) return kStOk;
-   if (TMath::Abs(vertexPos.z() - mPicoEvent->vzVpd()) > mxeCuts::vzVpdVz) return kStOk;
-   if (sqrt(TMath::Power(vertexPos.x(), 2) + TMath::Power(vertexPos.y(), 2)) > mxeCuts:: Vrcut) return kStOk;
-
-   mD0Hists->hRefMult->Fill(mPicoEvent->refMult());
-   mD0Hists->hGRefMult->Fill(mPicoEvent->grefMult());
-
-   // - GRef from Guannan
-   if (!mGRefMultCorrUtil)
+   
+   if(isGoodEvent())
    {
-      LOG_WARN << " No mGRefMultCorrUtil! Skip! " << endl;
-      return kStWarn;
-   }
+     mD0Hists->hRefMult->Fill(mPicoEvent->refMult());
+     mD0Hists->hGRefMult->Fill(mPicoEvent->grefMult());
 
-   mGRefMultCorrUtil->init(mPicoEvent->runId());
-   mGRefMultCorrUtil->initEvent(mPicoEvent->grefMult(), vertexPos.z(), mPicoEvent->ZDCx()) ;
-   int const centrality  = mGRefMultCorrUtil->getCentralityBin9();
-   float weight = mGRefMultCorrUtil->getWeight();
-   mD0Hists->hCentrality->Fill(centrality);
-   mD0Hists->hCentralityWeighted->Fill(centrality, weight);
-   if (centrality < 0 || centrality > 8) return kStOk;
+     // - GRef from Guannan
+     if (!mGRefMultCorrUtil)
+     {
+       LOG_WARN << " No mGRefMultCorrUtil! Skip! " << endl;
+       return kStWarn;
+     }
 
-   int const vz_bin = (int)((6 + vertexPos.z()) / 1.2) ;
-   if (vz_bin < 0  ||  vz_bin > 9) return kStOk;
+     mGRefMultCorrUtil->init(mPicoEvent->runId());
+     mGRefMultCorrUtil->initEvent(mPicoEvent->grefMult(), vertexPos.z(), mPicoEvent->ZDCx()) ;
+     int const centrality  = mGRefMultCorrUtil->getCentralityBin9();
+     float weight = mGRefMultCorrUtil->getWeight();
+     mD0Hists->hCentrality->Fill(centrality);
+     mD0Hists->hCentralityWeighted->Fill(centrality, weight);
+     if (centrality < 0 || centrality > 8) return kStOk;
+
+     int const vz_bin = (int)((6 + vertexPos.z()) / 1.2) ;
+     if (vz_bin < 0  ||  vz_bin > 9) return kStOk;
 
 
-   if (mFailedRunnumber != mPicoEvent->runId())
-   {
-      if (!loadEventPlaneCorr(mEventPlaneMaker))
-      {
+     if (mFailedRunnumber != mPicoEvent->runId())
+     {
+       if (!loadEventPlaneCorr(mEventPlaneMaker))
+       {
          LOG_WARN << "Event plane calculations unavalable! Skipping" << endm;
          mFailedRunnumber = picoDst->event()->runId();
          return kStOK;
-      }
+       }
+     }
+     else  return kStOK;
+
+
+     float const eventPlane = mEventPlaneMaker->getEventPlane();
+     int const eventPlane_bin = (int)(eventPlane / TMath::Pi() * 10.) ;
+     if (eventPlane_bin < 0  ||  eventPlane_bin > 9 || mEventPlaneMaker->eventPlaneStatus()) return kStOk;
+
+     mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
+
+     if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, weight))
+       mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
    }
-   else  return kStOK;
-
-
-   float const eventPlane = mEventPlaneMaker->getEventPlane();
-   int const eventPlane_bin = (int)(eventPlane / TMath::Pi() * 10.) ;
-   if (eventPlane_bin < 0  ||  eventPlane_bin > 9 || mEventPlaneMaker->eventPlaneStatus()) return kStOk;
-
-   mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
-
-   if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, weight))
-      mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
 
    return kStOk;
+}
+
+bool StPicoMixedEventMaker::isGoodEvent() const
+{
+  return fabs(vertexPos.z()) < mxeCuts::maxVz && fabs(vertexPos.z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
+    sqrt(pow(vertexPos.x(), 2) + pow(vertexPos.y(), 2)) < mxeCuts::Vrcut;
 }
