@@ -54,7 +54,7 @@ private:
    StRefMultCorr* mGRefMultCorrUtil;
    StEventPlane*  mEventPlaneMaker;
    kfEvent* mKfEvent;
-   char const *mKfFileList;
+   TString mKfFileList;
    TChain* mKfChain;
 
    StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality

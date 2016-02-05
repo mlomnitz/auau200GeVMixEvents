@@ -29,7 +29,7 @@ StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* p
    StMaker(name), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
    mGRefMultCorrUtil(grefmultCorrUtil), mEventPlaneMaker(eventPlaneMaker),
    mOuputFileBaseName(outputBaseFileName), mInputFileName(inputPicoList),
-   mEventCounter(0), mKfFileList(kfFileList), mKfChain(NULL)
+   mKfFileList(kfFileList), mKfChain(NULL), mEventCounter(0)
 {
    mGRefMultCorrUtil->print();
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
@@ -113,7 +113,7 @@ Int_t StPicoMixedEventMaker::Init()
 
    mKfChain = new TChain("kfEvent");
    std::ifstream listOfKfFiles;
-   listOfKfFiles.open(mKfFileList);
+   listOfKfFiles.open(mKfFileList.Data());
    if (listOfKfFiles.is_open())
    {
       std::string kffile;

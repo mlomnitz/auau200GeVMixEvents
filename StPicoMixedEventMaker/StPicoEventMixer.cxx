@@ -27,7 +27,7 @@ StPicoEventMixer::StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPl
 }
 StPicoEventMixer::~StPicoEventMixer()
 {
-   for (int i = 0 ; i < mEvents.size() ; i++)
+   for (size_t i = 0 ; i < mEvents.size() ; i++)
    {
       delete mEvents.at(i);
    }
@@ -218,7 +218,7 @@ void StPicoEventMixer::mixEvents()
       } //first event track loop
    } //loop over second events
 
-   if (mFirstEvents.size() == mEventsBufferSize - 1)
+   if (mFirstEvents.size() == static_cast<unsigned short>(mEventsBufferSize - 1))
       delete mEvents.at(0);
    else
       mFirstEvents.push_back(mEvents.at(0));
