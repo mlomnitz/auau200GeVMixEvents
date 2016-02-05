@@ -42,13 +42,6 @@ public:
    bool addPicoEvent(StPicoDst const* picoDst, StThreeVectorF pVertex, float weight = 1);
    void setEventsBufferSize(int bufferSize);
    void mixEvents();
-   bool isGoodTrack(StPicoTrack const * const trk, const StPicoDst* picoDst, StThreeVectorF const kfVtx);
-   bool isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx);
-   bool isTpcPion(StPicoTrack const * const trk);
-   bool isTpcKaon(StPicoTrack const * const trk);
-   bool isPion(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex);
-   bool isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex);
-   float getTofBeta(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex) const;
    bool isGoodPair(StMixerPair const& pair);
    int getD0PtIndex(StMixerPair const& pair) const;
    void finish();
@@ -63,6 +56,14 @@ private:
    unsigned short int mEventsBufferSize;
    float dca1, dca2, dcaDaughters, theta_hs, decayL_hs;
    float pt_hs, mass_hs, eta_hs, phi_hs;
+
+   bool isGoodTrack(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& kfVtx) const;
+   bool isCloseTrack(StPicoTrack const*, StThreeVectorF const& pVtx) const;
+   bool isTpcPion(StPicoTrack const*) const;
+   bool isTpcKaon(StPicoTrack const*) const;
+   bool isPion(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
+   bool isKaon(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
+   float getTofBeta(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
 };
 
 inline void StPicoEventMixer::setEventsBufferSize(int bufferSize)

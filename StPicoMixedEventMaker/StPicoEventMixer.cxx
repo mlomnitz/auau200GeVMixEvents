@@ -60,7 +60,7 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVecto
       bool isPion_ = false;
       bool isKaon_ = false;
 
-      if (!isGoodTrack(trk, picoDst, pVertex )  || isCloseTrack(*trk, pVertex)) continue;//good track and Not close trak
+      if (!isGoodTrack(trk, picoDst, pVertex )  || isCloseTrack(trk, pVertex)) continue;//good track and Not close trak
       if (isPion(trk, picoDst, pVertex))
       {
          event->addPion(event->getNoTracks());
@@ -223,7 +223,7 @@ void StPicoEventMixer::mixEvents()
    mEvents.erase(mEvents.begin());
 
 }
-bool StPicoEventMixer::isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
+bool StPicoEventMixer::isKaon(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
    if (!isTpcKaon(trk)) return false;
    float beta = getTofBeta(trk, picoDst, pVertex);
@@ -235,7 +235,7 @@ bool StPicoEventMixer::isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, 
    if (fabs(1. / beta - oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffPion) return false;
    return true;
 }
-bool StPicoEventMixer::isPion(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
+bool StPicoEventMixer::isPion(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
    if (!isTpcPion(trk)) return false;
    float beta = getTofBeta(trk, picoDst, pVertex);
@@ -247,23 +247,23 @@ bool StPicoEventMixer::isPion(const StPicoTrack* trk, const StPicoDst* picoDst, 
    if (fabs(1. / beta - oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffKaon) return false;
    return true;
 }
-bool StPicoEventMixer::isTpcPion(StPicoTrack const * const trk)
+bool StPicoEventMixer::isTpcPion(StPicoTrack const * const trk) const
 {
-   return (fabs(trk->nSigmaPion()) < mxeCuts::nSigmaPion);
+   return fabs(trk->nSigmaPion()) < mxeCuts::nSigmaPion;
 }
-bool StPicoEventMixer::isTpcKaon(StPicoTrack const * const trk)
+bool StPicoEventMixer::isTpcKaon(StPicoTrack const * const trk) const
 {
-   return (fabs(trk->nSigmaKaon()) < mxeCuts::nSigmaKaon);
+   return fabs(trk->nSigmaKaon()) < mxeCuts::nSigmaKaon;
 }
-bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, const StPicoDst* picoDst,  StThreeVectorF const kfVtx)
+bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, StPicoDst const* const picoDst,  StThreeVectorF const& kfVtx) const;
 {
   StThreeVectorF mom = trk->gMom(kfVtx, picoDst->event()->bField());
    return ((!mxeCuts::mRequireHft || trk->isHFTTrack()) &&
            trk->nHitsFit() >= mxeCuts::nHitsFit && trk->gPt() > mxeCuts::minPt && fabs(mom.pseudoRapidity()) <= mxeCuts::Eta);
 }
-bool StPicoEventMixer::isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx)
+bool StPicoEventMixer::isCloseTrack(StPicoTrack const* const trk, StThreeVectorF const& pVtx) const
 {
-   StPhysicalHelixD helix = trk.dcaGeometry().helix();
+   StPhysicalHelixD helix = trk->dcaGeometry().helix();
    return (helix.pathLength(pVtx) - pVtx).mag() <= mxeCuts::dca2pVtx;
 }
 bool StPicoEventMixer::isGoodPair(StMixerPair const& pair)
@@ -287,7 +287,7 @@ int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair) const
    }
    return mxeCuts::nPtBins - 1;
 }
-float StPicoEventMixer::getTofBeta(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex) const
+float StPicoEventMixer::getTofBeta(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
    int index2tof = trk->bTofPidTraitsIndex();
 
