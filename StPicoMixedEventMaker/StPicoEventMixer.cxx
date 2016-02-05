@@ -264,9 +264,7 @@ bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, const StPicoDs
 bool StPicoEventMixer::isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx)
 {
    StPhysicalHelixD helix = trk.dcaGeometry().helix();
-   helix.moveOrigin(helix.pathLength(pVtx));
-   if ((helix.origin() - pVtx).mag() > mxeCuts::dca2pVtx) return false;
-   return true;
+   return (helix.pathLength(pVtx) - pVtx).mag() <= mxeCuts::dca2pVtx;
 }
 bool StPicoEventMixer::isGoodPair(StMixerPair const& pair)
 {
