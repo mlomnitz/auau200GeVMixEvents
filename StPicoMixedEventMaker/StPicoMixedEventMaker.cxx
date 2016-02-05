@@ -256,13 +256,12 @@ Int_t StPicoMixedEventMaker::Make()
       if (mPicoEvent->triggerWord() >> i & 0x1)
          mD0Hists->hTrigger->Fill(i);
 
-   if(!isMinBiasTrigger(mPicoEvent)) return kStOk;
+   if(!isMinBiasTrigger()) return kStOk;
 
    //Remove bad vertices
    mD0Hists->hVzVpdVz->Fill(vertexPos.z(), mPicoEvent->vzVpd());
    mD0Hists->hVzDiff->Fill(mPicoEvent->vzVpd() - vertexPos.z());
    mD0Hists->hVxy->Fill(vertexPos.x(), vertexPos.y());
-
    
    if(isGoodEvent())
    {
