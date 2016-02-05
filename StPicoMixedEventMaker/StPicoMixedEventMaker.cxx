@@ -312,6 +312,7 @@ Int_t StPicoMixedEventMaker::Make()
 
 bool StPicoMixedEventMaker::isGoodEvent() const
 {
-  return fabs(mPicoEvent->primaryVertex().z()) < mxeCuts::maxVz && fabs(mPicoEvent->primaryVertex().z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
+  return !(fabs(mPicoEvent->primaryVertex().x()) < mxeCuts::Verror && fabs(mPicoEvent->primaryVertex().y()) < mxeCuts::Verror && fabs(mPicoEvent->primaryVertex().z()) < mxeCuts::Verror) &&
+    fabs(mPicoEvent->primaryVertex().z()) < mxeCuts::maxVz && fabs(mPicoEvent->primaryVertex().z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
     sqrt(pow(mPicoEvent->primaryVertex().x(), 2) + pow(mPicoEvent->primaryVertex().y(), 2)) < mxeCuts::Vrcut;
 }
