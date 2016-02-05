@@ -255,7 +255,7 @@ bool StPicoEventMixer::isTpcKaon(StPicoTrack const * const trk) const
 {
    return fabs(trk->nSigmaKaon()) < mxeCuts::nSigmaKaon;
 }
-bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, StPicoDst const* const picoDst,  StThreeVectorF const& kfVtx) const;
+bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, StPicoDst const* const picoDst,  StThreeVectorF const& kfVtx) const
 {
   StThreeVectorF mom = trk->gMom(kfVtx, picoDst->event()->bField());
    return ((!mxeCuts::mRequireHft || trk->isHFTTrack()) &&
@@ -264,7 +264,7 @@ bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, StPicoDst cons
 bool StPicoEventMixer::isCloseTrack(StPicoTrack const* const trk, StThreeVectorF const& pVtx) const
 {
    StPhysicalHelixD helix = trk->dcaGeometry().helix();
-   return (helix.pathLength(pVtx) - pVtx).mag() <= mxeCuts::dca2pVtx;
+   return (helix.at(helix.pathLength(pVtx)) - pVtx).mag() <= mxeCuts::dca2pVtx;
 }
 bool StPicoEventMixer::isGoodPair(StMixerPair const& pair)
 {
