@@ -53,17 +53,14 @@ private:
    StPicoEvent*    mPicoEvent;
    StRefMultCorr* mGRefMultCorrUtil;
    StEventPlane*  mEventPlaneMaker;
+   StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
+
    kfEvent* mKfEvent;
    TString mKfFileList;
    TChain* mKfChain;
-
-   StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
-
    Int_t           mFailedRunnumber;
-
    TString         mOuputFileBaseName;
    TString         mInputFileName;
-
    int             mEventCounter;
 
    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
