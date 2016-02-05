@@ -9,7 +9,6 @@
 #include "StThreeVectorF.hh"
 #include "StPicoDstMaker/StPicoDst.h"
 #include "StPicoDstMaker/StPicoDstMaker.h"
-#include "StPicoDstMaker/StPicoEvent.h"
 #include "StPicoDstMaker/StPicoTrack.h"
 #include "StPicoDstMaker/StPicoBTofPidTraits.h"
 #include "StPicoPrescales/StPicoPrescales.h"
@@ -314,6 +313,6 @@ Int_t StPicoMixedEventMaker::Make()
 
 bool StPicoMixedEventMaker::isGoodEvent() const
 {
-  return fabs(vertexPos.z()) < mxeCuts::maxVz && fabs(vertexPos.z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
-    sqrt(pow(vertexPos.x(), 2) + pow(vertexPos.y(), 2)) < mxeCuts::Vrcut;
+  return fabs(mPicoEvent->primaryVertex().z()) < mxeCuts::maxVz && fabs(mPicoEvent->primaryVertex().z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
+    sqrt(pow(mPicoEvent->primaryVertex().x(), 2) + pow(mPicoEvent->primaryVertex().y(), 2)) < mxeCuts::Vrcut;
 }

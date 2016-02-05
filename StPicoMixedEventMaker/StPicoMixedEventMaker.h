@@ -2,6 +2,8 @@
 #define StPicoMixedEventMaker_h
 
 #include "StMaker.h"
+#include "StPicoDstMaker/StPicoEvent.h"
+#include "StMixerCuts.h"
 
 /* **************************************************
  *  Base class for Mixed Event cosntructions
@@ -28,7 +30,6 @@ class TChain;
 
 class StPicoDst;
 class StPicoDstMaker;
-class StPicoEvent;
 class StPicoTrack;
 class StRefMultCorr;
 class StEventPlane;
@@ -77,6 +78,6 @@ private:
 
 inline bool StPicoMixedEventMaker::isMinBiasTrigger() const
 {
-  return picoEvent->triggerWord() & mxeCuts::minBiasTrigger;
+  return mPicoEvent->triggerWord() & mxeCuts::minBiasTrigger;
 }
 #endif
