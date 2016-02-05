@@ -50,8 +50,6 @@ void StPicoEventMixer::finish()
 }
 bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, float weight)
 {
-   if (!isGoodEvent(picoDst, pVertex))
-      return false;
    int nTracks = picoDst->numberOfTracks();
    StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), mEventPlaneMaker, weight);
    //Event.setNoTracks( nTracks );
@@ -224,14 +222,6 @@ void StPicoEventMixer::mixEvents()
       mFirstEvents.push_back(mEvents.at(0));
    mEvents.erase(mEvents.begin());
 
-}
-bool StPicoEventMixer::isGoodEvent(StPicoDst const * const picoDst, StThreeVectorF pVertex)
-{
-   StPicoEvent* picoEvent = picoDst->event();
-   return ((picoEvent->triggerWord() & mxeCuts::triggerWord) &&
-           fabs(pVertex.z()) < mxeCuts::maxVz &&
-           fabs(pVertex.z() - picoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
-           sqrt(TMath::Power(pVertex.x(), 2) + TMath::Power(pVertex.y(), 2)) <= mxeCuts:: Vrcut);
 }
 bool StPicoEventMixer::isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
 {

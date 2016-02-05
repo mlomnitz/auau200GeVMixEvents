@@ -42,7 +42,6 @@ public:
    bool addPicoEvent(StPicoDst const* picoDst, StThreeVectorF pVertex, float weight = 1);
    void setEventsBufferSize(int bufferSize);
    void mixEvents();
-   bool isGoodEvent(StPicoDst const * const picoDst, StThreeVectorF pVertex);
    bool isGoodTrack(StPicoTrack const * const trk, const StPicoDst* picoDst, StThreeVectorF const kfVtx);
    bool isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx);
    bool isTpcPion(StPicoTrack const * const trk);
