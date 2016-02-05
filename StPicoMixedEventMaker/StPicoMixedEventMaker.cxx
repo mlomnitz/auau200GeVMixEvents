@@ -6,7 +6,6 @@
 #include "TH3F.h"
 #include "THn.h"
 
-#include "StThreeVectorF.hh"
 #include "StPicoDstMaker/StPicoDst.h"
 #include "StPicoDstMaker/StPicoDstMaker.h"
 #include "StPicoDstMaker/StPicoTrack.h"
@@ -241,9 +240,8 @@ Int_t StPicoMixedEventMaker::Make()
       exit(1);
    }
 
-   StThreeVectorF const picoVertexPos = mPicoEvent->primaryVertex();
-   StThreeVectorF const vertexPos(mKfEvent->mKfVx, mKfEvent->mKfVy, mKfEvent->mKfVz);
-   if (picoVertexPos.x() != mKfEvent->mVx)
+   StThreeVectorF const kfVtx(mKfEvent->mKfVx, mKfEvent->mKfVy, mKfEvent->mKfVz);
+   if (mPicoEvent->primaryVertex().x() != mKfEvent->mVx)
    {
       LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << "\n";
       LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent vertex are not in sync." << endm;
@@ -257,11 +255,11 @@ Int_t StPicoMixedEventMaker::Make()
    if(!isMinBiasTrigger()) return kStOk;
 
    //Remove bad vertices
-   mD0Hists->hVzVpdVz->Fill(vertexPos.z(), mPicoEvent->vzVpd());
-   mD0Hists->hVzDiff->Fill(mPicoEvent->vzVpd() - vertexPos.z());
-   mD0Hists->hVxy->Fill(vertexPos.x(), vertexPos.y());
+   mD0Hists->hVzVpdVz->Fill(kfVtx.z(), mPicoEvent->vzVpd());
+   mD0Hists->hVzDiff->Fill(mPicoEvent->vzVpd() - kfVtx.z());
+   mD0Hists->hVxy->Fill(kfVtx.x(), kfVtx.y());
    
-   if(isGoodEvent())
+   if(isGoodEvent(kfVtx))
    {
      mD0Hists->hRefMult->Fill(mPicoEvent->refMult());
      mD0Hists->hGRefMult->Fill(mPicoEvent->grefMult());
@@ -274,14 +272,14 @@ Int_t StPicoMixedEventMaker::Make()
      }
 
      mGRefMultCorrUtil->init(mPicoEvent->runId());
-     mGRefMultCorrUtil->initEvent(mPicoEvent->grefMult(), vertexPos.z(), mPicoEvent->ZDCx()) ;
+     mGRefMultCorrUtil->initEvent(mPicoEvent->grefMult(), kfVtx.z(), mPicoEvent->ZDCx()) ;
      int const centrality  = mGRefMultCorrUtil->getCentralityBin9();
      float weight = mGRefMultCorrUtil->getWeight();
      mD0Hists->hCentrality->Fill(centrality);
      mD0Hists->hCentralityWeighted->Fill(centrality, weight);
      if (centrality < 0 || centrality > 8) return kStOk;
 
-     int const vz_bin = (int)((6 + vertexPos.z()) / 1.2) ;
+     int const vz_bin = (int)((6 + kfVtx.z()) / 1.2) ;
      if (vz_bin < 0  ||  vz_bin > 9) return kStOk;
 
 
@@ -301,18 +299,18 @@ Int_t StPicoMixedEventMaker::Make()
      int const eventPlane_bin = (int)(eventPlane / TMath::Pi() * 10.) ;
      if (eventPlane_bin < 0  ||  eventPlane_bin > 9 || mEventPlaneMaker->eventPlaneStatus()) return kStOk;
 
-     mD0Hists->hCentVzPsi->Fill(centrality, vertexPos.z(), eventPlane, weight);
+     mD0Hists->hCentVzPsi->Fill(centrality, kfVtx.z(), eventPlane, weight);
 
-     if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, vertexPos, weight))
+     if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, kfVtx, weight))
        mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
    }
 
    return kStOk;
 }
 
-bool StPicoMixedEventMaker::isGoodEvent() const
+bool StPicoMixedEventMaker::isGoodEvent(StThreeVectorF const& pVtx) const
 {
-  return !(fabs(mPicoEvent->primaryVertex().x()) < mxeCuts::Verror && fabs(mPicoEvent->primaryVertex().y()) < mxeCuts::Verror && fabs(mPicoEvent->primaryVertex().z()) < mxeCuts::Verror) &&
-    fabs(mPicoEvent->primaryVertex().z()) < mxeCuts::maxVz && fabs(mPicoEvent->primaryVertex().z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
-    sqrt(pow(mPicoEvent->primaryVertex().x(), 2) + pow(mPicoEvent->primaryVertex().y(), 2)) < mxeCuts::Vrcut;
+  return !(fabs(pVtx.x()) < mxeCuts::Verror && fabs(pVtx.y()) < mxeCuts::Verror && fabs(pVtx.z()) < mxeCuts::Verror) &&
+    fabs(pVtx.z()) < mxeCuts::maxVz && fabs(pVtx.z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
+    sqrt(pow(pVtx.x(), 2) + pow(pVtx.y(), 2)) < mxeCuts::Vrcut;
 }

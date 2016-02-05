@@ -2,6 +2,7 @@
 #define StPicoMixedEventMaker_h
 
 #include "StMaker.h"
+#include "StThreeVectorF.hh"
 #include "StPicoDstMaker/StPicoEvent.h"
 #include "StMixerCuts.h"
 
@@ -65,7 +66,7 @@ private:
 
    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
    bool isMinBiasTrigger() const;
-   bool isGoodEvent() const;
+   bool isGoodEvent(StThreeVectorF const&) const;
 
    TFile*          mOutputFile;
    StD0Hists* mD0Hists;
