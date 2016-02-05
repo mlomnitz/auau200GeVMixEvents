@@ -238,7 +238,7 @@ Int_t StPicoMixedEventMaker::Make()
 
    if (mPicoEvent->runId() != mKfEvent->mRunId || mPicoEvent->eventId() != mKfEvent->mEventId)
    {
-      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << endm;
+      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << "\n";
       LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent are not in sync." << endm;
       exit(1);
    }
@@ -247,7 +247,7 @@ Int_t StPicoMixedEventMaker::Make()
    StThreeVectorF const vertexPos(mKfEvent->mKfVx, mKfEvent->mKfVy, mKfEvent->mKfVz);
    if (picoVertexPos.x() != mKfEvent->mVx)
    {
-      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << endm;
+      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << "\n";
       LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent vertex are not in sync." << endm;
       exit(1);
    }
