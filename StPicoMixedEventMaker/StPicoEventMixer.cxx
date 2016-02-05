@@ -2,6 +2,7 @@
 
 #include "TH3F.h"
 #include "THn.h"
+#include "phys_constants.h"
 #include "StPicoEventMixer.h"
 #include "StPicoDstMaker/StPicoEvent.h"
 #include "StPicoDstMaker/StPicoTrack.h"
@@ -229,8 +230,7 @@ bool StPicoEventMixer::isKaon(StPicoTrack const* const trk, StPicoDst const* con
    float beta = getTofBeta(trk, picoDst, pVertex);
    if (beta < 0) return true;
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
-   float mKaon = 0.493677;
-   float oneOverBetaExpected = sqrt(mKaon * mKaon / p / p + 1);
+   float oneOverBetaExpected = sqrt(M_KAON_PLUS*M_KAON_PLUS / p / p + 1);
    //  hOneOverBetaDiffPionP->Fill(pPion, 1./betaPion-oneOverBetaExpectedPion);
    if (fabs(1. / beta - oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffPion) return false;
    return true;
@@ -241,8 +241,7 @@ bool StPicoEventMixer::isPion(StPicoTrack const* const trk, StPicoDst const* con
    float beta = getTofBeta(trk, picoDst, pVertex);
    if (beta < 0) return true;
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
-   float mPion = 0.13957;
-   float oneOverBetaExpected = sqrt(mPion * mPion / p / p + 1);
+   float oneOverBetaExpected = sqrt(M_PION_PLUS*M_PION_PLUS / p / p + 1);
    //  hOneOverBetaDiffPionP->Fill(pPion, 1./betaPion-oneOverBetaExpectedPion);
    if (fabs(1. / beta - oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffKaon) return false;
    return true;
@@ -308,7 +307,7 @@ float StPicoEventMixer::getTofBeta(StPicoTrack const* const trk, StPicoDst const
             StPhysicalHelixD helix = trk->helix();
             float L = tofPathLength(&pVertex, &btofHitPos, helix.curvature());
             float tof = tofPid->btof();
-            if (tof > 0) beta = L / (tof * (2.99792458e10 / 1.e9));
+            if (tof > 0) beta = L / (tof * (C_C_LIGHT / 1.e9));
             else beta = std::numeric_limits<float>::quiet_NaN();
          }
       }
