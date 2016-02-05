@@ -27,7 +27,7 @@ ClassImp(StPicoMixedEventMaker)
 // _________________________________________________________
 StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
       char const* outputBaseFileName,  char const* inputPicoList, char const * kfFileList) :
-   StMaker(name), mPicoDst(NULL), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
+   StMaker(name), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
    mGRefMultCorrUtil(grefmultCorrUtil), mEventPlaneMaker(eventPlaneMaker),
    mOuputFileBaseName(outputBaseFileName), mInputFileName(inputPicoList),
    mEventCounter(0), mKfFileList(kfFileList), mKfChain(NULL)
@@ -229,7 +229,7 @@ Int_t StPicoMixedEventMaker::Make()
    }
 
    //Load event
-   mPicoEvent = (StPicoEvent*)mPicoDst->event();
+   mPicoEvent = picoDst->event();
    if (!mPicoEvent)
    {
       cerr << "Error opening picoDst Event, skip!" << endl;

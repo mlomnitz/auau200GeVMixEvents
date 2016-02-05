@@ -48,7 +48,6 @@ public:
    virtual void  Clear(Option_t* opt = "");
 
 private:
-   StPicoDst*      mPicoDst;
    StPicoDstMaker* mPicoDstMaker;
    StPicoEvent*    mPicoEvent;
    StRefMultCorr* mGRefMultCorrUtil;
