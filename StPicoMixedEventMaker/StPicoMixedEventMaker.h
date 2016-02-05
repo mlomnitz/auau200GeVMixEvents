@@ -67,10 +67,16 @@ private:
    int             mEventCounter;
 
    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
+   bool isMinBiasTrigger(StPicoEvent const*) const;
 
    TFile*          mOutputFile;
    StD0Hists* mD0Hists;
 
    ClassDef(StPicoMixedEventMaker, 0)
 };
+
+inline bool StPicoMixedEventMaker::isMinBiasTrigger(StPicoEvent const* const picoEvent) const
+{
+  return picoEvent->triggerWord() & mxeCuts::minBiasTrigger;
+}
 #endif

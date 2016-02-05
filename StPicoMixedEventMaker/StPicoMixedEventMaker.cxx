@@ -256,17 +256,7 @@ Int_t StPicoMixedEventMaker::Make()
       if (mPicoEvent->triggerWord() >> i & 0x1)
          mD0Hists->hTrigger->Fill(i);
 
-   //if (!(isMinBias)) {cout<<"not a mb trigger"<<endl;return 0;}
-   bool isVPDMB5 = kFALSE;
-   for (int i = 0; i < 5; i++)
-   {
-      if (mPicoEvent->triggerWord() & (1 << i)) isVPDMB5 = kTRUE ; //Select MB trigger
-   }
-   if (!(isVPDMB5))
-   {
-      //cout<<"not a VPDmb trigger"<<endl;
-      return kStOk;
-   }
+   if(!isMinBiasTrigger(mPicoEvent)) return kStOk;
 
    //Remove bad vertices
    mD0Hists->hVzVpdVz->Fill(vertexPos.z(), mPicoEvent->vzVpd());
@@ -322,5 +312,3 @@ Int_t StPicoMixedEventMaker::Make()
 
    return kStOk;
 }
-
-
