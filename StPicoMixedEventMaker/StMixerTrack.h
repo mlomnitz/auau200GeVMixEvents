@@ -30,7 +30,7 @@ class StMixerTrack
 public:
    StMixerTrack();
    StMixerTrack(StMixerTrack const *);
-   StMixerTrack(StThreeVectorF const & pVtx, float B, StPicoTrack const& picoTrack, bool isPion, bool isKaon, TVector2 q);
+   StMixerTrack(StThreeVectorF const & pVtx, float B, StPicoTrack const& picoTrack, bool isPion, bool isKaon, TVector2 const& q);
    short const getTrackInfo() const;
    int const charge() const ;
    StThreeVectorF const& gMom() const;
