@@ -32,8 +32,8 @@ class StMixerEvent
 {
 public:
    StMixerEvent();
-   StMixerEvent(StMixerEvent *);
-   StMixerEvent(StThreeVectorF vertexPos, float B, StEventPlane* eventPlaneMaker, float weight = 1);
+   StMixerEvent(StMixerEvent*);
+   StMixerEvent(StThreeVectorF const& vertexPos, float B, StEventPlane* eventPlaneMaker, float weight = 1);
    ~StMixerEvent()
    {
       ;
