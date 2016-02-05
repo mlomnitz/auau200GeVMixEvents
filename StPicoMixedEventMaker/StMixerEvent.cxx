@@ -18,7 +18,7 @@ StMixerEvent::StMixerEvent(StThreeVectorF const& vtx, float b, StEventPlane* eve
    for (int i = 0; i < 20; i++)
       mQEta[i] = eventPlaneMaker->QEta(i);
 }
-void StMixerEvent::addTrack(StMixerTrack t)
+void StMixerEvent::addTrack(StMixerTrack const& t)
 {
    mTracks.push_back(t);
    return;
