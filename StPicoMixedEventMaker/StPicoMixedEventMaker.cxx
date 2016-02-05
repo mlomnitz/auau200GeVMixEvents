@@ -256,11 +256,6 @@ Int_t StPicoMixedEventMaker::Make()
       if (mPicoEvent->triggerWord() >> i & 0x1)
          mD0Hists->hTrigger->Fill(i);
 
-   bool isMinBias = kFALSE;
-   for (int i = 0; i < 11; i++)
-   {
-      if (mPicoEvent->triggerWord() & (1 << i)) isMinBias = kTRUE ; //Select MB trigger
-   }
    //if (!(isMinBias)) {cout<<"not a mb trigger"<<endl;return 0;}
    bool isVPDMB5 = kFALSE;
    for (int i = 0; i < 5; i++)
