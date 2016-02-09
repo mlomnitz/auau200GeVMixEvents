@@ -12,12 +12,11 @@
 #include "StPicoMixedEventMaker.h"
 #include "StMixerEvent.h"
 #include "StMixerPair.h"
-#include "StMixerTriplet.h"
 #include "StD0Hists.h"
 #include "StBTofUtil/tofPathLength.hh"
 
 StPicoEventMixer::StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPlane* eventPlaneMaker, StD0Hists* d0Hists):
-   mEvents(NULL), mD0Hists(d0Hists)
+   mEvents(), mD0Hists(d0Hists)
 {
    mCentBin = centBin;
    mVzBin = vzBin;
