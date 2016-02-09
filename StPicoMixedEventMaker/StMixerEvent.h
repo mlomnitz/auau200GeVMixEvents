@@ -41,15 +41,15 @@ public:
    void addPion(int);
    void addKaon(int);
    void addTrack(StMixerTrack const&);
-   void setPos(float const, float const, float const);
-   void setField(float const);
+   void setPos(float,float,float);
+   void setField(float);
    int getNoTracks() const;
    int getNoKaons() const;
    int getNoPions() const;
    int pionId(int counter) const;
    int kaonId(int counter) const;
-   StMixerTrack pionAt(int const);
-   StMixerTrack kaonAt(int const);
+   StMixerTrack const&  pionAt(int) const;
+   StMixerTrack const&  kaonAt(int) const;
    StThreeVectorF const & vertex() const;
    double const field() const;
    float const weight() const;
@@ -87,19 +87,19 @@ inline int StMixerEvent::getNoTracks() const
 }
 inline int StMixerEvent::pionId(int counter) const
 {
-   return mPionsIds.at(counter);
+   return mPionsIds[counter];
 }
 inline int StMixerEvent::kaonId(int counter) const
 {
-   return mKaonsIds.at(counter);
+   return mKaonsIds[counter];
 }
-inline StMixerTrack StMixerEvent::pionAt(int const counter)
+inline StMixerTrack const& StMixerEvent::pionAt(int const counter) const
 {
-   return (mTracks.at(mPionsIds.at(counter)));
+   return mTracks[mPionsIds[counter]];
 }
-inline StMixerTrack StMixerEvent::kaonAt(int const counter)
+inline StMixerTrack const& StMixerEvent::kaonAt(int const counter) const
 {
-   return (mTracks.at(mKaonsIds.at(counter)));
+   return mTracks[mKaonsIds[counter]];
 }
 inline StThreeVectorF const & StMixerEvent::vertex() const
 {
