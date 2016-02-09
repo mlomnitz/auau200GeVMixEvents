@@ -43,11 +43,11 @@ public:
    void addTrack(StMixerTrack const&);
    void setPos(float const, float const, float const);
    void setField(float const);
-   int getNoTracks();
-   int getNoKaons();
-   int getNoPions();
-   int pionId(int counter);
-   int kaonId(int counter);
+   int getNoTracks() const;
+   int getNoKaons() const;
+   int getNoPions() const;
+   int pionId(int counter) const;
+   int kaonId(int counter) const;
    StMixerTrack pionAt(int const);
    StMixerTrack kaonAt(int const);
    StThreeVectorF const & vertex() const;
@@ -62,8 +62,8 @@ private:
    TVector2 mQ;
    TVector2 mQEta[20];
    std::vector <StMixerTrack  > mTracks;
-   std::vector <int  > mEventKaons;
-   std::vector <int  > mEventPions;
+   std::vector <int  > mKaonsIds;
+   std::vector <int  > mPionsIds;
 };
 inline void StMixerEvent::setPos(float const vx, float const vy, float const vz)
 {
@@ -73,33 +73,33 @@ inline void StMixerEvent::setField(float const field)
 {
    mBField = field;
 }
-inline int StMixerEvent::getNoPions()
+inline int StMixerEvent::getNoPions() const
 {
-   return mEventPions.size();
+   return mPionsIds.size();
 }
-inline int StMixerEvent::getNoKaons()
+inline int StMixerEvent::getNoKaons() const
 {
-   return mEventKaons.size();
+   return mKaonsIds.size();
 }
-inline int StMixerEvent::getNoTracks()
+inline int StMixerEvent::getNoTracks() const
 {
    return mTracks.size();
 }
-inline int StMixerEvent::pionId(int counter)
+inline int StMixerEvent::pionId(int counter) const
 {
-   return mEventPions.at(counter);
+   return mPionsIds.at(counter);
 }
-inline int StMixerEvent::kaonId(int counter)
+inline int StMixerEvent::kaonId(int counter) const
 {
-   return mEventKaons.at(counter);
+   return mKaonsIds.at(counter);
 }
 inline StMixerTrack StMixerEvent::pionAt(int const counter)
 {
-   return (mTracks.at(mEventPions.at(counter)));
+   return (mTracks.at(mPionsIds.at(counter)));
 }
 inline StMixerTrack StMixerEvent::kaonAt(int const counter)
 {
-   return (mTracks.at(mEventKaons.at(counter)));
+   return (mTracks.at(mKaonsIds.at(counter)));
 }
 inline StThreeVectorF const & StMixerEvent::vertex() const
 {
