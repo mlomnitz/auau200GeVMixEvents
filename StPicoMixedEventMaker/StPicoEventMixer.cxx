@@ -98,6 +98,8 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVecto
 }
 void StPicoEventMixer::mixEvents()
 {
+   if(!mEvents.size()) return;
+
    //Template for D0 studies
    for (size_t iEvt2 = 0; iEvt2 < mEvents.size(); ++iEvt2)
    {
