@@ -32,15 +32,15 @@ class StMixerEvent
 {
 public:
    StMixerEvent();
-   StMixerEvent(StMixerEvent *);
-   StMixerEvent(StThreeVectorF vertexPos, float B, StEventPlane* eventPlaneMaker, float weight = 1);
+   StMixerEvent(StMixerEvent*);
+   StMixerEvent(StThreeVectorF const& vertexPos, float B, StEventPlane* eventPlaneMaker, float weight = 1);
    ~StMixerEvent()
    {
       ;
    };
    void addPion(int);
    void addKaon(int);
-   void addTrack(StMixerTrack);
+   void addTrack(StMixerTrack const&);
    void setPos(float const, float const, float const);
    void setField(float const);
    int getNoTracks();

@@ -11,14 +11,14 @@ StMixerEvent::StMixerEvent(StMixerEvent *t) : mVtx(t->mVtx), mBField(t->mBField)
    mEventKaons(t->mEventKaons), mEventPions(t->mEventPions), mQ(t->mQ)
 {
 }
-StMixerEvent::StMixerEvent(StThreeVectorF vtx, float b, StEventPlane* eventPlaneMaker, float weight) :
+StMixerEvent::StMixerEvent(StThreeVectorF const& vtx, float b, StEventPlane* eventPlaneMaker, float weight) :
    mWeight(weight), mVtx(vtx), mBField(b)
 {
    mQ = eventPlaneMaker->Q();
    for (int i = 0; i < 20; i++)
       mQEta[i] = eventPlaneMaker->QEta(i);
 }
-void StMixerEvent::addTrack(StMixerTrack t)
+void StMixerEvent::addTrack(StMixerTrack const& t)
 {
    mTracks.push_back(t);
    return;

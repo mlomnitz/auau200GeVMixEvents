@@ -2,6 +2,7 @@
 
 #include "TH3F.h"
 #include "THn.h"
+#include "phys_constants.h"
 #include "StPicoEventMixer.h"
 #include "StPicoDstMaker/StPicoEvent.h"
 #include "StPicoDstMaker/StPicoTrack.h"
@@ -27,7 +28,7 @@ StPicoEventMixer::StPicoEventMixer(int centBin, int vzBin, int psiBin, StEventPl
 }
 StPicoEventMixer::~StPicoEventMixer()
 {
-   for (int i = 0 ; i < mEvents.size() ; i++)
+   for (size_t i = 0 ; i < mEvents.size() ; i++)
    {
       delete mEvents.at(i);
    }
@@ -50,8 +51,6 @@ void StPicoEventMixer::finish()
 }
 bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVectorF pVertex, float weight)
 {
-   if (!isGoodEvent(picoDst, pVertex))
-      return false;
    int nTracks = picoDst->numberOfTracks();
    StMixerEvent* event = new StMixerEvent(pVertex, picoDst->event()->bField(), mEventPlaneMaker, weight);
    //Event.setNoTracks( nTracks );
@@ -62,7 +61,7 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVecto
       bool isPion_ = false;
       bool isKaon_ = false;
 
-      if (!isGoodTrack(trk, picoDst, pVertex )  || isCloseTrack(*trk, pVertex)) continue;//good track and Not close trak
+      if (!isGoodTrack(trk, picoDst, pVertex )  || isCloseTrack(trk, pVertex)) continue;//good track and Not close trak
       if (isPion(trk, picoDst, pVertex))
       {
          event->addPion(event->getNoTracks());
@@ -218,65 +217,53 @@ void StPicoEventMixer::mixEvents()
       } //first event track loop
    } //loop over second events
 
-   if (mFirstEvents.size() == mEventsBufferSize - 1)
+   if (mFirstEvents.size() == static_cast<unsigned short>(mEventsBufferSize - 1))
       delete mEvents.at(0);
    else
       mFirstEvents.push_back(mEvents.at(0));
    mEvents.erase(mEvents.begin());
 
 }
-bool StPicoEventMixer::isGoodEvent(StPicoDst const * const picoDst, StThreeVectorF pVertex)
-{
-   StPicoEvent* picoEvent = picoDst->event();
-   return ((picoEvent->triggerWord() & mxeCuts::triggerWord) &&
-           fabs(pVertex.z()) < mxeCuts::maxVz &&
-           fabs(pVertex.z() - picoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
-           sqrt(TMath::Power(pVertex.x(), 2) + TMath::Power(pVertex.y(), 2)) <= mxeCuts:: Vrcut);
-}
-bool StPicoEventMixer::isKaon(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
+bool StPicoEventMixer::isKaon(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
    if (!isTpcKaon(trk)) return false;
    float beta = getTofBeta(trk, picoDst, pVertex);
    if (beta < 0) return true;
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
-   float mKaon = 0.493677;
-   float oneOverBetaExpected = sqrt(mKaon * mKaon / p / p + 1);
+   float oneOverBetaExpected = sqrt(M_KAON_PLUS*M_KAON_PLUS / p / p + 1);
    //  hOneOverBetaDiffPionP->Fill(pPion, 1./betaPion-oneOverBetaExpectedPion);
    if (fabs(1. / beta - oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffPion) return false;
    return true;
 }
-bool StPicoEventMixer::isPion(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex)
+bool StPicoEventMixer::isPion(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
    if (!isTpcPion(trk)) return false;
    float beta = getTofBeta(trk, picoDst, pVertex);
    if (beta < 0) return true;
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
-   float mPion = 0.13957;
-   float oneOverBetaExpected = sqrt(mPion * mPion / p / p + 1);
+   float oneOverBetaExpected = sqrt(M_PION_PLUS*M_PION_PLUS / p / p + 1);
    //  hOneOverBetaDiffPionP->Fill(pPion, 1./betaPion-oneOverBetaExpectedPion);
    if (fabs(1. / beta - oneOverBetaExpected) > mxeCuts::tofOneOverBetaDiffKaon) return false;
    return true;
 }
-bool StPicoEventMixer::isTpcPion(StPicoTrack const * const trk)
+bool StPicoEventMixer::isTpcPion(StPicoTrack const * const trk) const
 {
-   return (fabs(trk->nSigmaPion()) < mxeCuts::nSigmaPion);
+   return fabs(trk->nSigmaPion()) < mxeCuts::nSigmaPion;
 }
-bool StPicoEventMixer::isTpcKaon(StPicoTrack const * const trk)
+bool StPicoEventMixer::isTpcKaon(StPicoTrack const * const trk) const
 {
-   return (fabs(trk->nSigmaKaon()) < mxeCuts::nSigmaKaon);
+   return fabs(trk->nSigmaKaon()) < mxeCuts::nSigmaKaon;
 }
-bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, const StPicoDst* picoDst,  StThreeVectorF const kfVtx)
+bool StPicoEventMixer::isGoodTrack(StPicoTrack const * const trk, StPicoDst const* const picoDst,  StThreeVectorF const& kfVtx) const
 {
   StThreeVectorF mom = trk->gMom(kfVtx, picoDst->event()->bField());
    return ((!mxeCuts::mRequireHft || trk->isHFTTrack()) &&
            trk->nHitsFit() >= mxeCuts::nHitsFit && trk->gPt() > mxeCuts::minPt && fabs(mom.pseudoRapidity()) <= mxeCuts::Eta);
 }
-bool StPicoEventMixer::isCloseTrack(StPicoTrack const& trk, StThreeVectorF const& pVtx)
+bool StPicoEventMixer::isCloseTrack(StPicoTrack const* const trk, StThreeVectorF const& pVtx) const
 {
-   StPhysicalHelixD helix = trk.dcaGeometry().helix();
-   helix.moveOrigin(helix.pathLength(pVtx));
-   if ((helix.origin() - pVtx).mag() > mxeCuts::dca2pVtx) return false;
-   return true;
+   StPhysicalHelixD helix = trk->dcaGeometry().helix();
+   return (helix.at(helix.pathLength(pVtx)) - pVtx).mag() <= mxeCuts::dca2pVtx;
 }
 bool StPicoEventMixer::isGoodPair(StMixerPair const& pair)
 {
@@ -299,7 +286,7 @@ int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair) const
    }
    return mxeCuts::nPtBins - 1;
 }
-float StPicoEventMixer::getTofBeta(const StPicoTrack* trk, const StPicoDst* picoDst, StThreeVectorF pVertex) const
+float StPicoEventMixer::getTofBeta(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
    int index2tof = trk->bTofPidTraitsIndex();
 
@@ -320,7 +307,7 @@ float StPicoEventMixer::getTofBeta(const StPicoTrack* trk, const StPicoDst* pico
             StPhysicalHelixD helix = trk->helix();
             float L = tofPathLength(&pVertex, &btofHitPos, helix.curvature());
             float tof = tofPid->btof();
-            if (tof > 0) beta = L / (tof * (2.99792458e10 / 1.e9));
+            if (tof > 0) beta = L / (tof * (C_C_LIGHT / 1.e9));
             else beta = std::numeric_limits<float>::quiet_NaN();
          }
       }

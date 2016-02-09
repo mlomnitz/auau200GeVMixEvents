@@ -2,6 +2,9 @@
 #define StPicoMixedEventMaker_h
 
 #include "StMaker.h"
+#include "StThreeVectorF.hh"
+#include "StPicoDstMaker/StPicoEvent.h"
+#include "StMixerCuts.h"
 
 /* **************************************************
  *  Base class for Mixed Event cosntructions
@@ -28,7 +31,6 @@ class TChain;
 
 class StPicoDst;
 class StPicoDstMaker;
-class StPicoEvent;
 class StPicoTrack;
 class StRefMultCorr;
 class StEventPlane;
@@ -48,29 +50,32 @@ public:
    virtual void  Clear(Option_t* opt = "");
 
 private:
-   StPicoDst*      mPicoDst;
    StPicoDstMaker* mPicoDstMaker;
    StPicoEvent*    mPicoEvent;
    StRefMultCorr* mGRefMultCorrUtil;
    StEventPlane*  mEventPlaneMaker;
-   kfEvent* mKfEvent;
-   char const *mKfFileList;
-   TChain* mKfChain;
-
    StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
 
+   kfEvent* mKfEvent;
+   TString mKfFileList;
+   TChain* mKfChain;
    Int_t           mFailedRunnumber;
-
    TString         mOuputFileBaseName;
    TString         mInputFileName;
-
    int             mEventCounter;
 
    bool loadEventPlaneCorr(StEventPlane const *mEventPlane);
+   bool isMinBiasTrigger() const;
+   bool isGoodEvent(StThreeVectorF const&) const;
 
    TFile*          mOutputFile;
    StD0Hists* mD0Hists;
 
    ClassDef(StPicoMixedEventMaker, 0)
 };
+
+inline bool StPicoMixedEventMaker::isMinBiasTrigger() const
+{
+  return mPicoEvent->triggerWord() & mxeCuts::minBiasTrigger;
+}
 #endif

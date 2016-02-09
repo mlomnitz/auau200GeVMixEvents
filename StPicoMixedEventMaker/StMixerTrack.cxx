@@ -6,7 +6,7 @@
 StMixerTrack::StMixerTrack() : mOrigin(StThreeVectorF()), mMom(StThreeVectorF()), mTrackInfo(std::numeric_limits<short>::min())
 {
 }
-StMixerTrack::StMixerTrack(StThreeVectorF const & pVtx, float B, StPicoTrack const& picoTrack, bool isPion, bool isKaon, TVector2 q) :
+StMixerTrack::StMixerTrack(StThreeVectorF const & pVtx, float B, StPicoTrack const& picoTrack, bool isPion, bool isKaon, TVector2 const & q) :
    mTrackInfo(0)
 {
    StPhysicalHelixD helix = picoTrack.helix();

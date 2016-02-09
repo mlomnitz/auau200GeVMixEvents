@@ -23,6 +23,7 @@ namespace mxeCuts
 
    //Event
    UShort_t const triggerWord = 0x1F; //first five bits see http://rnc.lbl.gov/~xdong/SoftHadron/picoDst.html
+   UShort_t const minBiasTrigger = 0x1F;
    float const maxVz = 6.0;// cm.
    float const vzVpdVz = 3.0; // 3 cm.
    float const Verror = 1.0e-5; //
