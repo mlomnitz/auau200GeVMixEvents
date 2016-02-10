@@ -226,7 +226,7 @@ bool StPicoEventMixer::isKaon(StPicoTrack const* const trk, StPicoDst const* con
 {
    if (!isTpcKaon(trk)) return false;
    float beta = getTofBeta(trk, picoDst, pVertex);
-   if (beta < 0) return true;
+   if (isnan(beta) || beta < 0) return true;
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
    float oneOverBetaExpected = sqrt(M_KAON_PLUS*M_KAON_PLUS / p / p + 1);
 
@@ -236,7 +236,7 @@ bool StPicoEventMixer::isPion(StPicoTrack const* const trk, StPicoDst const* con
 {
    if (!isTpcPion(trk)) return false;
    float beta = getTofBeta(trk, picoDst, pVertex);
-   if (beta < 0) return true;
+   if (isnan(beta) || beta < 0) return true;
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
    float oneOverBetaExpected = sqrt(M_PION_PLUS*M_PION_PLUS / p / p + 1);
 
