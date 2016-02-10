@@ -9,6 +9,7 @@
  * **************************************************
  */
 
+#include <string>
 #include "TObject.h"
 
 class TH1F;
@@ -25,7 +26,7 @@ class TString;
 class StD0Hists: public TObject
 {
 public:
-   StD0Hists(char* fileBaseName);
+   StD0Hists(std::string fileBaseName);
    virtual ~StD0Hists();
    void closeFile();
    void fillSameEvt_US_QADist(StMixerPair const&, int const);

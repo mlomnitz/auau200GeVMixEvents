@@ -42,8 +42,6 @@ public:
    bool addPicoEvent(StPicoDst const* picoDst, StThreeVectorF pVertex, float weight = 1);
    void setEventsBufferSize(int bufferSize);
    void mixEvents();
-   bool isGoodPair(StMixerPair const& pair);
-   int getD0PtIndex(StMixerPair const& pair) const;
    void finish();
 private:
    int mCentBin, mVzBin, mPsiBin;
@@ -63,6 +61,8 @@ private:
    bool isTpcKaon(StPicoTrack const*) const;
    bool isPion(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
    bool isKaon(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
+   bool isGoodPair(StMixerPair const& pair) const;
+   int getD0PtIndex(StMixerPair const& pair) const;
    float getTofBeta(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
 };
 
@@ -70,6 +70,5 @@ inline void StPicoEventMixer::setEventsBufferSize(int bufferSize)
 {
    mEventsBufferSize = bufferSize;
 }
-
 
 #endif

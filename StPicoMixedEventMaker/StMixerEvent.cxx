@@ -7,15 +7,16 @@ StMixerEvent::StMixerEvent() :  mVtx(StThreeVectorF()),
 {
 }
 StMixerEvent::StMixerEvent(StMixerEvent *t) : mVtx(t->mVtx), mBField(t->mBField),
-   mWeight(t->mWeight), mTracks(t->mTracks),
-   mEventKaons(t->mEventKaons), mEventPions(t->mEventPions), mQ(t->mQ)
+   mWeight(t->mWeight), mQ(t->mQ), mTracks(t->mTracks),
+   mKaonsIds(t->mKaonsIds), mPionsIds(t->mPionsIds)
 {
+  for(int i=0; i<20; ++i) mQEta[i] = t->mQEta[i];
 }
 StMixerEvent::StMixerEvent(StThreeVectorF const& vtx, float b, StEventPlane* eventPlaneMaker, float weight) :
-   mWeight(weight), mVtx(vtx), mBField(b)
+  mVtx(vtx), mBField(b), mWeight(weight)
 {
    mQ = eventPlaneMaker->Q();
-   for (int i = 0; i < 20; i++)
+   for (int i = 0; i < 20; ++i)
       mQEta[i] = eventPlaneMaker->QEta(i);
 }
 void StMixerEvent::addTrack(StMixerTrack const& t)
@@ -25,12 +26,12 @@ void StMixerEvent::addTrack(StMixerTrack const& t)
 }
 void StMixerEvent::addPion(int arrayId)
 {
-   mEventPions.push_back(arrayId);
+   mPionsIds.push_back(arrayId);
    return;
 }
 void StMixerEvent::addKaon(int arrayId)
 {
-   mEventKaons.push_back(arrayId);
+   mKaonsIds.push_back(arrayId);
    return;
 }
 TVector2 StMixerEvent::QEtaGap(int iEta, int nEtaGaps) const
