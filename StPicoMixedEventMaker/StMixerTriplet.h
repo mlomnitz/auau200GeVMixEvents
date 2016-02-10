@@ -32,7 +32,7 @@
 #include "StThreeVectorF.hh"
 #include "StMixerTrack.h"
 
-class StMixerTriplet
+class StMixerTriplet : public TObject
 {
 public:
    StMixerTriplet();
