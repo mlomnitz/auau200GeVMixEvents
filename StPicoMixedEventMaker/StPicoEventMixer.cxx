@@ -29,7 +29,7 @@ StPicoEventMixer::~StPicoEventMixer()
 {
    for (size_t i = 0 ; i < mEvents.size() ; i++)
    {
-      delete mEvents.at(i);
+      delete mEvents[i];
    }
 }
 void StPicoEventMixer::finish()
@@ -143,7 +143,7 @@ void StPicoEventMixer::mixEvents()
             while (dPhi >= TMath::Pi()) dPhi -= TMath::Pi();
 
             double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
-            double toFillDaug[5] = {mCentBin + 0.5, pair.pt(), mEvents[0]->pionAt(iTrk1).gMom().perp(), pair.m(), mEvents.at(iEvt2)->kaonAt(iTrk2).gMom().perp()};
+            double toFillDaug[5] = {mCentBin + 0.5, pair.pt(), mEvents[0]->pionAt(iTrk1).gMom().perp(), pair.m(), mEvents[iEvt2]->kaonAt(iTrk2).gMom().perp()};
 
             if (iEvt2 == 0)
             {
@@ -216,9 +216,9 @@ void StPicoEventMixer::mixEvents()
    } //loop over second events
 
    if (mFirstEvents.size() == static_cast<unsigned short>(mEventsBufferSize - 1))
-      delete mEvents.at(0);
+      delete mEvents[0];
    else
-      mFirstEvents.push_back(mEvents.at(0));
+      mFirstEvents.push_back(mEvents[0]);
 
    mEvents.erase(mEvents.begin());
 }
@@ -230,7 +230,7 @@ bool StPicoEventMixer::isKaon(StPicoTrack const* const trk, StPicoDst const* con
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
    float oneOverBetaExpected = sqrt(M_KAON_PLUS*M_KAON_PLUS / p / p + 1);
 
-   return fabs(1. / beta - oneOverBetaExpected) <= mxeCuts::tofOneOverBetaDiffPion;
+   return fabs(1. / beta - oneOverBetaExpected) < mxeCuts::tofOneOverBetaDiffPion;
 }
 bool StPicoEventMixer::isPion(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {
@@ -240,7 +240,7 @@ bool StPicoEventMixer::isPion(StPicoTrack const* const trk, StPicoDst const* con
    float p = trk->gMom(pVertex, picoDst->event()->bField()).mag();
    float oneOverBetaExpected = sqrt(M_PION_PLUS*M_PION_PLUS / p / p + 1);
 
-   return fabs(1. / beta - oneOverBetaExpected) <= mxeCuts::tofOneOverBetaDiffKaon;
+   return fabs(1. / beta - oneOverBetaExpected) < mxeCuts::tofOneOverBetaDiffKaon;
 }
 bool StPicoEventMixer::isTpcPion(StPicoTrack const * const trk) const
 {
