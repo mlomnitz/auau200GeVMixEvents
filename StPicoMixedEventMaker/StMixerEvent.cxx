@@ -8,7 +8,7 @@ StMixerEvent::StMixerEvent() :  mVtx(StThreeVectorF()),
 }
 StMixerEvent::StMixerEvent(StMixerEvent *t) : mVtx(t->mVtx), mBField(t->mBField),
    mWeight(t->mWeight), mQ(t->mQ), mTracks(t->mTracks),
-   mKaonsIds(t->mKaonsIds), mPionsIds(t->mPionsIds),
+   mKaonsIds(t->mKaonsIds), mPionsIds(t->mPionsIds)
 {
   for(int i=0; i<20; ++i) mQEta[i] = t->mQEta[i];
 }
