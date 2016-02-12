@@ -148,8 +148,11 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
        pair.decayLength() > mxeCuts::decayTopologyMinDca &&
        std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
        ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::decayTopologyMaxD0Dca2Vtx)
-     mME_US_DecayTopology->Fill(pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
-                                pair.particle1Dca(), pair.particle2Dca(), pair.decayLength());
+   {
+     double toFill[] = {pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
+                        pair.particle1Dca(), pair.particle2Dca(), pair.decayLength()};
+     mME_US_DecayTopology->Fill(toFill);
+   }
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -222,8 +225,11 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
        pair.decayLength() > mxeCuts::decayTopologyMinDca &&
        std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
        ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::decayTopologyMaxD0Dca2Vtx)
-     mSE_US_DecayTopology->Fill(pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
-                                pair.particle1Dca(), pair.particle2Dca(), pair.decayLength());
+   {
+     double toFill[] = {pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
+                        pair.particle1Dca(), pair.particle2Dca(), pair.decayLength()};
+     mSE_US_DecayTopology->Fill(toFill);
+   }
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&

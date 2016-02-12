@@ -168,6 +168,7 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
    mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Write();
    //
+   mD0Hists->mSE_US_DecayTopology->Write();
    mD0Hists->mSE_US_PointingAngle->Write();
    mD0Hists->mSE_US_DecayL->Write();
    mD0Hists->mSE_US_Dca12->Write();
@@ -183,6 +184,7 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mSE_LS_KaonDca2Vtx->Write();
    mD0Hists->mSE_LS_D0Dca2Vtx->Write();
    //
+   mD0Hists->mME_US_DecayTopology->Write();
    mD0Hists->mME_US_PointingAngle->Write();
    mD0Hists->mME_US_DecayL->Write();
    mD0Hists->mME_US_Dca12->Write();
