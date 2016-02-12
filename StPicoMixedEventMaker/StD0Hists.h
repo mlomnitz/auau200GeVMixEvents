@@ -79,6 +79,7 @@ public:
    TH3F* mME_LS;
    TH3F* mME_US;
    //QA hists
+   THn*  mSE_US_DecayTopology;
    TH3F* mSE_US_PointingAngle;
    TH3F* mSE_US_DecayL;
    TH3F* mSE_US_Dca12;
@@ -93,6 +94,7 @@ public:
    TH3F* mSE_LS_KaonDca2Vtx;
    TH3F* mSE_LS_D0Dca2Vtx;
    //
+   THn*  mME_LS_DecayTopology;
    TH3F* mME_US_PointingAngle;
    TH3F* mME_US_DecayL;
    TH3F* mME_US_Dca12;

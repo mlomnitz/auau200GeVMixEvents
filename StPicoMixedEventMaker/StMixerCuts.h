@@ -50,6 +50,11 @@ namespace mxeCuts
    float const QAmassMin = 1.828;
    float const QAmassMax = 1.892;
 
+   //Decay Topology Cuts
+   int    const decayTopologyCentrality = 7; // minimumCentrality
+   double const decayTopologyMinDca = 0.0050;
+   double const decayTopologyMaxD0Dca2Vtx = 0.0120;
+
    int   const nPtBins = 5;
    float const PtEdge[nPtBins + 1] = {0., 1., 2., 3., 5., 15.};
    //Ultimate1
