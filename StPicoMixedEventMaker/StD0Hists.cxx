@@ -3,6 +3,7 @@
 #include "StD0Hists.h"
 #include "StMixerPair.h"
 #include "TMath.h"
+#include "TH1D.h"
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TH3F.h"
@@ -14,6 +15,7 @@ ClassImp(StD0Hists);
 StD0Hists::StD0Hists(std::string fileBaseName = "")
 {
    // event level QA
+   hTotalNumberOfEvents = new TH1D("hTotalNumberOfEvents","hTotalNumberOfEvents",1,0,1);
    hVzVpdVz = new TH2F("hVzVpdVz", "hVzVpdVz", 200, -100, 100, 200, -100, 100);
    hVzDiff  = new TH1F("hVzDiff", "hVzDiff", 500, -100, 100);
    hVxy = new TH2F("hVxy", "hVxy", 500, -1, 1, 500, -1, 1);
@@ -84,7 +86,14 @@ StD0Hists::StD0Hists(std::string fileBaseName = "")
    float const maxDca12 = 0.1;
    int const nDca12Bins = 200;
 
+   int const decayTopologyNDim = 5;
+   int const decayTopologyBins[decayTopologyNDim] = {16,14,6,6,95}; // pT, d0Dca2Vtx, pDca, kDca, decayLanegth
+   double const decayTopologyXMin[decayTopologyNDim] = {0, 0.0050, 0.0050, 0.0050, 0.0050}; 
+   double const decayTopologyXMax[decayTopologyNDim] = {8, 0.0120, 0.0110, 0.0110, 0.1000}; 
+
    //QA Foreground
+   mSE_US_DecayTopology = new THnF("mSE_US_DecayTopology","mSE_US_DecayTopology;p_{T}(GeV/c);d0Dca2Vtx(cm);pDca(cm);kDca(cm);decayL(cm)",
+                                                           decayTopologyNDim,decayTopologyBins,decayTopologyXMin,decayTopologyXMax);
    mSE_US_PointingAngle = new TH3F(Form("%s_se_us_pointingangle", fileBaseName.c_str()), "Same Event US pointing angle; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0.9, 1.0);
    mSE_US_DecayL = new TH3F(Form("%s_se_us_decayL", fileBaseName.c_str()), "Same Event US Decay Length; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mSE_US_Dca12 = new TH3F(Form("%s_se_us_dcaDaughters", fileBaseName.c_str()), "Same Event US dca daughters; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDca12Bins, 0, maxDca12);
@@ -99,6 +108,8 @@ StD0Hists::StD0Hists(std::string fileBaseName = "")
    mSE_LS_KaonDca2Vtx = new TH3F(Form("%s_se_ls_kaonDca", fileBaseName.c_str()), "Same Event LS K dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mSE_LS_D0Dca2Vtx = new TH3F(Form("%s_se_ls_D0Dca2Vtx", fileBaseName.c_str()), "SameEvent LS D0 dca 2 vertex; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.05);
    //
+   mME_US_DecayTopology = new THnF("mME_US_DecayTopology","mME_US_DecayTopology;p_{T}(GeV/c);d0Dca2Vtx(cm);pDca(cm);kDca(cm);decayL(cm)",
+                                                           decayTopologyNDim,decayTopologyBins,decayTopologyXMin,decayTopologyXMax);
    mME_US_PointingAngle = new TH3F(Form("%s_me_us_pointingangle", fileBaseName.c_str()), "Same Event US pointing angle ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 1000, 0.9, 1.0);
    mME_US_DecayL = new TH3F(Form("%s_me_us_decayL", fileBaseName.c_str()), "Same Event US Decay Length ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mME_US_Dca12 = new TH3F(Form("%s_me_us_dcaDaughters", fileBaseName.c_str()), "Same Event US dca daughters ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDca12Bins, 0, maxDca12);
@@ -129,6 +140,19 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
       }
    }
    if (pair.m() <  mxeCuts::QAmassMin || pair.m() > mxeCuts::QAmassMax) return;
+
+   // Decay Topology
+   if (centrality >= mxeCuts::decayTopologyCentrality &&
+       pair.particle1Dca() > mxeCuts::decayTopologyMinDca && pair.particle2Dca() > mxeCuts::decayTopologyMinDca &&
+       pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
+       pair.decayLength() > mxeCuts::decayTopologyMinDca &&
+       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
+       ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::decayTopologyMaxD0Dca2Vtx)
+   {
+     double toFill[] = {pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
+                        pair.particle1Dca(), pair.particle2Dca(), pair.decayLength()};
+     mME_US_DecayTopology->Fill(toFill);
+   }
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
@@ -193,6 +217,19 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
       }
    }
    if (pair.m() <  mxeCuts::QAmassMin || pair.m() > mxeCuts::QAmassMax) return;
+
+   // Decay Topology
+   if (centrality >= mxeCuts::decayTopologyCentrality &&
+       pair.particle1Dca() > mxeCuts::decayTopologyMinDca && pair.particle2Dca() > mxeCuts::decayTopologyMinDca &&
+       pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
+       pair.decayLength() > mxeCuts::decayTopologyMinDca &&
+       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
+       ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::decayTopologyMaxD0Dca2Vtx)
+   {
+     double toFill[] = {pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
+                        pair.particle1Dca(), pair.particle2Dca(), pair.decayLength()};
+     mSE_US_DecayTopology->Fill(toFill);
+   }
 
    //Cos theta
    if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
