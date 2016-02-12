@@ -12,6 +12,7 @@
 #include <string>
 #include "TObject.h"
 
+class TH1D;
 class TH1F;
 class TH2F;
 class TH3F;
@@ -33,6 +34,7 @@ public:
    void fillSameEvt_LS_QADist(StMixerPair const&, int const);
    void fillMixedEvtQADist(StMixerPair const&, int const);
    //event level qa
+   TH1D*      hTotalNumberOfEvents;
    TH2F*      hVzVpdVz;
    TH1F*      hVzDiff;
    TH2F*      hVxy;

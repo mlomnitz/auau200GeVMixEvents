@@ -248,6 +248,8 @@ Int_t StPicoMixedEventMaker::Make()
       exit(1);
    }
 
+   mD0Hists->hTotalNumberOfEvents->Fill(0);
+
    for (int i = 0; i < 32; i++)
       if (mPicoEvent->triggerWord() >> i & 0x1)
          mD0Hists->hTrigger->Fill(i);

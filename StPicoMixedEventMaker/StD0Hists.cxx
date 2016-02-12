@@ -3,6 +3,7 @@
 #include "StD0Hists.h"
 #include "StMixerPair.h"
 #include "TMath.h"
+#include "TH1D.h"
 #include "TH1F.h"
 #include "TH2F.h"
 #include "TH3F.h"
@@ -14,6 +15,7 @@ ClassImp(StD0Hists);
 StD0Hists::StD0Hists(std::string fileBaseName = "")
 {
    // event level QA
+   hTotalNumberOfEvents = new TH1D("hTotalNumberOfEvents","hTotalNumberOfEvents",1,0,1);
    hVzVpdVz = new TH2F("hVzVpdVz", "hVzVpdVz", 200, -100, 100, 200, -100, 100);
    hVzDiff  = new TH1F("hVzDiff", "hVzDiff", 500, -100, 100);
    hVxy = new TH2F("hVxy", "hVxy", 500, -1, 1, 500, -1, 1);
