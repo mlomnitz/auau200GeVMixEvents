@@ -7,7 +7,8 @@
  *
  * **************************************************
  */
-
+//#define 150Eff
+//#define 50Eff
 #include "Rtypes.h"
 #include <string>
 
@@ -66,12 +67,27 @@ namespace mxeCuts
    //float const pDca[nPtBins] = {0.0109, 0.0108, 0.0100, 0.0074, 0.0067};//0.008
    float const RapidityCut = 1.0;
    //Ultimate 2
+#ifdef 50Eff
+   float const dcaV0ToPv[nPtBins] = {0.0044, 0.0036, 0.0031, 0.0026, 0.0032};
+   float const decayLength[nPtBins] = {0.0144, 0.0204, 0.0242, 0.0245, 0.0300};
+   float const cosTheta[nPtBins] = {0.0000, 0.0000, 0.0000, 0.0000, 0.0000};//0.995
+   float const dcaDaughters[nPtBins] = {0.0069, 0.0048, 0.0044, 0.0049, 0.0047}; //0.0050;
+   float const kDca[nPtBins] = {0.0119, 0.0110, 0.0109, 0.0106, 0.0080};//0.008, // minimum
+   float const pDca[nPtBins] = {0.0120, 0.0102, 0.0118, 0.0109, 0.0096};//0.008
+#elseif 150Eff
+   float const dcaV0ToPv[nPtBins] = {0.0072, 0.0053, 0.0047, 0.0042, 0.0062};
+   float const decayLength[nPtBins] = {0.0110, 0.0168, 0.0187, 0.0199, 0.0180};
+   float const cosTheta[nPtBins] = {0.0000, 0.0000, 0.0000, 0.0000, 0.0000};//0.995
+   float const dcaDaughters[nPtBins] = {0.0077, 0.0078, 0.0074, 0.0068, 0.0066}; //0.0050;
+   float const kDca[nPtBins] = {0.0105, 0.0068, 0.0080, 0.0066, 0.0041};//0.008, // minimum
+   float const pDca[nPtBins] = {0.0092, 0.0078, 0.0086, 0.0065, 0.0047};//0.008
+#else
    float const dcaV0ToPv[nPtBins] = {0.0061, 0.0049, 0.0038, 0.0038, 0.0040};
    float const decayLength[nPtBins] = {0.0145, 0.0181, 0.0212, 0.0247, 0.0259};
    float const cosTheta[nPtBins] = {0.0000, 0.0000, 0.0000, 0.0000, 0.0000};//0.995
    float const dcaDaughters[nPtBins] = {0.0084, 0.0066, 0.0057, 0.0050, 0.0060}; //0.0050;
    float const kDca[nPtBins] = {0.0103, 0.0091, 0.0095, 0.0079, 0.0058};//0.008, // minimum
    float const pDca[nPtBins] = {0.0110, 0.0111, 0.0086, 0.0081, 0.0062};//0.008
-
+#endif
 }
 #endif
