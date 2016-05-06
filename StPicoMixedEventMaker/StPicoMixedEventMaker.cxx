@@ -252,8 +252,10 @@ Int_t StPicoMixedEventMaker::Make()
 
    mD0Hists->hTotalNumberOfEvents->Fill(0);
 
+
+
    for (int i = 0; i < 32; i++)
-      if (mPicoEvent->triggerWord() >> i & 0x1)
+     if ( mPicoEvent->isTrigger(i) )
          mD0Hists->hTrigger->Fill(i);
 
    if(!isMinBiasTrigger()) return kStOk;
@@ -317,4 +319,15 @@ bool StPicoMixedEventMaker::isGoodEvent(StThreeVectorF const& pVtx) const
   return !(fabs(pVtx.x()) < mxeCuts::Verror && fabs(pVtx.y()) < mxeCuts::Verror && fabs(pVtx.z()) < mxeCuts::Verror) &&
     fabs(pVtx.z()) < mxeCuts::maxVz && fabs(pVtx.z() - mPicoEvent->vzVpd()) < mxeCuts::vzVpdVz &&
     sqrt(pow(pVtx.x(), 2) + pow(pVtx.y(), 2)) < mxeCuts::Vrcut;
+}
+bool StPicoMixedEventMaker::isMinBiasTrigger() const 
+{
+  bool isTrig = false;
+  for(int ii = 0; mxeCuts::nTrig; ++ii){
+    if( !mPicoEvent->isTrigger(mxeCuts::mTriggerId[ii]) )
+      continue;
+    isTrig = true;
+    break;
+  }
+  return isTrig;
 }

@@ -73,9 +73,4 @@ private:
 
    ClassDef(StPicoMixedEventMaker, 0)
 };
-
-inline bool StPicoMixedEventMaker::isMinBiasTrigger() const
-{
-  return mPicoEvent->triggerWord() & mxeCuts::minBiasTrigger;
-}
 #endif
