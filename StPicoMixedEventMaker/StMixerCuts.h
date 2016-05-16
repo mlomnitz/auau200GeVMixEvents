@@ -9,6 +9,7 @@
  */
 //#define Eff150
 //#define Eff50
+#define Eff100
 #include "Rtypes.h"
 #include <string>
 
