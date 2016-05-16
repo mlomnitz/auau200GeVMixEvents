@@ -36,13 +36,12 @@ class StRefMultCorr;
 class StEventPlane;
 class StD0Hists;
 class StPicoEventMixer;
-class kfEvent;
 
 class StPicoMixedEventMaker : public StMaker
 {
 public:
    StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
-                         char const* outputBaseFileName, char const* inputPicoList, char const* kfFileList);
+                         char const* outputBaseFileName, char const* inputPicoList);
    virtual ~StPicoMixedEventMaker();
    virtual Int_t Init();
    virtual Int_t Make();
@@ -56,9 +55,7 @@ private:
    StEventPlane*  mEventPlaneMaker;
    StPicoEventMixer* mPicoEventMixer[10][9][10]; //Needs to be generalized, have vz and centrality
 
-   kfEvent* mKfEvent;
    TString mKfFileList;
-   TChain* mKfChain;
    Int_t           mFailedRunnumber;
    TString         mOuputFileBaseName;
    TString         mInputFileName;

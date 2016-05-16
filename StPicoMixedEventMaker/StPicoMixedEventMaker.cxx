@@ -16,7 +16,6 @@
 #include "StD0Hists.h"
 #include "StRoot/StRefMultCorr/StRefMultCorr.h"
 #include "StRoot/StEventPlane/StEventPlane.h"
-#include "kfEvent.h"
 
 #include <vector>
 
@@ -24,11 +23,11 @@ ClassImp(StPicoMixedEventMaker)
 
 // _________________________________________________________
 StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
-      char const* outputBaseFileName,  char const* inputPicoList, char const * kfFileList) :
+      char const* outputBaseFileName,  char const* inputPicoList) :
    StMaker(name), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
    mGRefMultCorrUtil(grefmultCorrUtil), mEventPlaneMaker(eventPlaneMaker),
-   mKfEvent(NULL), mKfFileList(kfFileList), mKfChain(NULL), mFailedRunnumber(0),
-   mOuputFileBaseName(outputBaseFileName), mInputFileName(inputPicoList), mEventCounter(0)
+   mFailedRunnumber(0), mOuputFileBaseName(outputBaseFileName), 
+   mInputFileName(inputPicoList), mEventCounter(0)
 {
    mGRefMultCorrUtil->print();
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
@@ -108,27 +107,6 @@ Int_t StPicoMixedEventMaker::Init()
 
    // -- reset event to be in a defined state
    //resetEvent();
-
-   mKfChain = new TChain("kfEvent");
-   std::ifstream listOfKfFiles;
-   listOfKfFiles.open(mKfFileList.Data());
-   if (listOfKfFiles.is_open())
-   {
-      std::string kffile;
-      while (getline(listOfKfFiles, kffile))
-      {
-         LOG_INFO << "StPicoD0AnaMaker - Adding kfVertex tree:" << kffile << endm;
-         mKfChain->Add(kffile.c_str());
-      }
-   }
-   else
-   {
-      LOG_ERROR << "StPicoD0AnaMaker - Could not open list of corresponding kfEvent files. ABORT!" << endm;
-      return kStErr;
-   }
-   mKfEvent = new kfEvent(mKfChain);
-
-
    return kStOK;
 }
 
@@ -205,7 +183,6 @@ void StPicoMixedEventMaker::Clear(Option_t* opt)
 // _________________________________________________________
 Int_t StPicoMixedEventMaker::Make()
 {
-   mKfChain->GetEntry(mEventCounter++);
 
    if (!mPicoDstMaker)
    {
@@ -235,37 +212,21 @@ Int_t StPicoMixedEventMaker::Make()
       return kStWarn;
    }
 
-   if (mPicoEvent->runId() != mKfEvent->mRunId || mPicoEvent->eventId() != mKfEvent->mEventId)
-   {
-      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << "\n";
-      LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent are not in sync." << endm;
-      exit(1);
-   }
-
-   StThreeVectorF const kfVtx(mKfEvent->mKfVx, mKfEvent->mKfVy, mKfEvent->mKfVz);
-   if (mPicoEvent->primaryVertex().x() != mKfEvent->mVx)
-   {
-      LOG_ERROR << " StPicoMixedEventMaker - !!!!!!!!!!!! ATTENTION !!!!!!!!!!!!!" << "\n";
-      LOG_ERROR << " StPicoMixedEventMaker - SOMETHING TERRIBLE JUST HAPPENED. StPicoDst and KfEvent vertex are not in sync." << endm;
-      exit(1);
-   }
 
    mD0Hists->hTotalNumberOfEvents->Fill(0);
-
-
 
    for (int i = 0; i < 32; i++)
      if ( mPicoEvent->isTrigger(i) )
          mD0Hists->hTrigger->Fill(i);
 
    if(!isMinBiasTrigger()) return kStOk;
-
+   StThreeVectorF pVtx = mPicoEvent->primaryVertex();
    //Remove bad vertices
-   mD0Hists->hVzVpdVz->Fill(kfVtx.z(), mPicoEvent->vzVpd());
-   mD0Hists->hVzDiff->Fill(mPicoEvent->vzVpd() - kfVtx.z());
-   mD0Hists->hVxy->Fill(kfVtx.x(), kfVtx.y());
+   mD0Hists->hVzVpdVz->Fill(pVtx.z(), mPicoEvent->vzVpd());
+   mD0Hists->hVzDiff->Fill(mPicoEvent->vzVpd() - pVtx.z());
+   mD0Hists->hVxy->Fill(pVtx.x(), pVtx.y());
    
-   if(isGoodEvent(kfVtx))
+   if(isGoodEvent(pVtx))
    {
      mD0Hists->hRefMult->Fill(mPicoEvent->refMult());
      mD0Hists->hGRefMult->Fill(mPicoEvent->grefMult());
@@ -278,14 +239,14 @@ Int_t StPicoMixedEventMaker::Make()
      }
 
      mGRefMultCorrUtil->init(mPicoEvent->runId());
-     mGRefMultCorrUtil->initEvent(mPicoEvent->grefMult(), kfVtx.z(), mPicoEvent->ZDCx()) ;
+     mGRefMultCorrUtil->initEvent(mPicoEvent->grefMult(), pVtx.z(), mPicoEvent->ZDCx()) ;
      int const centrality  = mGRefMultCorrUtil->getCentralityBin9();
      float weight = mGRefMultCorrUtil->getWeight();
      mD0Hists->hCentrality->Fill(centrality);
      mD0Hists->hCentralityWeighted->Fill(centrality, weight);
      if (centrality < 0 || centrality > 8) return kStOk;
 
-     int const vz_bin = (int)((6 + kfVtx.z()) / 1.2) ;
+     int const vz_bin = (int)((6 + pVtx.z()) / 1.2) ;
      if (vz_bin < 0  ||  vz_bin > 9) return kStOk;
 
 
@@ -305,9 +266,9 @@ Int_t StPicoMixedEventMaker::Make()
      int const eventPlane_bin = (int)(eventPlane / TMath::Pi() * 10.) ;
      if (eventPlane_bin < 0  ||  eventPlane_bin > 9 || mEventPlaneMaker->eventPlaneStatus()) return kStOk;
 
-     mD0Hists->hCentVzPsi->Fill(centrality, kfVtx.z(), eventPlane, weight);
+     mD0Hists->hCentVzPsi->Fill(centrality, pVtx.z(), eventPlane, weight);
 
-     if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, kfVtx, weight))
+     if (mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->addPicoEvent(picoDst, pVtx, weight))
        mPicoEventMixer[vz_bin][centrality][eventPlane_bin]->mixEvents();
    }
 
