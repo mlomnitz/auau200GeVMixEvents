@@ -283,7 +283,7 @@ bool StPicoMixedEventMaker::isGoodEvent(StThreeVectorF const& pVtx) const
 }
 bool StPicoMixedEventMaker::isMinBiasTrigger() const 
 {
-  for(int ii = 0; mxeCuts::nTrig; ++ii){
+  for(int ii = 0; ii<mxeCuts::nTrig; ++ii){
     if( mPicoEvent->isTrigger(mxeCuts::mTriggerId[ii]) )
       return true;
   }
