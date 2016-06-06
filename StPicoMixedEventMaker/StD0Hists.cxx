@@ -75,11 +75,6 @@ StD0Hists::StD0Hists(std::string fileBaseName = "")
    hD0CentVzPsiPtEtaMDphiLikeSignMixed = new THnF("hD0CentVzPsiPtEtaMDphiLikeSignMixed", "hD0CentVzPsiPtEtaMDphiLikeSignMixed", nDimMixed, nBinsMixed, xMinMixed, xMaxMixed);
    */
 
-   mSE_LS = new TH3F(Form("%s_se_ls_mass", fileBaseName.c_str()), "Same Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
-   mSE_US = new TH3F(Form("%s_se_us_mass", fileBaseName.c_str()), "Same Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
-   mME_LS = new TH3F(Form("%s_me_ls_mass", fileBaseName.c_str()), "Mixed Event LS pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
-   mME_US = new TH3F(Form("%s_me_us_mass", fileBaseName.c_str()), "Mixed Event US pair Invariant mass(K#pi);p_{T}(K#pi)(GeV/c);centrality;Mass_{K#pi}(GeV/c^{2})", 150, 0, 15, 9, 0, 9, 250, 0, 2.5);
-
    float const maxDca = 0.3;
    int const nDcaBins = 300;
 

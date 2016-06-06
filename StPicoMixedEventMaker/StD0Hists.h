@@ -71,13 +71,6 @@ public:
    THn* hD0CentPtMDphiEtaGapMixed;
    THn* hD0CentPtMDphiEtaGapLikeSignMixed;
 
-   //Topology distribution
-   TH3F* mSE_Vtx;
-   TH3F* mME_Vtx;
-   TH3F* mSE_LS;
-   TH3F* mSE_US;
-   TH3F* mME_LS;
-   TH3F* mME_US;
    //QA hists
    THn*  mSE_US_DecayTopology;
    TH3F* mSE_US_PointingAngle;
