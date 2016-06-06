@@ -145,7 +145,8 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
    mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
    mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Write();
-   //
+#ifdef __run_w_QA__
+   // QA plots
    mD0Hists->mSE_US_DecayTopology->Write();
    mD0Hists->mSE_US_PointingAngle->Write();
    mD0Hists->mSE_US_DecayL->Write();
@@ -169,7 +170,7 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->mME_US_PionDca2Vtx->Write();
    mD0Hists->mME_US_KaonDca2Vtx->Write();
    mD0Hists->mME_US_D0Dca2Vtx->Write();
-
+#endif
    mOutputFile->Write();
    //   mOutputFile->Close();
    cout << "StPicoMixedEventMaker::Finish() done" << endl;

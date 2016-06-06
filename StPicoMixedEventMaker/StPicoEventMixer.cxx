@@ -127,13 +127,14 @@ void StPicoEventMixer::mixEvents()
             int charge2 = mEvents[0]->pionAt(iTrk1).charge() * mEvents[iEvt2]->kaonAt(iTrk2).charge();
 
             //Topology histos, fill before checking cuts
+#ifdef __run_w_QA__
             if (iEvt2 == 0)
             {
                if (charge2 < 0) mD0Hists->fillSameEvt_US_QADist(pair, mCentBin);
                else mD0Hists->fillSameEvt_LS_QADist(pair, mCentBin);
             }
             else if (charge2 < 0) mD0Hists->fillMixedEvtQADist(pair, mCentBin);
-
+#endif
             if (!isGoodPair(&pair)) continue;
 
             TVector2 QSub = mEvents[0]->Q() - mEvents[0]->pionAt(iTrk1).q();

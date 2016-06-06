@@ -7,9 +7,14 @@
  *
  * **************************************************
  */
+// ---------- Topological cuts switch
 //#define Eff150
 //#define Eff50
 #define Eff100
+
+// ---------- QA Switch
+//#define __run_w_QA__
+
 #include "Rtypes.h"
 #include <string>
 
