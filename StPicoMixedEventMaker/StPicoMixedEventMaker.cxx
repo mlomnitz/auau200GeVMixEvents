@@ -23,11 +23,11 @@ ClassImp(StPicoMixedEventMaker)
 
 // _________________________________________________________
 StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
-      char const* outputBaseFileName,  char const* inputPicoList) :
+					     char const* outputBaseFileName,  char const* inputPicoList, int harmonic) :
    StMaker(name), mPicoDstMaker(picoMaker),  mPicoEvent(NULL),
    mGRefMultCorrUtil(grefmultCorrUtil), mEventPlaneMaker(eventPlaneMaker),
    mFailedRunnumber(0), mOuputFileBaseName(outputBaseFileName), 
-   mInputFileName(inputPicoList), mEventCounter(0)
+  mInputFileName(inputPicoList), mEventCounter(0), mHarmonic(harmonic)
 {
    mGRefMultCorrUtil->print();
    for (int iVz = 0 ; iVz < 10 ; ++iVz)
@@ -46,7 +46,7 @@ StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* p
    mOutputFile = new TFile(Form("%s.d0Hists.root", mOuputFileBaseName.Data()), "RECREATE");
 
    mEventPlaneMaker->setFileOut(mOutputFile);
-   mD0Hists = new StD0Hists("picoME");
+   mD0Hists = new StD0Hists("picoME",mHarmonic);
 
    // -- constructor
 }
@@ -140,7 +140,8 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->hD0CentPtEtaMDphiDaugLikeSign->Write();
    mD0Hists->hD0CentPtEtaMDphiDaugMixed->Write();
    mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed->Write();
-
+      
+   // Eta Gap
    mD0Hists->hD0CentPtMDphiEtaGap->Write();
    mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
    mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
