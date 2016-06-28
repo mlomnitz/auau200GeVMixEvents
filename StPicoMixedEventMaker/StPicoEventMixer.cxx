@@ -173,6 +173,41 @@ void StPicoEventMixer::mixEvents()
                }
             }
 
+	    // Eta sub
+            TVector2 QSubEtaSub;
+	    if( pair.eta() > 0 )
+	      QSubEtaSub = mEvents[0]->QEtaMinusGap005();
+	    else 
+	      QSubEtaSub = mEvents[0]->QEtaPlusGap005();
+            float dPhiEtaSub = pair.phi() - QSubEtaSub.Phi() / 2;
+            while (dPhiEtaSub < 0) dPhiEtaSub += TMath::Pi();
+            while (dPhiEtaSub >= TMath::Pi()) dPhiEtaSub -= TMath::Pi();
+
+            double toFillEtaSub[5] = {mCentBin + 0.5, pair.pt(), pair.m(), dPhiEtaSub};
+            if (iEvt2 == 0)
+            {
+               if (charge2 < 0)
+               {
+                 mD0Hists->hD0EtaSubCentPtMDphi->Fill(toFillEtaSub, mEvents[0]->weight());
+               }
+               else
+               {
+                 mD0Hists->hD0EtaSubCentPtMDphiLikeSign->Fill(toFillEtaSub, mEvents[0]->weight());
+               }
+            }
+            else
+            {
+               if (charge2 < 0)
+               {
+                 mD0Hists->hD0EtaSubCentPtMDphiMixed->Fill(toFillEtaSub, mEvents[0]->weight());
+               }
+               else
+               {
+                 mD0Hists->hD0EtaSubCentPtMDphiLikeSignMixed->Fill(toFillEtaSub, mEvents[0]->weight());
+               }
+            }
+
+	    // Eta gap
             int iEta = (int)(pair.eta() * 10 + 10);
             for (int nEtaGaps = 0; nEtaGaps < 8; ++nEtaGaps)
             {

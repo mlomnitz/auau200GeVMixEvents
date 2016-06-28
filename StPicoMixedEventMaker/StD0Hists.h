@@ -27,7 +27,7 @@ class TString;
 class StD0Hists: public TObject
 {
 public:
-   StD0Hists(std::string fileBaseName);
+  StD0Hists(std::string fileBaseName, int harmonic = 2);
    virtual ~StD0Hists();
    void closeFile();
 #ifdef __run_w_QA__
@@ -68,6 +68,13 @@ public:
    THn* hD0CentPtEtaMDphiDaugMixed;
    THn* hD0CentPtEtaMDphiDaugLikeSignMixed;
 
+   // Half eta's event plane 
+   THn* hD0EtaSubCentPtMDphi;
+   THn* hD0EtaSubCentPtMDphiLikeSign;
+   THn* hD0EtaSubCentPtMDphiMixed;
+   THn* hD0EtaSubCentPtMDphiLikeSignMixed;
+
+   // Eta Gap Event Plane
    THn* hD0CentPtMDphiEtaGap;
    THn* hD0CentPtMDphiEtaGapLikeSign;
    THn* hD0CentPtMDphiEtaGapMixed;

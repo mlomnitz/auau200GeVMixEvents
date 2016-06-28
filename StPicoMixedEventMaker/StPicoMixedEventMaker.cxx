@@ -140,7 +140,13 @@ Int_t StPicoMixedEventMaker::Finish()
    mD0Hists->hD0CentPtEtaMDphiDaugLikeSign->Write();
    mD0Hists->hD0CentPtEtaMDphiDaugMixed->Write();
    mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed->Write();
-      
+
+   //Eta sub
+   mD0Hists->hD0EtaSubCentPtMDphi->Write();
+   mD0Hists->hD0EtaSubCentPtMDphiLikeSign->Write();
+   mD0Hists->hD0EtaSubCentPtMDphiMixed->Write();
+   mD0Hists->hD0EtaSubCentPtMDphiLikeSignMixed->Write();
+
    // Eta Gap
    mD0Hists->hD0CentPtMDphiEtaGap->Write();
    mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();

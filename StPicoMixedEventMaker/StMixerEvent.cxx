@@ -17,8 +17,8 @@ StMixerEvent::StMixerEvent(StThreeVectorF const& vtx, float b, StEventPlane* eve
   mVtx(vtx), mBField(b), mWeight(weight)
 {
    mQ = eventPlaneMaker->Q();
-   mQEtaPlusGap005->eventPlaneMaker->QEtaPlusGap005();
-   mQEtaMinusGap005->eventPlaneMaker->QEtaMinusGap005();
+   mQEtaPlusGap005 = eventPlaneMaker->QEtaPlusGap005();
+   mQEtaMinusGap005 = eventPlaneMaker->QEtaMinusGap005();
    for (int i = 0; i < 20; ++i)
       mQEta[i] = eventPlaneMaker->QEta(i);
 }

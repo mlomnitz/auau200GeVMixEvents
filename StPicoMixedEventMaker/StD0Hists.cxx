@@ -12,7 +12,7 @@
 
 ClassImp(StD0Hists);
 
-StD0Hists::StD0Hists(std::string fileBaseName = "")
+StD0Hists::StD0Hists(std::string fileBaseName = "", int harmonic)
 {
    // event level QA
    hTotalNumberOfEvents = new TH1D("hTotalNumberOfEvents","hTotalNumberOfEvents",1,0,1);
@@ -30,11 +30,11 @@ StD0Hists::StD0Hists(std::string fileBaseName = "")
    hOneOverBetaDiffPionP = new TH2F("hOneOverBetaDiffPionP", "hOneOverBetaDiffPionP", 50, 0, 5, 100, -0.5, 0.5);
 
    //mix event counts
-   hCentVzPsi = new TH3F("hCentVzPsi", "hCentVzPsi", 9, 0, 9, 10, -6, 6, 10, 0, TMath::Pi());
-   hCentVzPsiSameEventNoWeight = new TH3F("hCentVzPsiSameEventNoWeight", "hCentVzPsiSameEventNoWeight", 9, 0, 9, 10, -6, 6, 10, 0, TMath::Pi());
-   hCentVzPsiMixedNoWeight = new TH3F("hCentVzPsiMixedNoWeight", "hCentVzPsiMixedNoWeight", 9, 0, 9, 10, -6, 6, 10, 0, TMath::Pi());
-   hCentVzPsiSameEvent = new TH3F("hCentVzPsiSameEvent", "hCentVzPsiSameEvent", 9, 0, 9, 10, -6, 6, 10, 0, TMath::Pi());
-   hCentVzPsiMixed = new TH3F("hCentVzPsiMixed", "hCentVzPsiMixed", 9, 0, 9, 10, -6, 6, 10, 0, TMath::Pi());
+   hCentVzPsi = new TH3F("hCentVzPsi", "hCentVzPsi", 9, 0, 9, 10, -6, 6, 10, 0, (2.0/harmonic)*TMath::Pi());
+   hCentVzPsiSameEventNoWeight = new TH3F("hCentVzPsiSameEventNoWeight", "hCentVzPsiSameEventNoWeight", 9, 0, 9, 10, -6, 6, 10, 0, (2.0/harmonic)*TMath::Pi());
+   hCentVzPsiMixedNoWeight = new TH3F("hCentVzPsiMixedNoWeight", "hCentVzPsiMixedNoWeight", 9, 0, 9, 10, -6, 6, 10, 0, (2.0/harmonic)*TMath::Pi());
+   hCentVzPsiSameEvent = new TH3F("hCentVzPsiSameEvent", "hCentVzPsiSameEvent", 9, 0, 9, 10, -6, 6, 10, 0, (2.0/harmonic)*TMath::Pi());
+   hCentVzPsiMixed = new TH3F("hCentVzPsiMixed", "hCentVzPsiMixed", 9, 0, 9, 10, -6, 6, 10, 0, (2.0/harmonic)*TMath::Pi());
 
    //D0 histograms
    const int nDim = 5;
@@ -55,7 +55,16 @@ StD0Hists::StD0Hists(std::string fileBaseName = "")
    hD0CentPtEtaMDphiDaugLikeSign = new THnF("hD0CentPtEtaMDphiDaugLikeSign", "hD0CentPtEtaMDphiDaugLikeSign", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
    hD0CentPtEtaMDphiDaugMixed = new THnF("hD0CentPtEtaMDphiDaugMixed", "hD0CentPtEtaMDphiDaugMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
    hD0CentPtEtaMDphiDaugLikeSignMixed = new THnF("hD0CentPtEtaMDphiDaugLikeSignMixed", "hD0CentPtEtaMDphiDaugLikeSignMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
-
+   // EtaSub Histograms
+   const int nDimEtaSub = 4;
+   int nBinsEtaSub[nDimEtaSub] = {9, 100, 50, 10};//cent, pt, m, dPhi, etaGap
+   double xMinEtaSub[nDimEtaSub] = {0, 0, 1.6, 0};
+   double xMaxEtaSub[nDimEtaSub] = {9, 10, 2.1, TMath::Pi()};
+   hD0EtaSubCentPtMDphi = new THnF("hD0EtaSubCentPtMDphi", "hD0EtaSubCentPtMDphi", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+   hD0EtaSubCentPtMDphiLikeSign = new THnF("hD0EtaSubCentPtMDphiLikeSign", "hD0EtaSubCentPtMDphiLikeSign", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+   hD0EtaSubCentPtMDphiMixed = new THnF("hD0EtaSubCentPtMDphiMixed", "hD0EtaSubCentPtMDphiMixed", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+   hD0EtaSubCentPtMDphiLikeSignMixed = new THnF("hD0EtaSubCentPtMDphiLikeSignMixed", "hD0EtaSubCentPtMDphiLikeSignMixed", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+   // Eta Gap Histograms
    const int nDim2 = 5;
    int nBins2[nDim2] = {9, 100, 50, 10, 8};//cent, pt, m, dPhi, etaGap
    double xMin2[nDim2] = {0, 0, 1.6, 0, 0};
