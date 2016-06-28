@@ -54,12 +54,16 @@ public:
    double const field() const;
    float const weight() const;
    TVector2 const Q() const;
+   TVector2 const QEtaPlusGap005() const;
+   TVector2 const QEtaMinusGap005() const;
    TVector2 QEtaGap(int iEta, int nEtaGaps) const;
 private:
    StThreeVectorF mVtx;
    float mBField;
    float mWeight;
    TVector2 mQ;
+   TVector2 mQEtaPlusGap005;
+   TVector2 mQEtaMinusGap005;
    TVector2 mQEta[20];
    std::vector <StMixerTrack  > mTracks;
    std::vector <int  > mKaonsIds;
@@ -116,5 +120,13 @@ inline float const StMixerEvent::weight() const
 inline TVector2 const StMixerEvent::Q() const
 {
    return mQ;
+}
+inline TVector2 const StMixerEvent::QEtaPlusGap005() const
+{
+   return mQEtaPlusGap005;
+}
+inline TVector2 const StMixerEvent::QEtaMinusGap005() const
+{
+   return mQEtaMinusGap005;
 }
 #endif
