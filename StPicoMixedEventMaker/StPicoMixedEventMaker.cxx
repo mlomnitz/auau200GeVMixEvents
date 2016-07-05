@@ -19,8 +19,7 @@
 
 #include <vector>
 
-ClassImp(StPicoMixedEventMaker)
-
+//ClassImp(StPicoMixedEventMaker)
 // _________________________________________________________
 StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
 					     char const* outputBaseFileName,  char const* inputPicoList, int harmonic) :

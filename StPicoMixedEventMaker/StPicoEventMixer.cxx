@@ -130,12 +130,12 @@ void StPicoEventMixer::mixEvents()
 #ifdef __run_w_QA__
             if (iEvt2 == 0)
             {
-               if (charge2 < 0) mD0Hists->fillSameEvt_US_QADist(pair, mCentBin);
-               else mD0Hists->fillSameEvt_LS_QADist(pair, mCentBin);
+	      if (charge2 < 0) mD0Hists->fillSameEvt_US_QADist(pair, mCentBin, mxeCuts::D0Cuts);
+	      else mD0Hists->fillSameEvt_LS_QADist(pair, mCentBin, mxeCuts::D0Cuts);
             }
-            else if (charge2 < 0) mD0Hists->fillMixedEvtQADist(pair, mCentBin);
+            else if (charge2 < 0) mD0Hists->fillMixedEvtQADist(pair, mCentBin, mxeCuts::D0Cuts);
 #endif
-            if (!isGoodPair(&pair)) continue;
+            if (!isGoodPair(&pair,mxeCuts::D0Cuts)) continue;
 
             TVector2 QSub = mEvents[0]->Q() - mEvents[0]->pionAt(iTrk1).q();
             if (iEvt2 == 0) QSub -= mEvents[iEvt2]->kaonAt(iTrk2).q();
@@ -297,26 +297,26 @@ bool StPicoEventMixer::isCloseTrack(StPicoTrack const* const trk, StThreeVectorF
    StPhysicalHelixD helix = trk->dcaGeometry().helix();
    return (helix.at(helix.pathLength(pVtx)) - pVtx).mag() <= mxeCuts::dca2pVtx;
 }
-bool StPicoEventMixer::isGoodPair(StMixerPair const& pair) const
+bool StPicoEventMixer::isGoodPair(StMixerPair const& pair, mxeCuts::TopologicalCuts const& cuts) const
 {
-   int ptIndex = getD0PtIndex(pair);
+  int ptIndex = getD0PtIndex(pair,cuts.PtEdge);
    return (pair.m() > mxeCuts::massMin && pair.m() < mxeCuts::massMax &&
-           std::abs(pair.lorentzVector().rapidity()) < mxeCuts::RapidityCut &&
-           pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-           pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-           pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-           std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-           ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex]);
+           std::abs(pair.lorentzVector().rapidity()) < cuts.RapidityCut &&
+           pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+           pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+           pair.decayLength() > cuts.decayLength[ptIndex] &&
+           std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+           ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex]);
 }
 //-----------------------------------------------------------------------------
-int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair) const
+int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair, std::vector<float> const& edges) const
 {
-   for (int i = 0; i < mxeCuts::nPtBins; i++)
+  for (int i = 0; i < edges.size(); i++)
    {
-      if ((pair.pt() >= mxeCuts::PtEdge[i]) && (pair.pt() < mxeCuts::PtEdge[i + 1]))
+      if ((pair.pt() >= edges[i]) && (pair.pt() < edges[i + 1]))
          return i;
    }
-   return mxeCuts::nPtBins - 1;
+  return edges.size() - 1;
 }
 float StPicoEventMixer::getTofBeta(StPicoTrack const* const trk, StPicoDst const* const picoDst, StThreeVectorF const& pVertex) const
 {

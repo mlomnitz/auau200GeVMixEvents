@@ -61,8 +61,8 @@ private:
    bool isTpcKaon(StPicoTrack const*) const;
    bool isPion(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
    bool isKaon(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
-   bool isGoodPair(StMixerPair const& pair) const;
-   int getD0PtIndex(StMixerPair const& pair) const;
+   bool isGoodPair(StMixerPair const& pair, mxeCuts::TopologicalCuts const& cuts) const;
+   int getD0PtIndex(StMixerPair const& pair, std::vector<float> const& edges) const;
    float getTofBeta(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
 };
 

@@ -24,16 +24,16 @@ class TString;
 #include "StMixerPair.h"
 #include "StMixerCuts.h"
 
-class StD0Hists: public TObject
+class StD0Hists
 {
 public:
   StD0Hists(std::string fileBaseName, int harmonic = 2);
    virtual ~StD0Hists();
    void closeFile();
 #ifdef __run_w_QA__
-   void fillSameEvt_US_QADist(StMixerPair const&, int const);
-   void fillSameEvt_LS_QADist(StMixerPair const&, int const);
-   void fillMixedEvtQADist(StMixerPair const&, int const);
+   void fillSameEvt_US_QADist(StMixerPair const&, int const, mxeCuts::TopologicalCuts const&);
+   void fillSameEvt_LS_QADist(StMixerPair const&, int const, mxeCuts::TopologicalCuts const&);
+   void fillMixedEvtQADist(StMixerPair const&, int const, mxeCuts::TopologicalCuts const&);
 #endif
    //event level qa
    TH1D*      hTotalNumberOfEvents;
@@ -105,10 +105,6 @@ public:
    TH3F* mME_US_KaonDca2Vtx;
    TH3F* mME_US_D0Dca2Vtx;
 #endif
-
-private:
-
-   ClassDef(StD0Hists, 1);
 };
 
 #endif

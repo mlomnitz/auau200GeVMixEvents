@@ -10,7 +10,6 @@
 #include "THn.h"
 #include "TProfile.h"
 
-ClassImp(StD0Hists);
 
 StD0Hists::StD0Hists(std::string fileBaseName = "", int harmonic)
 {
@@ -134,12 +133,12 @@ void StD0Hists::closeFile()
 #ifdef __run_w_QA__
 // QA histogram filling
 // --------------------------------------
-void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centrality)
+void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centrality, mxeCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
    for (int i = 0; i < mxeCuts::nPtBins; i++)
    {
-      if ((pair.pt() >= mxeCuts::PtEdge[i]) && (pair.pt() < mxeCuts::PtEdge[i + 1]))
+     if ((pair.pt() >= cuts.PtEdge[i]) && (pair.pt() < cuts.PtEdge[i + 1]))
       {
          ptIndex = i;
          break;
@@ -150,9 +149,9 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
    // Decay Topology
    if (centrality >= mxeCuts::decayTopologyCentrality &&
        pair.particle1Dca() > mxeCuts::decayTopologyMinDca && pair.particle2Dca() > mxeCuts::decayTopologyMinDca &&
-       pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
+       pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
        pair.decayLength() > mxeCuts::decayTopologyMinDca &&
-       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
+       std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
        ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::decayTopologyMaxD0Dca2Vtx)
    {
      double toFill[] = {pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
@@ -161,62 +160,62 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
    }
 
    //Cos theta
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         //std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         //std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mME_US_PointingAngle->Fill(pair.pt(), centrality,  std::cos(pair.pointingAngle()));
 
    //DecayL
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         //pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         //pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mME_US_DecayL->Fill(pair.pt(), centrality, pair.decayLength());
 
    //DcaDaughter
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         //pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         //pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mME_US_Dca12->Fill(pair.pt(), centrality, pair.dcaDaughters());
 
    //PionDca
-   if (//pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
-      pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-      pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-      pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-      std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-      ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (//pair.particle1Dca() > cuts.pDca[ptIndex] &&
+      pair.particle2Dca() > cuts.kDca[ptIndex] &&
+      pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+      pair.decayLength() > cuts.decayLength[ptIndex] &&
+      std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+      ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mME_US_PionDca2Vtx->Fill(pair.pt(), centrality, pair.particle1Dca());
 
    //Kaon Dca
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
-         //pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] &&
+         //pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mME_US_KaonDca2Vtx->Fill(pair.pt(), centrality,  pair.particle2Dca());
 
    //D0 dca
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex]
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex]
       )
       mME_US_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
 // --------------------------------------
-void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centrality)
+void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centrality,mxeCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
-   for (int i = 0; i < mxeCuts::nPtBins; i++)
+   for (int i = 0; i < cuts.nPtBins; i++)
    {
-      if ((pair.pt() >= mxeCuts::PtEdge[i]) && (pair.pt() < mxeCuts::PtEdge[i + 1]))
+      if ((pair.pt() >= cuts.PtEdge[i]) && (pair.pt() < cuts.PtEdge[i + 1]))
       {
          ptIndex = i;
          break;
@@ -227,9 +226,9 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
    // Decay Topology
    if (centrality >= mxeCuts::decayTopologyCentrality &&
        pair.particle1Dca() > mxeCuts::decayTopologyMinDca && pair.particle2Dca() > mxeCuts::decayTopologyMinDca &&
-       pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
+       pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
        pair.decayLength() > mxeCuts::decayTopologyMinDca &&
-       std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
+       std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
        ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::decayTopologyMaxD0Dca2Vtx)
    {
      double toFill[] = {pair.pt(), pair.decayLength() * std::sin(pair.pointingAngle()), 
@@ -238,62 +237,62 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
    }
 
    //Cos theta
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         //std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         //std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_US_PointingAngle->Fill(pair.pt(), centrality, std::cos(pair.pointingAngle()));
 
    //DecayL
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         //pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         //pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_US_DecayL->Fill(pair.pt(),  centrality, pair.decayLength());
 
    //DcaDaughter
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         //pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         //pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_US_Dca12->Fill(pair.pt(), centrality, pair.dcaDaughters());
 
    //PionDca
-   if (//pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
-      pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-      pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-      pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-      std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-      ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (//pair.particle1Dca() > cuts.pDca[ptIndex] &&
+      pair.particle2Dca() > cuts.kDca[ptIndex] &&
+      pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+      pair.decayLength() > cuts.decayLength[ptIndex] &&
+      std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+      ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_US_PionDca2Vtx->Fill(pair.pt(), centrality, pair.particle1Dca());
 
    //Kaon Dca
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
-         //pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] &&
+         //pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_US_KaonDca2Vtx->Fill(pair.pt(), centrality, pair.particle2Dca());
 
    //D0 dca
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex]
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex]
       )
       mSE_US_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
 // --------------------------------------
-void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centrality)
+void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centrality,mxeCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
-   for (int i = 0; i < mxeCuts::nPtBins; i++)
+   for (int i = 0; i < cuts.nPtBins; i++)
    {
-      if ((pair.pt() >= mxeCuts::PtEdge[i]) && (pair.pt() < mxeCuts::PtEdge[i + 1]))
+      if ((pair.pt() >= cuts.PtEdge[i]) && (pair.pt() < cuts.PtEdge[i + 1]))
       {
          ptIndex = i;
          break;
@@ -302,52 +301,52 @@ void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centra
    if (pair.m() <  mxeCuts::QAmassMin || pair.m() > mxeCuts::QAmassMax) return;
 
    //Cos theta
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
          //std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_LS_PointingAngle->Fill(pair.pt(), centrality, std::cos(pair.pointingAngle()));
 
    //DecayL
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         //pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         //pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_LS_DecayL->Fill(pair.pt(), centrality, pair.decayLength());
 
    //DcaDaughter
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         //pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         //pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_LS_Dca12->Fill(pair.pt(), centrality, pair.dcaDaughters());
 
    //PionDca
-   if (//pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
-      pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-      pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-      pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-      std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-      ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (//pair.particle1Dca() > cuts.pDca[ptIndex] &&
+      pair.particle2Dca() > cuts.kDca[ptIndex] &&
+      pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+      pair.decayLength() > cuts.decayLength[ptIndex] &&
+      std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+      ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_LS_PionDca2Vtx->Fill(pair.pt(), centrality, pair.particle1Dca());
 
    //Kaon Dca
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] &&
-         //pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex] &&
-         ((pair.decayLength()) * sin(pair.pointingAngle())) < mxeCuts::dcaV0ToPv[ptIndex])
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] &&
+         //pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
+         ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex])
       mSE_LS_KaonDca2Vtx->Fill(pair.pt(), centrality, pair.particle2Dca());
 
    //D0 dca
-   if (pair.particle1Dca() > mxeCuts::pDca[ptIndex] && pair.particle2Dca() > mxeCuts::kDca[ptIndex] &&
-         pair.dcaDaughters() < mxeCuts::dcaDaughters[ptIndex] &&
-         pair.decayLength() > mxeCuts::decayLength[ptIndex] &&
-         std::cos(pair.pointingAngle()) > mxeCuts::cosTheta[ptIndex]
+   if (pair.particle1Dca() > cuts.pDca[ptIndex] && pair.particle2Dca() > cuts.kDca[ptIndex] &&
+         pair.dcaDaughters() < cuts.dcaDaughters[ptIndex] &&
+         pair.decayLength() > cuts.decayLength[ptIndex] &&
+         std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex]
       )
       mSE_LS_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
