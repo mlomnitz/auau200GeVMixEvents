@@ -120,7 +120,7 @@ StD0Hists::StD0Hists(std::string fileBaseName = "", int harmonic)
    mME_US_PionDca2Vtx = new TH3F(Form("%s_me_us_pionDca", fileBaseName.c_str()), "Same Event #pi dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mME_US_KaonDca2Vtx = new TH3F(Form("%s_me_us_kaonDca", fileBaseName.c_str()), "Same Event US K dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, nDcaBins,0,maxDca);
    mME_US_D0Dca2Vtx = new TH3F(Form("%s_me_us_D0Dca2Vtx", fileBaseName.c_str()), "SameEvent US D0 dca 2 vertex ; p_{T} (GeV/c);centrality", 150, 0, 15, 9, 0, 9, 100, 0, 0.05);
-#endif __run_w_QA__
+#endif
 }
 StD0Hists::~StD0Hists()
 {
@@ -136,7 +136,7 @@ void StD0Hists::closeFile()
 void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centrality, mxeCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
-   for (int i = 0; i < mxeCuts::nPtBins; i++)
+   for (int i = 0; i < cuts.nPtBins; i++)
    {
      if ((pair.pt() >= cuts.PtEdge[i]) && (pair.pt() < cuts.PtEdge[i + 1]))
       {
