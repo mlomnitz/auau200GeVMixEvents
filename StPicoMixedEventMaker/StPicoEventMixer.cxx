@@ -98,7 +98,7 @@ bool StPicoEventMixer::addPicoEvent(StPicoDst const* const picoDst, StThreeVecto
 void StPicoEventMixer::mixEvents()
 {
    if(!mEvents.size()) return;
-
+   int mHarmonic = mEventPlane->harmonic();
    //Template for D0 studies
    for (size_t iEvt2 = 0; iEvt2 < mEvents.size(); ++iEvt2)
    {
@@ -139,9 +139,9 @@ void StPicoEventMixer::mixEvents()
 
             TVector2 QSub = mEvents[0]->Q() - mEvents[0]->pionAt(iTrk1).q();
             if (iEvt2 == 0) QSub -= mEvents[iEvt2]->kaonAt(iTrk2).q();
-            float dPhi = pair.phi() - QSub.Phi() / 2;
-            while (dPhi < 0) dPhi += TMath::Pi();
-            while (dPhi >= TMath::Pi()) dPhi -= TMath::Pi();
+            float dPhi = pair.phi() - QSub.Phi() / mHarmonic;
+            while (dPhi < 0) dPhi += (2.0/mHarmonic)*TMath::Pi();
+            while (dPhi >= (2.0/mHarmonic)*TMath::Pi()) dPhi -= (2.0/mHarmonic)*TMath::Pi();
 
             double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
             double toFillDaug[5] = {mCentBin + 0.5, pair.pt(), mEvents[0]->pionAt(iTrk1).gMom().perp(), pair.m(), mEvents[iEvt2]->kaonAt(iTrk2).gMom().perp()};
@@ -179,9 +179,9 @@ void StPicoEventMixer::mixEvents()
 	      QSubEtaSub = mEvents[0]->QEtaMinusGap005();
 	    else 
 	      QSubEtaSub = mEvents[0]->QEtaPlusGap005();
-            float dPhiEtaSub = pair.phi() - QSubEtaSub.Phi() / 2;
-            while (dPhiEtaSub < 0) dPhiEtaSub += TMath::Pi();
-            while (dPhiEtaSub >= TMath::Pi()) dPhiEtaSub -= TMath::Pi();
+            float dPhiEtaSub = pair.phi() - QSubEtaSub.Phi() / mHarmonic;
+            while (dPhiEtaSub < 0) dPhiEtaSub += (2.0/mHarmonic)*TMath::Pi();
+            while (dPhiEtaSub >= (2.0/mHarmonic)*TMath::Pi()) dPhiEtaSub -= (2.0/mHarmonic)*TMath::Pi();
 
             double toFillEtaSub[5] = {mCentBin + 0.5, pair.pt(), pair.m(), dPhiEtaSub};
             if (iEvt2 == 0)
@@ -229,9 +229,9 @@ void StPicoEventMixer::mixEvents()
                   cout << "QSubEtaGap.Mod()==0  nEtaGaps: " << nEtaGaps << endl;
                   continue;
                }
-               float dPhiEtaGap = pair.phi() - QSubEtaGap.Phi() / 2;
-               while (dPhiEtaGap < 0) dPhiEtaGap += TMath::Pi();
-               while (dPhiEtaGap >= TMath::Pi()) dPhiEtaGap -= TMath::Pi();
+               float dPhiEtaGap = pair.phi() - QSubEtaGap.Phi() / mHarmonic;
+               while (dPhiEtaGap < 0) dPhiEtaGap += (2.0/mHarmonic)*TMath::Pi();
+               while (dPhiEtaGap >= (2.0/mHarmonic)*TMath::Pi()) dPhiEtaGap -= (2.0/mHarmonic)*TMath::Pi();
                double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.m(), dPhiEtaGap, 0.1 * nEtaGaps + 0.05};
 
                if (iEvt2 == 0)
