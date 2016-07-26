@@ -9,6 +9,7 @@
  */
 // ---------- QA Switch
 //#define __run_w_QA__
+//#define __run_w_DaugHisto__
 //
 #include "Rtypes.h"
 #include <string>

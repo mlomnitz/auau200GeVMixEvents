@@ -57,11 +57,13 @@ public:
    TH3F* hCentVzPsiSameEvent;
    TH3F* hCentVzPsiMixed;
 
+#ifdef __run_w_DaugHisto__
    //add daughter pT
    THn* hD0CentPtEtaMDphiDaug[mxeCuts::nCutsSets];
    THn* hD0CentPtEtaMDphiDaugLikeSign[mxeCuts::nCutsSets];
    THn* hD0CentPtEtaMDphiDaugMixed[mxeCuts::nCutsSets];
    THn* hD0CentPtEtaMDphiDaugLikeSignMixed[mxeCuts::nCutsSets];
+#endif
 
    // Half eta's event plane 
    THn* hD0EtaSubCentPtMDphi[mxeCuts::nCutsSets];

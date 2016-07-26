@@ -129,12 +129,15 @@ Int_t StPicoMixedEventMaker::Finish()
    cout << "StPicoMixedEventMaker::Finish()" << endl;
    mOutputFile->cd();
    for(int ii = 0 ; ii<mxeCuts::nCutsSets; ++ii){
+
+#ifdef __run_w_DaugHisto__     
      //Daught
      mD0Hists->hD0CentPtEtaMDphiDaug[ii]->Write();
      mD0Hists->hD0CentPtEtaMDphiDaugLikeSign[ii]->Write();
      mD0Hists->hD0CentPtEtaMDphiDaugMixed[ii]->Write();
      mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed[ii]->Write();
-     
+#endif
+
      //Eta sub
      mD0Hists->hD0EtaSubCentPtMDphi[ii]->Write();
      mD0Hists->hD0EtaSubCentPtMDphiLikeSign[ii]->Write();

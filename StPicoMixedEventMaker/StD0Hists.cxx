@@ -51,15 +51,20 @@ StD0Hists::StD0Hists(std::string fileBaseName = "", int harmonic)
    double xMin2[nDim2] = {0, 0, 1.6, 0, 0};
    double xMax2[nDim2] = {9, 10, 2.1, (2.0/harmonic)*TMath::Pi(), 0.8};
    for(int ii = 0 ; ii< mxeCuts::nCutsSets ; ++ii){
+
+#ifdef __run_w_DaugHisto__
      hD0CentPtEtaMDphiDaug[ii] = new THnF(Form("hD0CentPtEtaMDphiDaug_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaug_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
      hD0CentPtEtaMDphiDaugLikeSign[ii] = new THnF(Form("hD0CentPtEtaMDphiDaugLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaugLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
      hD0CentPtEtaMDphiDaugMixed[ii] = new THnF(Form("hD0CentPtEtaMDphiDaugMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaugMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
      hD0CentPtEtaMDphiDaugLikeSignMixed[ii] = new THnF(Form("hD0CentPtEtaMDphiDaugLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaugLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+#endif
+
      //Eta sub
      hD0EtaSubCentPtMDphi[ii] = new THnF(Form("hD0EtaSubCentPtMDphi_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphi_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
      hD0EtaSubCentPtMDphiLikeSign[ii] = new THnF(Form("hD0EtaSubCentPtMDphiLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphiLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
      hD0EtaSubCentPtMDphiMixed[ii] = new THnF(Form("hD0EtaSubCentPtMDphiMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphiMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
      hD0EtaSubCentPtMDphiLikeSignMixed[ii] = new THnF(Form("hD0EtaSubCentPtMDphiLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphiLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+
      //Eta gap
      hD0CentPtMDphiEtaGap[ii] = new THnF(Form("hD0CentPtMDphiEtaGap_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtMDphiEtaGap_%s",mxeCuts::cutsSetName[ii].c_str()), nDim2, nBins2, xMin2, xMax2);
      hD0CentPtMDphiEtaGapLikeSign[ii] = new THnF(Form("hD0CentPtMDphiEtaGapLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtMDphiEtaGapLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), nDim2, nBins2, xMin2, xMax2);

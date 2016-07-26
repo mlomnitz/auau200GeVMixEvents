@@ -148,6 +148,8 @@ void StPicoEventMixer::mixEvents()
 
             double toFill[5] = {mCentBin + 0.5, pair.pt(), pair.eta(), pair.m(), dPhi};
             double toFillDaug[5] = {mCentBin + 0.5, pair.pt(), mEvents[0]->pionAt(iTrk1).gMom().perp(), pair.m(), mEvents[iEvt2]->kaonAt(iTrk2).gMom().perp()};
+	    //Daughter histograms
+#ifdef __run_w_DaugHisto__
 	    for(int ii = 0; ii < mxeCuts::nCutsSets; ++ii){
 	      if( !pass_cut_set[ii] ) continue;
 	      if (iEvt2 == 0)
@@ -158,7 +160,7 @@ void StPicoEventMixer::mixEvents()
 		    }
 		  else
 		    {
-		      mD0Hists->hD0CentPtEtaMDphiDaugLikeSign[ii]->Fill(toFill, mEvents[0]->weight());
+		      mD0Hists->hD0CentPtEtaMDphiDaugLikeSign[ii]->Fill(toFillDaug, mEvents[0]->weight());
 		    }
 		}
 	      else
@@ -169,11 +171,11 @@ void StPicoEventMixer::mixEvents()
 		    }
 		  else
 		    {
-		      mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed[ii]->Fill(toFill, mEvents[0]->weight());
+		      mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed[ii]->Fill(toFillDaug, mEvents[0]->weight());
 		    }
 		}
 	    }
-
+#endif
 	    // Eta sub
             TVector2 QSubEtaSub;
 	    if( pair.eta() > 0 )
