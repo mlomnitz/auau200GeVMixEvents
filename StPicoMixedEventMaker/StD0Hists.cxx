@@ -36,42 +36,36 @@ StD0Hists::StD0Hists(std::string fileBaseName = "", int harmonic)
    hCentVzPsiMixed = new TH3F("hCentVzPsiMixed", "hCentVzPsiMixed", 9, 0, 9, 10, -6, 6, 10, 0, (2.0/harmonic)*TMath::Pi());
 
    //D0 histograms
-   const int nDim = 5;
-   int nBins[nDim] = {9, 100, 20, 250, 10};//cent, pt, eta, m, dPhi
-   double xMin[nDim] = {0, 0, -1, 0, 0};
-   double xMax[nDim] = {9, 10, 1, 2.5, (2.0/harmonic)*TMath::Pi()};
-   hD0CentPtEtaMDphi = new THnF("hD0CentPtEtaMDphi", "hD0CentPtEtaMDphi", nDim, nBins, xMin, xMax);
-   hD0CentPtEtaMDphiLikeSign = new THnF("hD0CentPtEtaMDphiLikeSign", "hD0CentPtEtaMDphiLikeSign", nDim, nBins, xMin, xMax);
-   hD0CentPtEtaMDphiMixed = new THnF("hD0CentPtEtaMDphiMixed", "hD0CentPtEtaMDphiMixed", nDim, nBins, xMin, xMax);
-   hD0CentPtEtaMDphiLikeSignMixed = new THnF("hD0CentPtEtaMDphiLikeSignMixed", "hD0CentPtEtaMDphiLikeSignMixed", nDim, nBins, xMin, xMax);
-
-   //D0 histograms
    const int nDimDaug = 5;
    int nBinsDaug[nDimDaug] = {9, 100, 10, 250, 10};//cent, pt, daughterpt1, m, daughterpt2
    double xMinDaug[nDimDaug] = {0, 0, 0.6, 0, 0.6};
    double xMaxDaug[nDimDaug] = {9, 10, 1.6, 2.5, 1.6};
-   hD0CentPtEtaMDphiDaug = new THnF("hD0CentPtEtaMDphiDaug", "hD0CentPtEtaMDphiDaug", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
-   hD0CentPtEtaMDphiDaugLikeSign = new THnF("hD0CentPtEtaMDphiDaugLikeSign", "hD0CentPtEtaMDphiDaugLikeSign", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
-   hD0CentPtEtaMDphiDaugMixed = new THnF("hD0CentPtEtaMDphiDaugMixed", "hD0CentPtEtaMDphiDaugMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
-   hD0CentPtEtaMDphiDaugLikeSignMixed = new THnF("hD0CentPtEtaMDphiDaugLikeSignMixed", "hD0CentPtEtaMDphiDaugLikeSignMixed", nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
    // EtaSub Histograms
    const int nDimEtaSub = 4;
    int nBinsEtaSub[nDimEtaSub] = {9, 100, 50, 10};//cent, pt, m, dPhi, etaGap
    double xMinEtaSub[nDimEtaSub] = {0, 0, 1.6, 0};
    double xMaxEtaSub[nDimEtaSub] = {9, 10, 2.1, (2.0/harmonic)*TMath::Pi()};
-   hD0EtaSubCentPtMDphi = new THnF("hD0EtaSubCentPtMDphi", "hD0EtaSubCentPtMDphi", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
-   hD0EtaSubCentPtMDphiLikeSign = new THnF("hD0EtaSubCentPtMDphiLikeSign", "hD0EtaSubCentPtMDphiLikeSign", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
-   hD0EtaSubCentPtMDphiMixed = new THnF("hD0EtaSubCentPtMDphiMixed", "hD0EtaSubCentPtMDphiMixed", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
-   hD0EtaSubCentPtMDphiLikeSignMixed = new THnF("hD0EtaSubCentPtMDphiLikeSignMixed", "hD0EtaSubCentPtMDphiLikeSignMixed", nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
    // Eta Gap Histograms
    const int nDim2 = 5;
    int nBins2[nDim2] = {9, 100, 50, 10, 8};//cent, pt, m, dPhi, etaGap
    double xMin2[nDim2] = {0, 0, 1.6, 0, 0};
    double xMax2[nDim2] = {9, 10, 2.1, (2.0/harmonic)*TMath::Pi(), 0.8};
-   hD0CentPtMDphiEtaGap = new THnF("hD0CentPtMDphiEtaGap", "hD0CentPtMDphiEtaGap", nDim2, nBins2, xMin2, xMax2);
-   hD0CentPtMDphiEtaGapLikeSign = new THnF("hD0CentPtMDphiEtaGapLikeSign", "hD0CentPtMDphiEtaGapLikeSign", nDim2, nBins2, xMin2, xMax2);
-   hD0CentPtMDphiEtaGapMixed = new THnF("hD0CentPtMDphiEtaGapMixed", "hD0CentPtMDphiEtaGapMixed", nDim2, nBins2, xMin2, xMax2);
-   hD0CentPtMDphiEtaGapLikeSignMixed = new THnF("hD0CentPtMDphiEtaGapLikeSignMixed", "hD0CentPtMDphiEtaGapLikeSignMixed", nDim2, nBins2, xMin2, xMax2);
+   for(int ii = 0 ; ii< mxeCuts::nCutsSets ; ++ii){
+     hD0CentPtEtaMDphiDaug[ii] = new THnF(Form("hD0CentPtEtaMDphiDaug_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaug_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+     hD0CentPtEtaMDphiDaugLikeSign[ii] = new THnF(Form("hD0CentPtEtaMDphiDaugLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaugLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+     hD0CentPtEtaMDphiDaugMixed[ii] = new THnF(Form("hD0CentPtEtaMDphiDaugMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaugMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+     hD0CentPtEtaMDphiDaugLikeSignMixed[ii] = new THnF(Form("hD0CentPtEtaMDphiDaugLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtEtaMDphiDaugLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimDaug, nBinsDaug, xMinDaug, xMaxDaug);
+     //Eta sub
+     hD0EtaSubCentPtMDphi[ii] = new THnF(Form("hD0EtaSubCentPtMDphi_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphi_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+     hD0EtaSubCentPtMDphiLikeSign[ii] = new THnF(Form("hD0EtaSubCentPtMDphiLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphiLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+     hD0EtaSubCentPtMDphiMixed[ii] = new THnF(Form("hD0EtaSubCentPtMDphiMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphiMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+     hD0EtaSubCentPtMDphiLikeSignMixed[ii] = new THnF(Form("hD0EtaSubCentPtMDphiLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0EtaSubCentPtMDphiLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDimEtaSub, nBinsEtaSub, xMinEtaSub, xMaxEtaSub);
+     //Eta gap
+     hD0CentPtMDphiEtaGap[ii] = new THnF(Form("hD0CentPtMDphiEtaGap_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtMDphiEtaGap_%s",mxeCuts::cutsSetName[ii].c_str()), nDim2, nBins2, xMin2, xMax2);
+     hD0CentPtMDphiEtaGapLikeSign[ii] = new THnF(Form("hD0CentPtMDphiEtaGapLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtMDphiEtaGapLikeSign_%s",mxeCuts::cutsSetName[ii].c_str()), nDim2, nBins2, xMin2, xMax2);
+     hD0CentPtMDphiEtaGapMixed[ii] = new THnF(Form("hD0CentPtMDphiEtaGapMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtMDphiEtaGapMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDim2, nBins2, xMin2, xMax2);
+     hD0CentPtMDphiEtaGapLikeSignMixed[ii] = new THnF(Form("hD0CentPtMDphiEtaGapLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), Form("hD0CentPtMDphiEtaGapLikeSignMixed_%s",mxeCuts::cutsSetName[ii].c_str()), nDim2, nBins2, xMin2, xMax2);
+   }
 
    /*
    const int nDimMixed=7;
@@ -133,7 +127,7 @@ void StD0Hists::closeFile()
 #ifdef __run_w_QA__
 // QA histogram filling
 // --------------------------------------
-void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centrality, mxeCuts::TopologicalCuts const& cuts)
+void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centrality, topoCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
    for (int i = 0; i < cuts.nPtBins; i++)
@@ -210,7 +204,7 @@ void StD0Hists::fillMixedEvtQADist(StMixerPair const&  pair, int const centralit
       mME_US_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
 // --------------------------------------
-void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centrality,mxeCuts::TopologicalCuts const& cuts)
+void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centrality,topoCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
    for (int i = 0; i < cuts.nPtBins; i++)
@@ -287,7 +281,7 @@ void StD0Hists::fillSameEvt_US_QADist(StMixerPair const&  pair, int const centra
       mSE_US_D0Dca2Vtx->Fill(pair.pt(), centrality, (pair.decayLength()) * sin(pair.pointingAngle()));
 }
 // --------------------------------------
-void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centrality,mxeCuts::TopologicalCuts const& cuts)
+void StD0Hists::fillSameEvt_LS_QADist(StMixerPair const&  pair, int const centrality,topoCuts::TopologicalCuts const& cuts)
 {
    int ptIndex;
    for (int i = 0; i < cuts.nPtBins; i++)

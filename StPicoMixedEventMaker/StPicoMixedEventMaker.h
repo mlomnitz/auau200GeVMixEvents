@@ -69,5 +69,6 @@ private:
    TFile*          mOutputFile;
    StD0Hists* mD0Hists;
 
+   ClassDef(StPicoMixedEventMaker, 0)
 };
 #endif

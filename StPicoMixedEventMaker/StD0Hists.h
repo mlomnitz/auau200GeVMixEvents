@@ -23,6 +23,7 @@ class TString;
 
 #include "StMixerPair.h"
 #include "StMixerCuts.h"
+#include "TopologyCuts.h"
 
 class StD0Hists
 {
@@ -31,9 +32,9 @@ public:
    virtual ~StD0Hists();
    void closeFile();
 #ifdef __run_w_QA__
-   void fillSameEvt_US_QADist(StMixerPair const&, int const, mxeCuts::TopologicalCuts const&);
-   void fillSameEvt_LS_QADist(StMixerPair const&, int const, mxeCuts::TopologicalCuts const&);
-   void fillMixedEvtQADist(StMixerPair const&, int const, mxeCuts::TopologicalCuts const&);
+   void fillSameEvt_US_QADist(StMixerPair const&, int const, topoCuts::TopologicalCuts const&);
+   void fillSameEvt_LS_QADist(StMixerPair const&, int const, topoCuts::TopologicalCuts const&);
+   void fillMixedEvtQADist(StMixerPair const&, int const, topoCuts::TopologicalCuts const&);
 #endif
    //event level qa
    TH1D*      hTotalNumberOfEvents;
@@ -56,29 +57,24 @@ public:
    TH3F* hCentVzPsiSameEvent;
    TH3F* hCentVzPsiMixed;
 
-   //d0 v2 histograms
-   THn* hD0CentPtEtaMDphi;
-   THn* hD0CentPtEtaMDphiLikeSign;
-   THn* hD0CentPtEtaMDphiMixed;
-   THn* hD0CentPtEtaMDphiLikeSignMixed;
-
    //add daughter pT
-   THn* hD0CentPtEtaMDphiDaug;
-   THn* hD0CentPtEtaMDphiDaugLikeSign;
-   THn* hD0CentPtEtaMDphiDaugMixed;
-   THn* hD0CentPtEtaMDphiDaugLikeSignMixed;
+   THn* hD0CentPtEtaMDphiDaug[mxeCuts::nCutsSets];
+   THn* hD0CentPtEtaMDphiDaugLikeSign[mxeCuts::nCutsSets];
+   THn* hD0CentPtEtaMDphiDaugMixed[mxeCuts::nCutsSets];
+   THn* hD0CentPtEtaMDphiDaugLikeSignMixed[mxeCuts::nCutsSets];
 
    // Half eta's event plane 
-   THn* hD0EtaSubCentPtMDphi;
-   THn* hD0EtaSubCentPtMDphiLikeSign;
-   THn* hD0EtaSubCentPtMDphiMixed;
-   THn* hD0EtaSubCentPtMDphiLikeSignMixed;
+   THn* hD0EtaSubCentPtMDphi[mxeCuts::nCutsSets];
+   THn* hD0EtaSubCentPtMDphiLikeSign[mxeCuts::nCutsSets];
+   THn* hD0EtaSubCentPtMDphiMixed[mxeCuts::nCutsSets];
+   THn* hD0EtaSubCentPtMDphiLikeSignMixed[mxeCuts::nCutsSets];
 
    // Eta Gap Event Plane
-   THn* hD0CentPtMDphiEtaGap;
-   THn* hD0CentPtMDphiEtaGapLikeSign;
-   THn* hD0CentPtMDphiEtaGapMixed;
-   THn* hD0CentPtMDphiEtaGapLikeSignMixed;
+   THn* hD0CentPtMDphiEtaGap[mxeCuts::nCutsSets];
+   THn* hD0CentPtMDphiEtaGapLikeSign[mxeCuts::nCutsSets];
+   THn* hD0CentPtMDphiEtaGapMixed[mxeCuts::nCutsSets];
+   THn* hD0CentPtMDphiEtaGapLikeSignMixed[mxeCuts::nCutsSets];
+
 
 #ifdef __run_w_QA__
    //QA hists

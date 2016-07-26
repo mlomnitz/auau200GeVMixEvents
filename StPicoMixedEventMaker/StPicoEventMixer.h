@@ -22,6 +22,7 @@
 #include "TVector2.h"
 #include "StThreeVectorF.hh"
 #include "StMixerCuts.h"
+#include "TopologyCuts.h"
 
 class TTree;
 class TH2F;
@@ -61,7 +62,7 @@ private:
    bool isTpcKaon(StPicoTrack const*) const;
    bool isPion(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
    bool isKaon(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
-   bool isGoodPair(StMixerPair const& pair, mxeCuts::TopologicalCuts const& cuts) const;
+   bool isGoodPair(StMixerPair const& pair, topoCuts::TopologicalCuts const& cuts) const;
    int getD0PtIndex(StMixerPair const& pair, std::vector<float> const& edges) const;
    float getTofBeta(StPicoTrack const*, StPicoDst const*, StThreeVectorF const& pVtx) const;
 };

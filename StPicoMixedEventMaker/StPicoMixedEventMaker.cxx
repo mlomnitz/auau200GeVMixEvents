@@ -19,7 +19,7 @@
 
 #include <vector>
 
-//ClassImp(StPicoMixedEventMaker)
+ClassImp(StPicoMixedEventMaker)
 // _________________________________________________________
 StPicoMixedEventMaker::StPicoMixedEventMaker(char const* name, StPicoDstMaker* picoMaker, StRefMultCorr* grefmultCorrUtil, StEventPlane* eventPlaneMaker,
 					     char const* outputBaseFileName,  char const* inputPicoList, int harmonic) :
@@ -128,29 +128,25 @@ Int_t StPicoMixedEventMaker::Finish()
    }
    cout << "StPicoMixedEventMaker::Finish()" << endl;
    mOutputFile->cd();
-
-   mD0Hists->hD0CentPtEtaMDphi->Write();
-   mD0Hists->hD0CentPtEtaMDphiLikeSign->Write();
-   mD0Hists->hD0CentPtEtaMDphiMixed->Write();
-   mD0Hists->hD0CentPtEtaMDphiLikeSignMixed->Write();
-
-   //Daught
-   mD0Hists->hD0CentPtEtaMDphiDaug->Write();
-   mD0Hists->hD0CentPtEtaMDphiDaugLikeSign->Write();
-   mD0Hists->hD0CentPtEtaMDphiDaugMixed->Write();
-   mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed->Write();
-
-   //Eta sub
-   mD0Hists->hD0EtaSubCentPtMDphi->Write();
-   mD0Hists->hD0EtaSubCentPtMDphiLikeSign->Write();
-   mD0Hists->hD0EtaSubCentPtMDphiMixed->Write();
-   mD0Hists->hD0EtaSubCentPtMDphiLikeSignMixed->Write();
-
-   // Eta Gap
-   mD0Hists->hD0CentPtMDphiEtaGap->Write();
-   mD0Hists->hD0CentPtMDphiEtaGapLikeSign->Write();
-   mD0Hists->hD0CentPtMDphiEtaGapMixed->Write();
-   mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed->Write();
+   for(int ii = 0 ; ii<mxeCuts::nCutsSets; ++ii){
+     //Daught
+     mD0Hists->hD0CentPtEtaMDphiDaug[ii]->Write();
+     mD0Hists->hD0CentPtEtaMDphiDaugLikeSign[ii]->Write();
+     mD0Hists->hD0CentPtEtaMDphiDaugMixed[ii]->Write();
+     mD0Hists->hD0CentPtEtaMDphiDaugLikeSignMixed[ii]->Write();
+     
+     //Eta sub
+     mD0Hists->hD0EtaSubCentPtMDphi[ii]->Write();
+     mD0Hists->hD0EtaSubCentPtMDphiLikeSign[ii]->Write();
+     mD0Hists->hD0EtaSubCentPtMDphiMixed[ii]->Write();
+     mD0Hists->hD0EtaSubCentPtMDphiLikeSignMixed[ii]->Write();
+     
+     // Eta Gap
+     mD0Hists->hD0CentPtMDphiEtaGap[ii]->Write();
+     mD0Hists->hD0CentPtMDphiEtaGapLikeSign[ii]->Write();
+     mD0Hists->hD0CentPtMDphiEtaGapMixed[ii]->Write();
+     mD0Hists->hD0CentPtMDphiEtaGapLikeSignMixed[ii]->Write();
+   }
 #ifdef __run_w_QA__
    // QA plots
    mD0Hists->mSE_US_DecayTopology->Write();
