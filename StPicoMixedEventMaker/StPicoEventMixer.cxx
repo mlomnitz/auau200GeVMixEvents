@@ -183,12 +183,12 @@ void StPicoEventMixer::mixEvents()
 	    else 
 	      QSubEtaSub = mEvents[0]->QEtaPlusGap005();
 	    
-	    float pionEta = mEvents[0]->pionAt(iTrk1).pseudoRapidity();
-	    float kaonEta = mEvents[iEvt]->kaonAt(iTrk2).pseudoRapidity();
+	    float pionEta = mEvents[0]->pionAt(iTrk1).gMom().pseudoRapidity();
+	    float kaonEta = mEvents[iEvt2]->kaonAt(iTrk2).gMom().pseudoRapidity();
 	    if( pionEta*pair.eta() < 0 && std::fabs(pionEta) > 0.05  )
-	      QSubEtaSub - mEvents[0]->pionAt(iTrk1).q();
+	      QSubEtaSub -= mEvents[0]->pionAt(iTrk1).q();
 	    if( iEvt2==0 && kaonEta*pair.eta() < 0 && std::fabs(kaonEta) > 0.05  )
-	      QSubEtaSub - mEvents[0]->kaonAt(iTrk2).q();
+	      QSubEtaSub -= mEvents[0]->kaonAt(iTrk2).q();
 	    
             float dPhiEtaSub = pair.phi() - QSubEtaSub.Phi() / mHarmonic;
             while (dPhiEtaSub < 0) dPhiEtaSub += (2.0/mHarmonic)*TMath::Pi();
