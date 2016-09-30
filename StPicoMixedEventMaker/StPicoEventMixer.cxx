@@ -182,6 +182,14 @@ void StPicoEventMixer::mixEvents()
 	      QSubEtaSub = mEvents[0]->QEtaMinusGap005();
 	    else 
 	      QSubEtaSub = mEvents[0]->QEtaPlusGap005();
+	    
+	    float pionEta = mEvents[0]->pionAt(iTrk1).pseudoRapidity();
+	    float kaonEta = mEvents[iEvt]->kaonAt(iTrk2).pseudoRapidity();
+	    if( pionEta*pair.eta() < 0 && std::fabs(pionEta) > 0.05  )
+	      QSubEtaSub - mEvents[0]->pionAt(iTrk1).q();
+	    if( iEvt2==0 && kaonEta*pair.eta() < 0 && std::fabs(kaonEta) > 0.05  )
+	      QSubEtaSub - mEvents[0]->kaonAt(iTrk2).q();
+	    
             float dPhiEtaSub = pair.phi() - QSubEtaSub.Phi() / mHarmonic;
             while (dPhiEtaSub < 0) dPhiEtaSub += (2.0/mHarmonic)*TMath::Pi();
             while (dPhiEtaSub >= (2.0/mHarmonic)*TMath::Pi()) dPhiEtaSub -= (2.0/mHarmonic)*TMath::Pi();
@@ -313,7 +321,7 @@ bool StPicoEventMixer::isGoodPair(StMixerPair const& pair, topoCuts::Topological
            pair.decayLength() > cuts.decayLength[ptIndex] &&
            std::cos(pair.pointingAngle()) > cuts.cosTheta[ptIndex] &&
            ((pair.decayLength()) * sin(pair.pointingAngle())) < cuts.dcaV0ToPv[ptIndex]);
-}
+}//----------------------------------------------------------------------------- 
 //-----------------------------------------------------------------------------
 int StPicoEventMixer::getD0PtIndex(StMixerPair const& pair, std::vector<float> const& edges) const
 {
